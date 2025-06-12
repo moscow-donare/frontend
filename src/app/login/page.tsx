@@ -23,11 +23,7 @@ export default function LoginPage() {
     }, [isConnected]);
 
     return (
-        <div className="container">
-            <h1 className="title">
-                Login
-            </h1>
-        </div>
+        <div className="w-screen h-screen bg-teal-600 to:bg-purple-600"></div>
     );
 }
 
