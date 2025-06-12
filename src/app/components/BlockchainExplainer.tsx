@@ -102,7 +102,7 @@ const BlockchainExplainer = () => {
         
         <div className="mt-12 text-center">
           <Link 
-            href="/about" 
+            href="/how-it-works" 
             className="inline-flex items-center text-teal-600 font-medium hover:text-teal-700 transition-colors"
           >
             Conoce más sobre nuestra tecnología <ChevronRight className="h-5 w-5 ml-1" />

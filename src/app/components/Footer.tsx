@@ -34,20 +34,20 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Donaré</h3>
             <ul className="space-y-2">
-              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Sobre Nosotros</Link></li>
-              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Cómo Funciona</Link></li>
-              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Tecnología Blockchain</Link></li>
-              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Verificación</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">Sobre Nosotros</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">Cómo Funciona</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">Tecnología Blockchain</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">Verificación</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="text-lg font-semibold mb-4">Recursos</h3>
             <ul className="space-y-2">
-              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Centro de Ayuda</Link></li>
-              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Blog</Link></li>
-              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Guías</Link></li>
-              <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Términos de Servicio</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">Centro de Ayuda</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">Blog</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">Guías</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">Términos de Servicio</Link></li>
             </ul>
           </div>
           

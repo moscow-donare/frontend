@@ -30,7 +30,7 @@ const Navbar = () => {
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
               />
             </div>
-            <Link href="/about" className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md font-medium transition-colors">
+            <Link href="/how-it-works" className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md font-medium transition-colors">
               Cómo funciona
             </Link>
             <Link href="/campaigns/create" className="bg-teal-600 text-white hover:bg-teal-700 px-4 py-2 rounded-md font-medium flex items-center transition-colors">
@@ -68,7 +68,7 @@ const Navbar = () => {
               />
             </div>
             <Link 
-              href="/about"
+              href="/how-it-works"
               className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
