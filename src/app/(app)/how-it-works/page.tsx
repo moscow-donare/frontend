@@ -6,27 +6,106 @@ import {
   Database, ChevronRight, X, MapPin, Slash, Clock, Check, FileText, ArrowRightLeft
 } from 'lucide-react';
 import Link from 'next/link';
+import { Card } from "@heroui/react";
 import { motion } from 'framer-motion';
 
 const HowItWorks: React.FC = () => {
+  // Variantes de animación para la sección "¿Cómo Funciona?"
+  const imageCardMotionProps = {
+    initial: { opacity: 0, x: 50 },
+    whileInView: { opacity: 1, x: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.7, ease: "easeInOut", delay: 0.2 } // Corregido a string
+  };
+
+  const listMotionProps = {
+    initial: "hidden",
+    whileInView: "visible",
+    viewport: { once: true },
+    variants: {
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          delayChildren: 0.7, // Inicia después de que la tarjeta de imagen comience a aparecer
+          staggerChildren: 0.4 // Tiempo entre la animación de cada elemento de la lista
+        }
+      }
+    }
+  };
+  const listItemMotionVariants = {
+    hidden: { opacity: 0, x: -40 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } // Corregido a string
+  };
+
+  // Variantes para la sección "Únete a Donaré" (con entrada y salida)
+  const sectionJoinTitleMotion = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 20 }, // Estado al salir (aunque whileInView con once:false lo maneja volviendo a initial)
+    transition: { duration: 0.5 },
+    viewport: { once: false } // Animar cada vez que entra/sale
+  };
+
+  const sectionJoinCardsContainerMotion = {
+    initial: "hidden",
+    whileInView: "visible",
+    exit: "hidden", // Revertir al estado hidden al salir
+    viewport: { once: false },
+    variants: {
+      hidden: { opacity: 0 },
+      visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } }
+    }
+  };
+
+  const sectionJoinCardItemMotion = {
+    variants: {
+      hidden: { opacity: 0, y: 30 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    }
+    // No necesita viewport u initial aquí, lo hereda del contenedor
+  };
+
   return (
     <div>
-      <section className="bg-gradient-to-br from-teal-600 to-teal-800 text-white py-16 md:py-24">
+      <motion.section 
+        className="bg-gradient-to-br from-teal-600 to-teal-800 text-white py-16 md:py-24"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { duration: 0.5 } }
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold mb-6 leading-tight"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } }
+            }}
+          >
             Revolucionando la <span className="text-purple-300">Transparencia</span> en Donaciones
-          </h1>
-          <p className="text-lg md:text-xl mb-8 text-teal-100 max-w-3xl mx-auto">
+          </motion.h1>
+          <motion.p 
+            className="text-lg md:text-xl mb-8 text-teal-100 max-w-3xl mx-auto"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }
+            }}
+          >
             Donaré utiliza la tecnología blockchain para garantizar que cada donación sea transparente, 
             verificable y llegue a su destino sin intermediarios.
-          </p>
+          </motion.p>
         </div>
-      </section>
+      </motion.section>
       
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">¿Por qué Donaré?</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              ¿Por qué <span className="text-teal-600">Don</span><span className="text-sky-500">aré</span>?
+            </h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
               Desarrollamos Donaré para solucionar los problemas de confianza y transparencia en 
               el sector de donaciones y recaudación de fondos.
@@ -38,8 +117,8 @@ const HowItWorks: React.FC = () => {
             <h3 className="text-2xl font-bold text-center mb-8 text-teal-700">
               El Antes y el Después de Tu Generosidad
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50 rounded-xl shadow-md overflow-hidden">
-              <div className="p-8 border-b md:border-b-0 md:border-r border-gray-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Card className="bg-red-50 p-6 md:p-8 h-full shadow-lg hover:shadow-2xl hover:-rotate-1 hover:scale-105 transition-all duration-300 ease-in-out">
                 <h4 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
                   <X className="w-6 h-6 text-red-500 mr-2" /> Método Tradicional
                 </h4>
@@ -100,8 +179,8 @@ const HowItWorks: React.FC = () => {
                     </div>
                   </motion.li>
                 </motion.ul>
-              </div>
-              <div className="p-8">
+              </Card>
+              <Card className="bg-green-50 p-6 md:p-8 h-full shadow-lg hover:shadow-2xl hover:rotate-1 hover:scale-105 transition-all duration-300 ease-in-out">
                 <h4 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
                   <Check className="w-6 h-6 text-green-500 mr-2" /> Donaré con Blockchain
                 </h4>
@@ -162,7 +241,7 @@ const HowItWorks: React.FC = () => {
                     </div>
                   </motion.li>
                 </motion.ul>
-              </div>
+              </Card>
             </div>
             <motion.p 
               className="mt-8 text-center text-lg text-gray-800 font-medium max-w-2xl mx-auto"
@@ -179,38 +258,44 @@ const HowItWorks: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 rounded-xl p-8 shadow-sm text-center">
-              <div className="bg-teal-100 rounded-full p-3 inline-block mb-4">
-                <Lock className="h-6 w-6 text-teal-600" />
+            <Card className="bg-gray-50 p-6 md:p-8 text-center shadow-md hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out h-full">
+              <div className="flex flex-col items-center h-full">
+                <div className="bg-teal-100 rounded-full p-3 inline-block mb-4">
+                  <Lock className="h-6 w-6 text-teal-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">Seguridad Garantizada</h3>
+                <p className="text-gray-600">
+                  Cada transacción es inmutable y criptográficamente segura, lo que significa que no puede ser 
+                  alterada ni falsificada.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">Seguridad Garantizada</h3>
-              <p className="text-gray-600">
-                Cada transacción es inmutable y criptográficamente segura, lo que significa que no puede ser 
-                alterada ni falsificada.
-              </p>
-            </div>
+            </Card>
             
-            <div className="bg-gray-50 rounded-xl p-8 shadow-sm text-center">
-              <div className="bg-purple-100 rounded-full p-3 inline-block mb-4">
-                <Eye className="h-6 w-6 text-purple-600" />
+            <Card className="bg-gray-50 p-6 md:p-8 text-center shadow-md hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out h-full">
+              <div className="flex flex-col items-center h-full">
+                <div className="bg-purple-100 rounded-full p-3 inline-block mb-4">
+                  <Eye className="h-6 w-6 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">Transparencia Total</h3>
+                <p className="text-gray-600">
+                  Todos los movimientos de fondos son públicos y verificables en tiempo real, sin posibilidad 
+                  de manipulación.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">Transparencia Total</h3>
-              <p className="text-gray-600">
-                Todos los movimientos de fondos son públicos y verificables en tiempo real, sin posibilidad 
-                de manipulación.
-              </p>
-            </div>
+            </Card>
             
-            <div className="bg-gray-50 rounded-xl p-8 shadow-sm text-center">
-              <div className="bg-orange-100 rounded-full p-3 inline-block mb-4">
-                <BarChart className="h-6 w-6 text-orange-600" />
+            <Card className="bg-gray-50 p-6 md:p-8 text-center shadow-md hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out h-full">
+              <div className="flex flex-col items-center h-full">
+                <div className="bg-orange-100 rounded-full p-3 inline-block mb-4">
+                  <BarChart className="h-6 w-6 text-orange-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">Eficiencia Máxima</h3>
+                <p className="text-gray-600">
+                  Reducimos drásticamente los costos operativos para que más de tu donación llegue a quien 
+                  realmente lo necesita.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">Eficiencia Máxima</h3>
-              <p className="text-gray-600">
-                Reducimos drásticamente los costos operativos para que más de tu donación llegue a quien 
-                realmente lo necesita.
-              </p>
-            </div>
+            </Card>
           </div>
         </div>
       </section>
@@ -226,159 +311,190 @@ const HowItWorks: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div>
-              <ol className="relative border-l border-gray-300">
-                <li className="mb-10 ml-6">
+            {/* Columna Izquierda: Lista de Pasos Animada */}
+            <motion.ol 
+              className="relative border-l border-gray-300"
+              {...listMotionProps}
+            >
+              <motion.li className="mb-10 ml-6" variants={listItemMotionVariants}>
                   <span className="flex absolute -left-3 justify-center items-center w-6 h-6 bg-teal-600 rounded-full">
                     <span className="text-white text-sm font-bold">1</span>
                   </span>
-                  <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
-                    Creación de Campaña
-                  </h3>
-                  <p className="mb-4 text-gray-600">
-                    El beneficiario crea una campaña detallando el objetivo, el monto necesario y la 
-                    fecha límite. Se genera automáticamente un contrato inteligente en la blockchain.
-                  </p>
-                </li>
-                <li className="mb-10 ml-6">
+                <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
+                  Creación de Campaña
+                </h3>
+                <p className="mb-4 text-gray-600">
+                  El beneficiario crea una campaña detallando el objetivo, el monto necesario y la 
+                  fecha límite. Se genera automáticamente un contrato inteligente en la blockchain.
+                </p>
+              </motion.li>
+              <motion.li className="mb-10 ml-6" variants={listItemMotionVariants}>
                   <span className="flex absolute -left-3 justify-center items-center w-6 h-6 bg-teal-600 rounded-full">
                     <span className="text-white text-sm font-bold">2</span>
                   </span>
-                  <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
-                    Proceso de Verificación
-                  </h3>
-                  <p className="mb-4 text-gray-600">
-                    Nuestro equipo verifica la identidad del beneficiario y la validez de la campaña
-                    para garantizar la legitimidad de la causa.
-                  </p>
-                </li>
-                <li className="mb-10 ml-6">
+                <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
+                  Proceso de Verificación
+                </h3>
+                <p className="mb-4 text-gray-600">
+                  Nuestro equipo verifica la identidad del beneficiario y la validez de la campaña
+                  para garantizar la legitimidad de la causa.
+                </p>
+              </motion.li>
+              <motion.li className="mb-10 ml-6" variants={listItemMotionVariants}>
                   <span className="flex absolute -left-3 justify-center items-center w-6 h-6 bg-teal-600 rounded-full">
                     <span className="text-white text-sm font-bold">3</span>
                   </span>
-                  <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
-                    Donaciones Transparentes
-                  </h3>
-                  <p className="mb-4 text-gray-600">
-                    Los donantes realizan sus aportes que son registrados en la blockchain, 
-                    creando un registro público e inmutable de cada transacción.
-                  </p>
-                </li>
-                <li className="ml-6">
+                <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
+                  Donaciones Transparentes
+                </h3>
+                <p className="mb-4 text-gray-600">
+                  Los donantes realizan sus aportes que son registrados en la blockchain, 
+                  creando un registro público e inmutable de cada transacción.
+                </p>
+              </motion.li>
+              <motion.li className="ml-6" variants={listItemMotionVariants}>
                   <span className="flex absolute -left-3 justify-center items-center w-6 h-6 bg-teal-600 rounded-full">
                     <span className="text-white text-sm font-bold">4</span>
                   </span>
-                  <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
-                    Transferencia de Fondos
-                  </h3>
-                  <p className="mb-4 text-gray-600">
-                    Los fondos son transferidos directamente al beneficiario con un registro detallado
-                    de cada movimiento, asegurando que lleguen a su destino.
-                  </p>
-                </li>
-              </ol>
-            </div>
+                <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">
+                  Transferencia de Fondos
+                </h3>
+                <p className="mb-4 text-gray-600">
+                  Los fondos son transferidos directamente al beneficiario con un registro detallado
+                  de cada movimiento, asegurando que lleguen a su destino.
+                </p>
+              </motion.li>
+            </motion.ol>
             
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="relative">
-                <img 
-                  src="https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-                  alt="Blockchain Technology"
-                  className="w-full h-80 object-cover rounded-lg"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-lg"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">Tecnología Blockchain</h3>
-                  <p className="text-white text-sm">
-                    Nuestra plataforma utiliza contratos inteligentes para garantizar que cada transacción
-                    sea segura, transparente y verificable.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 p-4 rounded-md">
-                  <div className="flex items-center mb-2">
-                    <Database className="h-5 w-5 text-teal-600 mr-2" />
-                    <h4 className="font-medium text-gray-900">Registro Descentralizado</h4>
+            {/* Columna Derecha: Tarjeta de Imagen Animada */}
+            <motion.div {...imageCardMotionProps}>
+              <Card className="bg-white rounded-lg shadow-md overflow-hidden h-full">
+                <div className="relative">
+                  <img 
+                    src="https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
+                    alt="Blockchain Technology"
+                    className="w-full h-80 object-cover" // Eliminado rounded-lg de aquí, Card se encarga
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 className="text-xl font-bold text-white mb-2">Tecnología Blockchain</h3>
+                    <p className="text-white text-sm">
+                      Nuestra plataforma utiliza contratos inteligentes para garantizar que cada transacción
+                      sea segura, transparente y verificable.
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-600">
-                    Todas las transacciones son almacenadas en múltiples nodos para garantizar su integridad.
-                  </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-md">
-                  <div className="flex items-center mb-2">
-                    <Shield className="h-5 w-5 text-teal-600 mr-2" />
-                    <h4 className="font-medium text-gray-900">Seguridad Criptográfica</h4>
+                
+                <div className="p-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Card className="bg-gray-50 p-4">
+                      <div className="flex items-center mb-2">
+                        <Database className="h-5 w-5 text-teal-600 mr-2" />
+                        <h4 className="font-medium text-gray-900">Registro Descentralizado</h4>
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        Todas las transacciones son almacenadas en múltiples nodos para garantizar su integridad.
+                      </p>
+                    </Card>
+                    <Card className="bg-gray-50 p-4">
+                      <div className="flex items-center mb-2">
+                        <Shield className="h-5 w-5 text-teal-600 mr-2" />
+                        <h4 className="font-medium text-gray-900">Seguridad Criptográfica</h4>
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        Utilizamos encriptación avanzada para proteger todas las transacciones.
+                      </p>
+                    </Card>
                   </div>
-                  <p className="text-sm text-gray-600">
-                    Utilizamos encriptación avanzada para proteger todas las transacciones.
-                  </p>
                 </div>
-              </div>
-            </div>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
       
       <section className="py-16 bg-teal-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Únete a Donaré</h2>
-            <p className="text-teal-100 max-w-3xl mx-auto">
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: false }} // Para que se anime al entrar y salir (revirtiendo a initial)
+            transition={{ duration: 0.3 }}
+          >
+            <motion.h2 
+              className="text-3xl font-bold mb-4"
+              {...sectionJoinTitleMotion} // Aplica las props de animación definidas
+            >
+              Únete a Donaré
+            </motion.h2>
+            <motion.p 
+              className="text-teal-100 max-w-3xl mx-auto"
+              {...sectionJoinTitleMotion} // Reutiliza las props, ajusta delay si es necesario
+              transition={{ ...sectionJoinTitleMotion.transition, delay: 0.1 }} // Pequeño delay para el párrafo
+            >
               Sé parte de la revolución en la forma de hacer donaciones y ayudar a causas importantes.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
-              <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
-                <Heart className="h-6 w-6" />
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            {...sectionJoinCardsContainerMotion} // Aplica las props de animación al contenedor de las tarjetas
+          >
+            <motion.div {...sectionJoinCardItemMotion} className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
+              <div className="flex flex-col items-center">
+                <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
+                  <Heart className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Haz una Donación</h3>
+                <p className="text-teal-100 mb-4">
+                  Apoya causas importantes con la seguridad de que tu dinero llegará a quien lo necesita.
+                </p>
+                <Link 
+                  href="/" // Debería ser /campaigns o similar
+                  className="inline-flex items-center text-white font-medium hover:text-teal-100 mt-auto"
+                >
+                  Ver campañas <ChevronRight className="h-5 w-5 ml-1" />
+                </Link>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Haz una Donación</h3>
-              <p className="text-teal-100 mb-4">
-                Apoya causas importantes con la seguridad de que tu dinero llegará a quien lo necesita.
-              </p>
-              <Link 
-                href="/"
-                className="inline-flex items-center text-white font-medium hover:text-teal-100"
-              >
-                Ver campañas <ChevronRight className="h-5 w-5 ml-1" />
-              </Link>
-            </div>
+            </motion.div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
-              <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
-                <Zap className="h-6 w-6" />
+            <motion.div {...sectionJoinCardItemMotion} className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
+              <div className="flex flex-col items-center">
+                <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
+                  <Zap className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Crea una Campaña</h3>
+                <p className="text-teal-100 mb-4">
+                  Inicia tu propia campaña para financiar un proyecto o ayudar a quien lo necesite.
+                </p>
+                <Link 
+                  href="/campaigns/create" // Corregido de /create
+                  className="inline-flex items-center text-white font-medium hover:text-teal-100 mt-auto"
+                >
+                  Crear campaña <ChevronRight className="h-5 w-5 ml-1" />
+                </Link>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Crea una Campaña</h3>
-              <p className="text-teal-100 mb-4">
-                Inicia tu propia campaña para financiar un proyecto o ayudar a quien lo necesite.
-              </p>
-              <Link 
-                href="/create"
-                className="inline-flex items-center text-white font-medium hover:text-teal-100"
-              >
-                Crear campaña <ChevronRight className="h-5 w-5 ml-1" />
-              </Link>
-            </div>
+            </motion.div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
-              <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
-                <CheckCircle className="h-6 w-6" />
+            <motion.div {...sectionJoinCardItemMotion} className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
+              <div className="flex flex-col items-center">
+                <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
+                  <CheckCircle className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Verifica Transparencia</h3>
+                <p className="text-teal-100 mb-4">
+                  Consulta el registro blockchain para verificar cada transacción realizada en la plataforma.
+                </p>
+                <Link 
+                  href="/" // Debería ser una página específica del explorador blockchain si existe
+                  className="inline-flex items-center text-white font-medium hover:text-teal-100 mt-auto"
+                >
+                  Explorar blockchain <ChevronRight className="h-5 w-5 ml-1" />
+                </Link>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Verifica Transparencia</h3>
-              <p className="text-teal-100 mb-4">
-                Consulta el registro blockchain para verificar cada transacción realizada en la plataforma.
-              </p>
-              <Link 
-                href="/"
-                className="inline-flex items-center text-white font-medium hover:text-teal-100"
-              >
-                Explorar blockchain <ChevronRight className="h-5 w-5 ml-1" />
-              </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
     </div>
