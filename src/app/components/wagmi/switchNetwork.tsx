@@ -3,6 +3,7 @@ import { useChainId, useSwitchChain } from 'wagmi'
 export function SwitchChain() {
   const chainId = useChainId()
   const { chains, switchChain, error } = useSwitchChain()
+  console.log('SwitchChain', { chainId, chains, error })
 
   return (
     <div>
