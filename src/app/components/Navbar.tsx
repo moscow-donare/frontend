@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Heart, Menu, X, LogIn, Plus, Search } from 'lucide-react';
 import Link from 'next/link';
+import Image from "next/image";
+import logo from './logo.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +15,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <Heart className="h-8 w-8 text-teal-600" />
+              <Image src={logo} alt="Logo" width={40} height={40} className="h-8 w-8"> </Image>
               <span className="ml-2 text-2xl font-bold text-gray-900">Donaré</span>
             </Link>
           </div>
