@@ -11,7 +11,8 @@ import React from "react";
 // IMP END - Setup Wagmi Provider
 
 // IMP START - Dashboard Registration
-const clientId = process.env.WEB3AUTH_CLIENT_ID ?? ''; // get from https://dashboard.web3auth.io
+const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID ?? '';
+
 // IMP END - Dashboard Registration
 
 // IMP START - Setup Wagmi Provider
@@ -24,8 +25,7 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
       clientId,
       web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
         // IMP START - SSR
-      ssr: true,
-      // IMP END - SSR
+      ssr: true
     }
   };
 // IMP END - Config
