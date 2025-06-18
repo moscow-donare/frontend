@@ -1,12 +1,13 @@
 import { Button, Card, CardBody, CardFooter, Avatar } from "@heroui/react"
 import { LinkedinIcon, GraduationCapIcon } from "lucide-react"
+import Image, { StaticImageData } from "next/image"
 import Link from "next/link"
 
 interface TeamMember {
   name: string
   role: string
   bio: string
-  image: string
+  image: StaticImageData
   linkedin: string
 }
 
@@ -19,11 +20,12 @@ export default function TeamMemberCard({ member }: TeamMemberCardProps) {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <CardBody className="pt-8 pb-4 text-center">
         <div className="flex justify-center mb-4">
-          <Avatar
+          <Image
+            width={96}
+            height={96}
             src={member.image}
             alt={`Foto de ${member.name}`}
             className="w-24 h-24 text-large"
-            isBordered
           />
         </div>
         
