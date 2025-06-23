@@ -1,4 +1,3 @@
-
 import React from "react";
 import Provider from "./components/provider";
 import { cookieToWeb3AuthState } from "@web3auth/modal";
