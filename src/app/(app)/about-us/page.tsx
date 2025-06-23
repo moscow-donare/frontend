@@ -16,7 +16,7 @@ export default function SobreNosotrosPage() {
           </h1>
           <div className="max-w-4xl mx-auto">
             <p className="text-xl text-default-600 mb-4 leading-relaxed">
-              Somos un equipo comprometido con la transformación social a través de la tecnología Blockchain. 
+              Somos un equipo comprometido con la transformación social a través de la tecnología Blockchain.
             </p>
             <p className="text-xl text-default-600 mb-8 leading-relaxed">
               En Donaré, creemos que pequeñas acciones pueden generar grandes cambios.
@@ -36,8 +36,7 @@ export default function SobreNosotrosPage() {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Nuestra Misión</h3>
                 <p className="text-sm text-default-500">
-                  Democratizar las donaciones y crear transparencia total en cada contribución
-                </p>
+                  Facilitar y modernizar campañas solidarias con una solución digital segura, accesible y trazable que empodere a donantes y beneficiarios.                </p>
               </CardBody>
             </Card>
 
@@ -50,8 +49,7 @@ export default function SobreNosotrosPage() {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Nuestra Visión</h3>
                 <p className="text-sm text-default-500">
-                  Un mundo donde cada donación genere el máximo impacto social posible
-                </p>
+                  Ser la plataforma líder en América Latina para recaudar fondos personales y comunitarios con transparencia y seguridad mediante blockchain.                </p>
               </CardBody>
             </Card>
 
@@ -64,8 +62,7 @@ export default function SobreNosotrosPage() {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Nuestro Impacto</h3>
                 <p className="text-sm text-default-500">
-                  Tecnología blockchain para garantizar transparencia y trazabilidad
-                </p>
+                  Impulsar la confianza y la transparencia en la recaudación solidaria mediante blockchain.                </p>
               </CardBody>
             </Card>
           </div>
