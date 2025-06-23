@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Campaign } from '../types/Campaign';
 import { CreditCard, MessageSquare, Check, AlertCircle } from 'lucide-react';
+import { Card, CardBody, CardHeader, Button, Input, Textarea, Checkbox, Chip, CircularProgress } from '@heroui/react';
 
 interface DonationFormProps {
   campaign: Campaign;
@@ -17,18 +18,6 @@ const DonationForm: React.FC<DonationFormProps> = ({ campaign, onDonate }) => {
   const [success, setSuccess] = useState<boolean>(false);
   
   const predefinedAmounts = [10, 25, 50, 100];
-  
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Only allow numbers and a single decimal point
-    if (/^\d*\.?\d*$/.test(value)) {
-      setAmount(value);
-    }
-  };
-  
-  const handlePredefinedAmount = (value: number) => {
-    setAmount(value.toString());
-  };
   
   const handleNextStep = () => {
     if (!amount || parseFloat(amount) <= 0) {
@@ -64,7 +53,7 @@ const DonationForm: React.FC<DonationFormProps> = ({ campaign, onDonate }) => {
           setStep(1);
           setSuccess(false);
         }, 3000);
-      } catch (err) {
+      } catch {
         setError('Hubo un error al procesar tu donación. Por favor intenta nuevamente.');
         setIsSubmitting(false);
       }
@@ -73,170 +62,167 @@ const DonationForm: React.FC<DonationFormProps> = ({ campaign, onDonate }) => {
   
   if (success) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="text-center">
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-            <Check className="h-6 w-6 text-green-600" />
+      <Card className="shadow-md">
+        <CardBody className="text-center">
+          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-success-100 mb-4">
+            <Check className="h-6 w-6 text-success-600" />
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">¡Donación exitosa!</h3>
           <p className="text-gray-600 mb-4">
             Tu donación de ${parseFloat(amount).toLocaleString()} ha sido procesada correctamente. 
             Gracias por tu apoyo a esta campaña.
           </p>
-          <p className="text-sm text-gray-500">
+          <Chip color="success" variant="flat" size="sm">
             Puedes ver la transacción en la blockchain en unos minutos.
-          </p>
-        </div>
-      </div>
+          </Chip>
+        </CardBody>
+      </Card>
     );
   }
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-medium text-gray-900 mb-4">Apoya esta campaña</h3>
-      
-      {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md flex items-start">
-          <AlertCircle className="h-5 w-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-red-600">{error}</p>
-        </div>
-      )}
-      
-      <form onSubmit={handleSubmit}>
-        {step === 1 ? (
-          <>
-            <div className="mb-6">
-              <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
-                Monto a donar ($)
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm">$</span>
-                </div>
-                <input
+    <Card className="shadow-md">
+      <CardHeader>
+        <h3 className="text-lg font-medium text-gray-900">Apoya esta campaña</h3>
+      </CardHeader>
+      <CardBody>
+        {error && (
+          <Chip
+            color="danger"
+            variant="flat"
+            startContent={<AlertCircle className="h-4 w-4" />}
+            className="mb-4 w-full justify-start"
+          >
+            {error}
+          </Chip>
+        )}
+        
+        <form onSubmit={handleSubmit}>
+          {step === 1 ? (
+            <>
+              <div className="mb-6">
+                <Input
                   type="text"
-                  id="amount"
                   value={amount}
-                  onChange={handleAmountChange}
-                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d*\.?\d*$/.test(value)) {
+                      setAmount(value);
+                    }
+                  }}
+                  label="Monto a donar ($)"
                   placeholder="0.00"
+                  startContent={
+                    <div className="pointer-events-none flex items-center">
+                      <span className="text-default-400 text-small">$</span>
+                    </div>
+                  }
+                  variant="bordered"
+                  color="primary"
                 />
               </div>
-            </div>
-            
-            <div className="grid grid-cols-4 gap-2 mb-6">
-              {predefinedAmounts.map((preAmount) => (
-                <button
-                  key={preAmount}
-                  type="button"
-                  onClick={() => handlePredefinedAmount(preAmount)}
-                  className={`py-2 px-4 border ${
-                    amount === preAmount.toString() 
-                      ? 'border-teal-500 bg-teal-50 text-teal-700' 
-                      : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-                  } rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
-                >
-                  ${preAmount}
-                </button>
-              ))}
-            </div>
-            
-            <button
-              type="button"
-              onClick={handleNextStep}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-            >
-              Continuar
-            </button>
-          </>
-        ) : (
-          <>
-            <div className="mb-4">
-              <div className="bg-gray-50 rounded-md p-3 flex items-center justify-between mb-4">
-                <span className="text-sm text-gray-500">Monto a donar</span>
-                <span className="font-medium">${parseFloat(amount).toLocaleString()}</span>
+              
+              <div className="grid grid-cols-4 gap-2 mb-6">
+                {predefinedAmounts.map((preAmount) => (
+                  <Button
+                    key={preAmount}
+                    type="button"
+                    variant={amount === preAmount.toString() ? "solid" : "bordered"}
+                    color={amount === preAmount.toString() ? "primary" : "default"}
+                    size="sm"
+                    onClick={() => setAmount(preAmount.toString())}
+                  >
+                    ${preAmount}
+                  </Button>
+                ))}
+              </div>
+              
+              <Button
+                type="button"
+                onClick={handleNextStep}
+                color="primary"
+                className="w-full"
+                size="lg"
+              >
+                Continuar
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="mb-4">
+                <Card className="bg-default-50">
+                  <CardBody className="flex flex-row justify-between items-center">
+                    <span className="text-sm text-default-500">Monto a donar</span>
+                    <span className="font-medium">${parseFloat(amount).toLocaleString()}</span>
+                  </CardBody>
+                </Card>
               </div>
               
               <div className="mb-4">
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  Mensaje (opcional)
-                </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <MessageSquare className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <textarea
-                    id="message"
-                    rows={3}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
-                    placeholder="Deja un mensaje de apoyo..."
-                  />
-                </div>
-              </div>
-              
-              <div className="flex items-center mb-6">
-                <input
-                  id="anonymous"
-                  type="checkbox"
-                  checked={isAnonymous}
-                  onChange={(e) => setIsAnonymous(e.target.checked)}
-                  className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+                <Textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  label="Mensaje (opcional)"
+                  placeholder="Deja un mensaje de apoyo..."
+                  variant="bordered"
+                  color="secondary"
+                  startContent={<MessageSquare className="h-4 w-4 text-default-400" />}
+                  minRows={3}
                 />
-                <label htmlFor="anonymous" className="ml-2 block text-sm text-gray-700">
-                  Realizar donación anónima
-                </label>
               </div>
               
               <div className="mb-6">
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Información de pago
-                  </label>
-                  <span className="text-xs text-gray-500">Conexión segura</span>
-                </div>
-                <div className="mt-1 p-3 border border-gray-300 rounded-md bg-gray-50">
-                  <div className="flex items-center">
-                    <CreditCard className="h-5 w-5 text-gray-400 mr-2" />
-                    <span className="text-sm text-gray-500">
-                      Los datos de pago se ingresarán en la siguiente pantalla
-                    </span>
-                  </div>
-                </div>
+                <Checkbox
+                  isSelected={isAnonymous}
+                  onValueChange={setIsAnonymous}
+                  color="primary"
+                >
+                  Realizar donación anónima
+                </Checkbox>
+              </div>
+              
+              <div className="mb-6">
+                <Card className="bg-default-50">
+                  <CardBody>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-default-700">Información de pago</span>
+                      <Chip size="sm" color="success" variant="flat">Conexión segura</Chip>
+                    </div>
+                    <div className="flex items-center">
+                      <CreditCard className="h-5 w-5 text-default-400 mr-2" />
+                      <span className="text-sm text-default-500">
+                        Los datos de pago se ingresarán en la siguiente pantalla
+                      </span>
+                    </div>
+                  </CardBody>
+                </Card>
               </div>
               
               <div className="flex space-x-3">
-                <button
+                <Button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                  variant="bordered"
+                  color="secondary"
+                  className="flex-1"
                 >
                   Atrás
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 flex justify-center items-center"
+                  color="primary"
+                  className="flex-1"
+                  startContent={isSubmitting && <CircularProgress size="sm" color="primary" />}
                 >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Procesando
-                    </>
-                  ) : (
-                    'Donar ahora'
-                  )}
-                </button>
+                  {isSubmitting ? 'Procesando' : 'Donar ahora'}
+                </Button>
               </div>
-            </div>
-          </>
-        )}
-      </form>
-    </div>
+            </>
+          )}
+        </form>
+      </CardBody>
+    </Card>
   );
 };
 

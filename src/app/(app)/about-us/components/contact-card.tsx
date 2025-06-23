@@ -1,5 +1,5 @@
 import { Button, Card, CardBody, CardHeader } from "@heroui/react"
-import { MailIcon, LinkedinIcon, InstagramIcon, FacebookIcon, TwitterIcon } from "lucide-react"
+import { MailIcon, LinkedinIcon, InstagramIcon } from "lucide-react"
 import { DONARE_INFO } from "../data/donare-info"
 import { TikTokIcon } from "@public/icons/TikTokIcon"
 import Link from "next/link"
@@ -8,7 +8,7 @@ export default function ContactSection() {
   return (
     <section>
       <h2 className="text-3xl font-bold mb-10 text-center">Contáctanos</h2>
-      <Card className="max-w-2xl mx-auto shadow-lg">
+      <Card className="max-w-xl mx-auto shadow-lg">
         <CardHeader className="text-center pb-2">
           <p className="text-sm text-default-500 mt-2 text-center">
             Estamos aquí para responder tus preguntas y colaborar contigo.
@@ -29,7 +29,7 @@ export default function ContactSection() {
             <Link href={DONARE_INFO.linkedin} target="_blank" rel="noopener noreferrer">
               <Button 
                 className="w-full justify-start h-12" 
-                color="primary"
+                color="secondary"
                 startContent={<LinkedinIcon className="h-4 w-4" />}
               >
                 Síguenos en LinkedIn

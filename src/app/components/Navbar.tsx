@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 import logo from "../../../public/images/logo.png"
+import { Button } from "@heroui/react"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -23,47 +24,47 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden w-full md:flex md:items-center md:space-x-4">
             <div className="w-full h-full flex flex-row justify-start items-center space-x-4 mx-10">
-
-            <Link
-              href="/home"
-              className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md font-medium transition-colors"
-            >
-              Inicio
-            </Link>
-            <Link
-              href="/campaigns"
-              className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md font-medium transition-colors"
+              <Link
+                href="/home"
+                className="text-gray-600 hover:text-primary-600 px-3 py-2 rounded-md font-medium transition-colors"
               >
-              Ver Campañas
-            </Link>
-            <Link
-              href="/how-it-works"
-              className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md font-medium transition-colors"
-            >
-              ¿Cómo funciona?
-            </Link>
-            <Link
-              href="/about-us"
-              className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md font-medium transition-colors"
+                Inicio
+              </Link>
+              <Link
+                href="/campaigns"
+                className="text-gray-600 hover:text-primary-600 px-3 py-2 rounded-md font-medium transition-colors"
               >
-              Contacto
-            </Link>
-              </div>
+                Ver Campañas
+              </Link>
+              <Link
+                href="/how-it-works"
+                className="text-gray-600 hover:text-primary-600 px-3 py-2 rounded-md font-medium transition-colors"
+              >
+                ¿Cómo funciona?
+              </Link>
+              <Link
+                href="/about-us"
+                className="text-gray-600 hover:text-primary-600 px-3 py-2 rounded-md font-medium transition-colors"
+              >
+                Contacto
+              </Link>
+            </div>
             <div className="w-full flex flex-row justify-end items-end space-x-2">
 
-            <Link
-              href="/campaigns/create"
-              className="bg-teal-600 text-white hover:bg-teal-700 px-4 py-2 rounded-md font-medium flex items-center transition-colors"
+              <Button
+                as={Link}
+                href="/campaigns/create"
+                color="primary"              >
+                <Plus className="h-4 w-4 mr-1" /> Crear Campaña
+              </Button>
+              <Button
+                as={Link}
+                href="/login"
+                color="secondary"
               >
-              <Plus className="h-4 w-4 mr-1" /> Crear Campaña
-            </Link>
-            <Link
-              href="/login"
-              className="bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-md font-medium flex items-center transition-colors"
-              >
-              <LogIn className="h-4 w-4 mr-1" /> Regístrate
-            </Link>
-              </div>
+                <LogIn className="h-4 w-4 mr-1" /> Iniciar Sesion
+              </Button>
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -84,42 +85,42 @@ const Navbar = () => {
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link
               href="/home"
-              className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md font-medium"
+              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Inicio
             </Link>
             <Link
               href="/campaigns"
-              className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md font-medium"
+              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Ver Campañas
             </Link>
             <Link
               href="/how-it-works"
-              className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md font-medium"
+              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               ¿Cómo funciona?
             </Link>
             <Link
               href="/about-us"
-              className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md font-medium"
+              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Contacto
             </Link>
             <Link
               href="/campaigns/create"
-              className="bg-teal-600 text-white hover:bg-teal-700 block px-3 py-2 rounded-md font-medium flex items-center mx-2 my-1"
+              className="bg-teal-600 text-white hover:bg-teal-700 px-3 py-2 rounded-md font-medium flex items-center mx-2 my-1"
               onClick={() => setIsMenuOpen(false)}
             >
               <Plus className="h-4 w-4 mr-1" /> Crear Campaña
             </Link>
             <Link
               href="/login"
-              className="bg-purple-600 text-white hover:bg-purple-700 block px-3 py-2 rounded-md font-medium flex items-center mx-2 my-1"
+              className="bg-purple-600 text-white hover:bg-purple-700 px-3 py-2 rounded-md font-medium flex items-center mx-2 my-1"
               onClick={() => setIsMenuOpen(false)}
             >
               <LogIn className="h-4 w-4 mr-1" /> Regístrate
