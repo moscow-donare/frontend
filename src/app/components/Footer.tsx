@@ -1,6 +1,9 @@
-import React from 'react';
-import { Heart, Twitter, Facebook, Instagram, Github, Linkedin } from 'lucide-react';
+import { TikTokIcon } from '@public/icons/TikTokIcon';
+import { Instagram, Linkedin } from 'lucide-react';
 import Link from 'next/link';
+import logo from "../../../public/images/logo.png";
+import Image from 'next/image';
+
 
 const Footer = () => {
   return (
@@ -9,7 +12,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
             <Link href="/" className="flex items-center">
-              <Heart className="h-8 w-8 text-teal-500" />
+              <Image src={logo} alt="Logo" width={40} height={40} />
               <span className="ml-2 text-2xl font-bold">Donaré</span>
             </Link>
             <p className="mt-4 text-gray-300 text-sm">
@@ -17,9 +20,9 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4 mt-6">
               {/* TO DO: Incorporar tik tok al hacer el merge */}
-              {/* <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Twitter className="h-5 w-5" />
-              </a> */}
+              <a href="https://www.tiktok.com/@donare.web3" className="text-gray-400 hover:text-white transition-colors">
+                <TikTokIcon className="h-5 w-5" />
+              </a>
               <a href="https://www.instagram.com/donare.web3" className="text-gray-400 hover:text-white transition-colors">
                 <Instagram className="h-5 w-5" />
               </a>

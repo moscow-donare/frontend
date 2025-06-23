@@ -1,16 +1,17 @@
 import React from "react";
 
-export const TikTokIcon = () => {
+interface TikTokIconProps {
+  className?: string;
+}
+
+export const TikTokIcon = ({ className }: TikTokIconProps) => {
   return (
     <div
+      className={className}
       style={{
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        width: "40px",
-        height: "40px",
-        borderRadius: "12px",
-        border: "1px solid #ccc",
       }}
     >
       <svg

@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
-import { Menu, X, LogIn, Plus, Search, Heart, Zap } from "lucide-react"
-import Link from "next/link"
+import { LogIn, Menu, Plus, X } from "lucide-react"
 import Image from "next/image"
-import logo from "../../../public/images/logo.png" 
+import Link from "next/link"
+import { useState } from "react"
+import logo from "../../../public/images/logo.png"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -43,7 +43,7 @@ const Navbar = () => {
               ¿Cómo funciona?
             </Link>
             <Link
-              href="/contact"
+              href="/about-us"
               className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md font-medium transition-colors"
               >
               Contacto
@@ -101,10 +101,10 @@ const Navbar = () => {
               className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
-              ¿¿Cómo funciona??
+              ¿Cómo funciona?
             </Link>
             <Link
-              href="/contact"
+              href="/about-us"
               className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
