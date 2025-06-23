@@ -23,7 +23,7 @@ const Hero = () => {
                 Crear Campaña
               </Link>
               <Link 
-                href="/about" 
+                href="/how-it-works" 
                 className="bg-transparent border border-white text-white hover:bg-white/10 px-6 py-3 rounded-md font-medium flex items-center justify-center transition-colors"
               >
                 Cómo Funciona <ChevronRight className="h-5 w-5 ml-1" />

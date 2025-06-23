@@ -37,7 +37,7 @@ const Navbar = () => {
               Ver Campañas
             </Link>
             <Link
-              href="/about"
+              href="/how-it-works"
               className="text-gray-600 hover:text-teal-600 px-3 py-2 rounded-md font-medium transition-colors"
             >
               ¿Cómo funciona?
@@ -97,7 +97,7 @@ const Navbar = () => {
               Ver Campañas
             </Link>
             <Link
-              href="/about"
+              href="/how-it-works"
               className="text-gray-600 hover:text-teal-600 block px-3 py-2 rounded-md font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
