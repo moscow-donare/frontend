@@ -1,9 +1,11 @@
+
 import React from "react";
 import Provider from "./components/provider";
 import { cookieToWeb3AuthState } from "@web3auth/modal";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +21,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       <body className={inter.className}>
         {/* // IMP START - SSR */}
-        <Provider web3authInitialState={web3authInitialState}>{children}</Provider>
+        <Providers>
+          <Provider web3authInitialState={web3authInitialState}>{children}</Provider>
+        </Providers>
         {/* // IMP END - SSR */}
       </body>
     </html>
