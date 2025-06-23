@@ -1,6 +1,7 @@
 import { Button, Card, CardBody, CardHeader } from "@heroui/react"
 import { MailIcon, LinkedinIcon, InstagramIcon, FacebookIcon, TwitterIcon } from "lucide-react"
 import { DONARE_INFO } from "../data/donare-info"
+import { TikTokIcon } from "@public/icons/TikTokIcon"
 import Link from "next/link"
 
 export default function ContactSection() {
@@ -51,24 +52,14 @@ export default function ContactSection() {
                   <span className="sr-only">Instagram</span>
                 </Button>
               </Link>
-              <Link href={DONARE_INFO.facebook} target="_blank" rel="noopener noreferrer">
+              <Link href={DONARE_INFO.tiktok} target="_blank" rel="noopener noreferrer">
                 <Button 
                   isIconOnly 
                   variant="ghost"
-                  className="hover:bg-blue-100 hover:text-blue-600 transition-colors"
+                  className="hover:bg-shadow-neutral-100 hover:text-shadow-neutral-600 transition-colors"
                 >
-                  <FacebookIcon className="h-5 w-5" />
-                  <span className="sr-only">Facebook</span>
-                </Button>
-              </Link>
-              <Link href={DONARE_INFO.twitter} target="_blank" rel="noopener noreferrer">
-                <Button 
-                  isIconOnly 
-                  variant="ghost"
-                  className="hover:bg-sky-100 hover:text-sky-600 transition-colors"
-                >
-                  <TwitterIcon className="h-5 w-5" />
-                  <span className="sr-only">Twitter</span>
+                  <TikTokIcon/>
+                  <span className="sr-only">TikTok</span>
                 </Button>
               </Link>
             </div>
