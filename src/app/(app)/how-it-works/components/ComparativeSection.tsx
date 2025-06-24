@@ -8,7 +8,6 @@ const ComparativeSection = () => (
       El Antes y el Después de Tu Generosidad
     </h3>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {/* Tarjeta roja para Método Tradicional */}
       <Card className="bg-red-50 border border-red-200 p-6 md:p-8 h-full shadow-lg hover:shadow-2xl hover:-rotate-1 hover:scale-105 transition-all duration-300 ease-in-out">
         <h4 className="text-xl font-semibold mb-4 text-red-700 flex items-center">
           <X className="w-6 h-6 text-red-500 mr-2" /> Método Tradicional
@@ -51,7 +50,6 @@ const ComparativeSection = () => (
           </motion.li>
         </motion.ul>
       </Card>
-      {/* Tarjeta verde con colores del sistema para Donaré */}
       <Card className="bg-primary/10 border border-primary/20 p-6 md:p-8 h-full shadow-lg hover:shadow-2xl hover:rotate-1 hover:scale-105 transition-all duration-300 ease-in-out">
         <h4 className="text-xl font-semibold mb-4 text-primary flex items-center">
           <Check className="w-6 h-6 text-primary mr-2" /> Donaré con Blockchain
