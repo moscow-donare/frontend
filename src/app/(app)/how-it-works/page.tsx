@@ -74,7 +74,7 @@ const HowItWorks: React.FC = () => {
   return (
     <div>
       <motion.section 
-        className="bg-gradient-to-br from-teal-600 to-teal-800 text-white py-16 md:py-24"
+        className="bg-gradient-to-br from-primary to-secondary text-white py-16 md:py-24"
         initial="hidden"
         animate="visible"
         variants={{

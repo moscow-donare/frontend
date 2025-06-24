@@ -52,14 +52,14 @@ const JoinDonareCards = () => (
     {cards.map((c, i) => (
       <motion.div key={i} {...sectionJoinCardItemMotion} className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
         <div className="flex flex-col items-center">
-          <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
+          <div className="bg-primary/10 rounded-full p-3 inline-block mb-4">
             {c.icon}
           </div>
           <h3 className="text-xl font-semibold mb-3">{c.title}</h3>
           <p className="text-teal-100 mb-4">{c.desc}</p>
           <Link 
             href={c.href}
-            className="inline-flex items-center text-white font-medium hover:text-teal-100 mt-auto"
+            className="inline-flex items-center text-secondary font-medium hover:text-primary mt-auto"
           >
             {c.link} <ChevronRight className="h-5 w-5 ml-1" />
           </Link>
