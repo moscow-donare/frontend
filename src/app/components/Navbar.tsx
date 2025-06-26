@@ -6,10 +6,13 @@ import Link from "next/link"
 import { useState } from "react"
 import logo from "../../../public/images/logo.png"
 import { Button } from "@heroui/react"
+import { useWeb3Auth } from "@web3auth/modal/react"
+import { Balance } from "./wagmi/getBalance"
+import AuthAvatar from "./AuthAvatar"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
+  const { isConnected } = useWeb3Auth()
   return (
     <nav className="bg-white shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,19 +54,28 @@ const Navbar = () => {
             </div>
             <div className="w-full flex flex-row justify-end items-end space-x-2">
 
-              <Button
+              {isConnected ? (
+                <>
+                  <Balance />
+                  <AuthAvatar />
+                </>
+              ) : (<Button
                 as={Link}
                 href="/campaigns/create"
                 color="primary"              >
                 <Plus className="h-4 w-4 mr-1" /> Crear Campaña
-              </Button>
-              <Button
-                as={Link}
-                href="/login"
-                color="secondary"
-              >
-                <LogIn className="h-4 w-4 mr-1" /> Iniciar Sesion
-              </Button>
+              </Button>)}
+              {!isConnected ? (
+                <>
+                  <Button
+                    as={Link}
+                    href="/login"
+                    color="secondary"
+                  >
+                    <LogIn className="h-4 w-4 mr-1" /> Iniciar Sesion
+                  </Button>
+                </>
+              ) : null}
             </div>
           </div>
 
