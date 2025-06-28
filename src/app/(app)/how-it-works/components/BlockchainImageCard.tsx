@@ -31,7 +31,7 @@ const BlockchainImageCard = () => (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Card className="bg-gray-50 p-4">
             <div className="flex items-center mb-2">
-              <Database className="h-5 w-5 text-teal-600 mr-2" />
+              <Database className="h-5 w-5 text-primary-600 mr-2" />
               <h4 className="font-medium text-gray-900">Registro Descentralizado</h4>
             </div>
             <p className="text-sm text-gray-600">
@@ -40,7 +40,7 @@ const BlockchainImageCard = () => (
           </Card>
           <Card className="bg-gray-50 p-4">
             <div className="flex items-center mb-2">
-              <Shield className="h-5 w-5 text-teal-600 mr-2" />
+              <Shield className="h-5 w-5 text-primary-600 mr-2" />
               <h4 className="font-medium text-gray-900">Seguridad Criptográfica</h4>
             </div>
             <p className="text-sm text-gray-600">

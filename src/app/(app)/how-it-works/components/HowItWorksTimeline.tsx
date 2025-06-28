@@ -43,7 +43,7 @@ const HowItWorksTimeline = () => (
 	<motion.ol className="relative border-l border-gray-300" {...listMotionProps}>
 		{steps.map((step, i) => (
 			<motion.li key={i} className={`mb-10 ml-6`} variants={listItemMotionVariants}>
-				<span className="flex absolute -left-3 justify-center items-center w-6 h-6 bg-teal-600 rounded-full">
+				<span className="flex absolute -left-3 justify-center items-center w-6 h-6 bg-primary-600 rounded-full">
 					<span className="text-white text-sm font-bold">{i + 1}</span>
 				</span>
 				<h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900">{step.title}</h3>

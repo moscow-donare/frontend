@@ -74,7 +74,7 @@ const HowItWorks: React.FC = () => {
   return (
     <div>
       <motion.section 
-        className="bg-gradient-to-br from-primary to-secondary text-white py-16 md:py-24"
+        className="bg-gradient-to-br from-primary-600 to-secondary-800 text-white py-16 md:py-36"
         initial="hidden"
         animate="visible"
         variants={{
@@ -90,10 +90,10 @@ const HowItWorks: React.FC = () => {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } }
             }}
           >
-            Revolucionando la <span className="text-purple-300">Transparencia</span> en Donaciones
+            Revolucionando la <span className="text-secondary-300">Transparencia</span> en Donaciones
           </motion.h1>
           <motion.p 
-            className="text-lg md:text-xl mb-8 text-teal-100 max-w-3xl mx-auto"
+            className="text-lg md:text-xl mb-8 max-w-3xl mx-auto"
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }
@@ -109,7 +109,7 @@ const HowItWorks: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              ¿Por qué <span className="text-teal-600">Don</span><span className="text-sky-500">aré</span>?
+              ¿Por qué <span className="text-primary-500">Don</span><span className="text-secondary-500">aré</span>?
             </h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
               Desarrollamos Donaré para solucionar los problemas de confianza y transparencia en 
@@ -137,7 +137,7 @@ const HowItWorks: React.FC = () => {
         </div>
       </section>
       
-      <section className="py-16 bg-teal-600 text-white">
+      <section className="py-16 bg-primary-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="text-center mb-12"
@@ -171,7 +171,7 @@ const HowItWorks: React.FC = () => {
                   <Heart className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Haz una Donación</h3>
-                <p className="text-teal-100 mb-4">
+                <p className="text-white mb-4">
                   Apoya causas importantes con la seguridad de que tu dinero llegará a quien lo necesita.
                 </p>
                 <Link 
@@ -189,7 +189,7 @@ const HowItWorks: React.FC = () => {
                   <Zap className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Crea una Campaña</h3>
-                <p className="text-teal-100 mb-4">
+                <p className="text-white mb-4">
                   Inicia tu propia campaña para financiar un proyecto o ayudar a quien lo necesite.
                 </p>
                 <Link 
@@ -207,7 +207,7 @@ const HowItWorks: React.FC = () => {
                   <CheckCircle className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Verifica Transparencia</h3>
-                <p className="text-teal-100 mb-4">
+                <p className="text-white mb-4">
                   Consulta el registro blockchain para verificar cada transacción realizada en la plataforma.
                 </p>
                 <Link 
