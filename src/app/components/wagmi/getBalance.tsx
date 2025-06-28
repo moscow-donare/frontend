@@ -1,15 +1,27 @@
 import { useAccount, useBalance } from "wagmi";
-import { formatUnits } from "viem";
+import { formatUnits, getAddress } from "viem";
+import { USDTIcon } from "@public/icons/USDTIcon";
+import { Chip } from "@heroui/react";
 
 export function Balance() {
   const { address } = useAccount()
+  const tokenChecksum = getAddress('0xdAC17F958D2ee523a2206206994597C13d831ec7')
 
-  const { data, isLoading, error } = useBalance({ address })
+  const { data, isLoading, error } = useBalance({
+    address,
+    token: tokenChecksum,
+  })
 
   return (
-    <div>
-      <h2>Balance</h2>
-      <div>{data?.value !== undefined && `${formatUnits(data.value, data.decimals)} ${data.symbol}`} {isLoading && 'Loading...'} {error && 'Error: ' + error.message}</div>
+    <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg border">
+      <USDTIcon size={20} color="#26A17B" />
+      <span className="text-sm font-medium text-gray-700">
+        {isLoading && 'Loading...'}
+        {error && 'Error'}
+        {data?.value !== undefined && !isLoading && !error && 
+          `${formatUnits(data.value, data.decimals)} ${data.symbol}`
+        }
+      </span>
     </div>
   )
 }
