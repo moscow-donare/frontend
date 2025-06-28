@@ -29,7 +29,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
               color="primary"
               startContent={<CheckCircle className="h-4 w-4" />}
             >
-              Verificado
+              En Curso
             </Chip>
           )}
         </div>

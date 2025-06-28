@@ -56,7 +56,7 @@ const Hero = () => {
                   <Heart className="h-6 w-6" />
                 </div>
                 <h3 className="text-lg font-medium mb-1">Impacto Real</h3>
-                <p className="text-teal-100 text-sm">Verificación de donaciones</p>
+                <p className="text-teal-100 text-sm">Validación de donaciones</p>
               </div>
             </div>
           </div>
