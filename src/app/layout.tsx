@@ -4,12 +4,13 @@ import { cookieToWeb3AuthState } from "@web3auth/modal";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Web3Auth NextJS Quick Start",
-  description: "Web3Auth NextJS Quick Start",
+  title: "Donaré",
+  description: "Donaré - Plataforma de recaudación de fondos, con trazabilidad en blockchain",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -19,7 +20,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       <body className={inter.className}>
         {/* // IMP START - SSR */}
-        <Provider web3authInitialState={web3authInitialState}>{children}</Provider>
+        <Providers>
+          <Provider web3authInitialState={web3authInitialState}>{children}</Provider>
+        </Providers>
         {/* // IMP END - SSR */}
       </body>
     </html>

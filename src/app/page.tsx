@@ -1,8 +1,6 @@
-"use client";
-
-import React from "react";
-import App from "./components/App";
+// /app/page.tsx
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return <App />;
+  redirect('/home'); // o la ruta relativa a tu grupo de rutas
 }
