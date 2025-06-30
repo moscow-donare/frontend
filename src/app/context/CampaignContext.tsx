@@ -11,7 +11,7 @@ const sampleCampaigns: Campaign[] = [
     description: 'Recaudación de fondos para cubrir gastos médicos de cáncer',
     fullDescription: 'María necesita un tratamiento oncológico especializado no cubierto por su obra social. Los fondos servirán para medicamentos, honorarios médicos y terapias complementarias. Cada peso donado queda registrado en la blockchain, garantizando transparencia total.',
     category: 'Salud',
-    imageUrl: 'https://images.pexels.com/photos/6011608/pexels-photo-6011608.jpeg',
+    imageUrl: 'https://images.pexels.com/photos/579474/pexels-photo-579474.jpeg',
     goal: 15000,
     amountRaised: 8750,
     createdAt: new Date(2025, 3, 15),

@@ -53,7 +53,6 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="w-full flex flex-row justify-end items-end space-x-2">
-
               {isConnected ? (
                 <>
                   <Balance />
@@ -61,7 +60,9 @@ const Navbar = () => {
                 </>
               ) : (<Button
                 as={Link}
-                href="/campaigns/create"
+                // TO DO:  
+                // href="/campaigns/create"
+                href=""
                 color="primary"              >
                 <Plus className="h-4 w-4 mr-1" /> Crear Campaña
               </Button>)}
@@ -69,7 +70,9 @@ const Navbar = () => {
                 <>
                   <Button
                     as={Link}
-                    href="/login"
+                    // TO DO: 
+                    // href="/login"
+                    href=""
                     color="secondary"
                   >
                     <LogIn className="h-4 w-4 mr-1" /> Iniciar Sesion
@@ -94,49 +97,78 @@ const Navbar = () => {
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <div className="px-2 pt-2 pb-3 space-y-2 sm:px-3">
             <Link
               href="/home"
-              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium"
+              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Inicio
             </Link>
             <Link
               href="/campaigns"
-              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium"
+              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Ver Campañas
             </Link>
             <Link
               href="/how-it-works"
-              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium"
+              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               ¿Cómo funciona?
             </Link>
             <Link
               href="/about-us"
-              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium"
+              className="text-gray-600 hover:text-primary-600 block px-3 py-2 rounded-md font-medium transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Contacto
             </Link>
-            <Link
-              href="/campaigns/create"
-              className="bg-teal-600 text-white hover:bg-teal-700 px-3 py-2 rounded-md font-medium flex items-center mx-2 my-1"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <Plus className="h-4 w-4 mr-1" /> Crear Campaña
-            </Link>
-            <Link
-              href="/login"
-              className="bg-purple-600 text-white hover:bg-purple-700 px-3 py-2 rounded-md font-medium flex items-center mx-2 my-1"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <LogIn className="h-4 w-4 mr-1" /> Regístrate
-            </Link>
+            
+            {/* Mobile auth section */}
+            <div className="pt-2 border-t border-gray-200 space-y-2">
+              {isConnected ? (
+                <div className="space-y-3">
+                  <div className="px-3 py-2">
+                    <Balance />
+                  </div>
+                  <div className="px-3 py-2">
+                    <AuthAvatar />
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <div className="px-3">
+                    <Button
+                      as={Link}
+                      // TO DO: 
+                      // href="/campaigns/create"
+                      href=""
+                      color="primary"
+                      className="w-full justify-center"
+                      onPress={() => setIsMenuOpen(false)}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Crear Campaña
+                    </Button>
+                  </div>
+                  <div className="px-3">
+                    <Button
+                      as={Link}
+                      // TO DO:
+                      // href="/login"
+                      href=""
+                      color="secondary"
+                      className="w-full justify-center"
+                      onPress={() => setIsMenuOpen(false)}
+                    >
+                      <LogIn className="h-4 w-4 mr-1" /> Iniciar Sesión
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -1,6 +1,7 @@
 import { Card } from "@heroui/react";
 import { motion } from "framer-motion";
 import { Database, Shield } from "lucide-react";
+import Image from "next/image";
 
 const imageCardMotionProps = {
   initial: { opacity: 0, x: 50 },
@@ -13,9 +14,11 @@ const BlockchainImageCard = () => (
   <motion.div {...imageCardMotionProps}>
     <Card className="bg-white rounded-lg shadow-md overflow-hidden h-full">
       <div className="relative">
-        <img 
+        <Image 
           src="https://images.pexels.com/photos/8370752/pexels-photo-8370752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
           alt="Blockchain Technology"
+          width={800}
+          height={450}
           className="w-full h-80 object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>

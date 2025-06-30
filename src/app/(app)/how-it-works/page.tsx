@@ -1,47 +1,20 @@
 "use client"
 
-import React from 'react';
-import { 
-  Shield, Zap, Heart, Lock, Eye, BarChart, CheckCircle,
-  Database, ChevronRight, X, MapPin, Slash, Clock, Check, FileText, ArrowRightLeft
+import { motion } from 'framer-motion';
+import {
+  CheckCircle,
+  ChevronRight,
+  Heart,
+  Zap
 } from 'lucide-react';
 import Link from 'next/link';
-import { Card } from "@heroui/react";
-import { motion } from 'framer-motion';
+import React from 'react';
+import BlockchainImageCard from './components/BlockchainImageCard';
 import ComparativeSection from './components/ComparativeSection';
 import FeatureCards from './components/FeatureCards';
 import HowItWorksTimeline from './components/HowItWorksTimeline';
-import BlockchainImageCard from './components/BlockchainImageCard';
-import JoinDonareCards from './components/JoinDonareCards';
 
 const HowItWorks: React.FC = () => {
-  // Variantes de animación para la sección "¿Cómo Funciona?"
-  const imageCardMotionProps = {
-    initial: { opacity: 0, x: 50 },
-    whileInView: { opacity: 1, x: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.7, ease: "easeInOut", delay: 0.2 } // Corregido a string
-  };
-
-  const listMotionProps = {
-    initial: "hidden",
-    whileInView: "visible",
-    viewport: { once: true },
-    variants: {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: {
-          delayChildren: 0.7, // Inicia después de que la tarjeta de imagen comience a aparecer
-          staggerChildren: 0.4 // Tiempo entre la animación de cada elemento de la lista
-        }
-      }
-    }
-  };
-  const listItemMotionVariants = {
-    hidden: { opacity: 0, x: -40 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } // Corregido a string
-  };
 
   // Variantes para la sección "Únete a Donaré" (con entrada y salida)
   const sectionJoinTitleMotion = {
@@ -137,7 +110,7 @@ const HowItWorks: React.FC = () => {
         </div>
       </section>
       
-      <section className="py-16 bg-primary-600 text-white">
+      <section className="py-16 bg-gradient-to-br from-primary-600 to-secondary-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="text-center mb-12"
@@ -166,17 +139,17 @@ const HowItWorks: React.FC = () => {
             {...sectionJoinCardsContainerMotion} // Aplica las props de animación al contenedor de las tarjetas
           >
             <motion.div {...sectionJoinCardItemMotion} className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center h-full">
                 <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
                   <Heart className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Haz una Donación</h3>
-                <p className="text-white mb-4">
+                <p className="text-white mb-6 flex-grow">
                   Apoya causas importantes con la seguridad de que tu dinero llegará a quien lo necesita.
                 </p>
                 <Link 
-                  href="/" // Debería ser /campaigns o similar
-                  className="inline-flex items-center text-white font-medium hover:text-teal-100 mt-auto"
+                  href="/campaigns" // Debería ser /campaigns o similar
+                  className="inline-flex items-center text-white font-medium hover:text-teal-100"
                 >
                   Ver campañas <ChevronRight className="h-5 w-5 ml-1" />
                 </Link>
@@ -184,17 +157,19 @@ const HowItWorks: React.FC = () => {
             </motion.div>
             
             <motion.div {...sectionJoinCardItemMotion} className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center h-full">
                 <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
                   <Zap className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Crea una Campaña</h3>
-                <p className="text-white mb-4">
+                <p className="text-white mb-6 flex-grow">
                   Inicia tu propia campaña para financiar un proyecto o ayudar a quien lo necesite.
                 </p>
                 <Link 
-                  href="/campaigns/create" // Corregido de /create
-                  className="inline-flex items-center text-white font-medium hover:text-teal-100 mt-auto"
+                  // TO DO: Corregir la ruta de creación de campaña
+                  // href="/campaigns/create"
+                  href=""
+                  className="inline-flex items-center text-white font-medium hover:text-teal-100"
                 >
                   Crear campaña <ChevronRight className="h-5 w-5 ml-1" />
                 </Link>
@@ -202,17 +177,17 @@ const HowItWorks: React.FC = () => {
             </motion.div>
             
             <motion.div {...sectionJoinCardItemMotion} className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center h-full">
                 <div className="bg-white/20 rounded-full p-3 inline-block mb-4">
                   <CheckCircle className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Verifica Transparencia</h3>
-                <p className="text-white mb-4">
+                <p className="text-white mb-6 flex-grow">
                   Consulta el registro blockchain para verificar cada transacción realizada en la plataforma.
                 </p>
                 <Link 
                   href="/" // Debería ser una página específica del explorador blockchain si existe
-                  className="inline-flex items-center text-white font-medium hover:text-teal-100 mt-auto"
+                  className="inline-flex items-center text-white font-medium hover:text-teal-100"
                 >
                   Explorar blockchain <ChevronRight className="h-5 w-5 ml-1" />
                 </Link>

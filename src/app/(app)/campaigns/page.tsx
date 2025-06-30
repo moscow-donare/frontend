@@ -10,8 +10,8 @@ export default function Home() {
   // Redirige a la ruta deseada
   return(
     <div>
-      <div className="w-screen h-screen bg-teal-600 to:bg-purple-600">
-        <p className="text-center text-white mt-2">Pagina no habilitada <a href="/home" className="underline">aquí</a>.</p>
+      <div className="w-screen h-screen bg-gradient-to-br from-primary-600 to-secondary-800">
+        <p className="text-center text-white mt-2">Pagina no habilitada.</p>
         <p className="text-center text-white mt-4">Redirigiendo...</p>
       </div>
     </div>

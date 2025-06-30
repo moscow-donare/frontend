@@ -9,8 +9,8 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Web3Auth NextJS Quick Start",
-  description: "Web3Auth NextJS Quick Start",
+  title: "Donaré",
+  description: "Donaré - Plataforma de recaudación de fondos, con trazabilidad en blockchain",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

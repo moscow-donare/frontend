@@ -1,7 +1,6 @@
 "use client"
 import Footer from "../components/Footer"
 import type React from "react"
-
 import Navbar from "../components/Navbar"
 import { CampaignProvider } from "../context/CampaignContext"
 
