@@ -1,19 +1,23 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-export default function Home() {
+export default function CampaignsPage() {
   const router = useRouter();
-  setTimeout(() => {
-    router.push('/home'); // o la ruta relativa a tu grupo de rutas
-  }, 1000); // Espera 1 segundo antes de redirigir
-  // Redirige a la ruta deseada
-  return(
-    <div>
-      <div className="w-screen h-screen bg-gradient-to-br from-primary-600 to-secondary-800">
-        <p className="text-center text-white mt-2">Pagina no habilitada.</p>
-        <p className="text-center text-white mt-4">Redirigiendo...</p>
+  
+  useEffect(() => {
+    // Redirigir a home por ahora ya que las campañas individuales no están habilitadas
+    router.push('/home');
+  }, [router]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-primary-600 to-secondary-800 flex items-center justify-center">
+      <div className="text-center text-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+        <p className="text-xl mb-2">Redirigiendo...</p>
+        <p className="text-sm opacity-75">Esta página será habilitada próximamente</p>
       </div>
     </div>
-  )
+  );
 }

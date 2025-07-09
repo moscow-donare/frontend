@@ -1,8 +1,8 @@
-import augusto from "@public/images/about-us/augusto.jpeg"; 
-import tomas from "@public/images/about-us/tomas.jpeg"; 
-import nicolas from "@public/images/about-us/nicolas.jpeg"; 
-import luis from "@public/images/about-us/luis.jpeg"; 
-import stefano from "@public/images/about-us/stefano.jpeg"; 
+import augusto from "../../../../../public/images/about-us/augusto.jpeg"; 
+import tomas from "../../../../../public/images/about-us/tomas.jpeg"; 
+import nicolas from "../../../../../public/images/about-us/nicolas.jpeg"; 
+import luis from "../../../../../public/images/about-us/luis.jpeg"; 
+import stefano from "../../../../../public/images/about-us/stefano.jpeg";
 
 export const TEAM_MEMBERS = [
     {

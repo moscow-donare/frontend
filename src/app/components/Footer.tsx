@@ -36,20 +36,17 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link href="/home" className="text-gray-400 hover:text-white transition-colors">Inicio</Link></li>
               <li><Link href="/campaigns" className="text-gray-400 hover:text-white transition-colors">Ver Campañas</Link></li>
-              {/* TO DO */}
-              {/* <li><Link href="/campaigns/create" className="text-gray-400 hover:text-white transition-colors">Crear Campaña</Link></li> */}
-              <li><Link href="/" className="text-gray-400 hover:text-white transition-colors">Crear Campaña</Link></li>
+              <li><Link href="/campaigns/create" className="text-gray-400 hover:text-white transition-colors">Crear Campaña</Link></li>
               <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">¿Cómo funciona?</Link></li>
-              {/* <li><Link href="/about-us" className="text-gray-400 hover:text-white transition-colors">Contacto</Link></li> */}
+              <li><Link href="/about-us" className="text-gray-400 hover:text-white transition-colors">Contacto</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Recursos</h3>
             <ul className="space-y-2">
-              {/* <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">Centro de Ayuda</Link></li> */}
-              {/* TO DO: Incorporar terminos de servicio y politica de privacidad */}
-              <li><Link href="" className="text-gray-400 hover:text-white transition-colors">Términos de Servicio</Link></li>
+              <li><Link href="/terms" className="text-gray-400 hover:text-white transition-colors">Términos de Servicio</Link></li>
+              <li><Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">Política de Privacidad</Link></li>
             </ul>
           </div>
 

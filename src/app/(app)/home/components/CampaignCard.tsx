@@ -29,7 +29,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
               color="primary"
               startContent={<CheckCircle className="h-4 w-4" />}
             >
-              En Curso
+              Verificado
             </Chip>
           )}
         </div>
@@ -37,7 +37,12 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
           <Chip
             size="sm"
             variant="solid"
-            color='danger'
+            color={
+              campaign.category === "Salud" ? "danger" :
+              campaign.category === "Educación" ? "primary" :
+              campaign.category === "Emergencia" ? "warning" :
+              "secondary"
+            }
           >
             {campaign.category}
           </Chip>
@@ -70,9 +75,8 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
       </CardBody>
       <CardFooter className="pt-0 px-4 pb-4">
         <Button
-        // TO DO HABILITAR REDICCIONAMIENTO
-          // as={Link}
-          // href={`/campaigns/${campaign.id}`}
+          as={Link}
+          href={`/campaigns/${campaign.id}`}
           color="secondary"
           className="w-full font-medium"
         >
