@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@heroui/react"
 import { MailIcon, LinkedinIcon, InstagramIcon } from "lucide-react"
-import { DONARE_INFO } from "../../../data/donare-info"
+import { DONARE_INFO } from "../data/donare-info"
 import { TikTokIcon } from "@public/icons/TikTokIcon"
 import Link from "next/link"
 

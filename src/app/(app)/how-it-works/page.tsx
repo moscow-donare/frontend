@@ -166,7 +166,9 @@ const HowItWorks: React.FC = () => {
                   Inicia tu propia campaña para financiar un proyecto o ayudar a quien lo necesite.
                 </p>
                 <Link 
-                  href="/campaigns/create"
+                  // TO DO: Corregir la ruta de creación de campaña
+                  // href="/campaigns/create"
+                  href=""
                   className="inline-flex items-center text-white font-medium hover:text-teal-100"
                 >
                   Crear campaña <ChevronRight className="h-5 w-5 ml-1" />

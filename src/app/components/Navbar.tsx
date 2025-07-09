@@ -60,7 +60,9 @@ const Navbar = () => {
                 </>
               ) : (<Button
                 as={Link}
-                href="/campaigns/create"
+                // TO DO:  
+                // href="/campaigns/create"
+                href=""
                 color="primary"              >
                 <Plus className="h-4 w-4 mr-1" /> Crear Campaña
               </Button>)}
@@ -68,7 +70,9 @@ const Navbar = () => {
                 <>
                   <Button
                     as={Link}
-                    href="/login"
+                    // TO DO: 
+                    // href="/login"
+                    href=""
                     color="secondary"
                   >
                     <LogIn className="h-4 w-4 mr-1" /> Iniciar Sesion
@@ -139,7 +143,9 @@ const Navbar = () => {
                   <div className="px-3">
                     <Button
                       as={Link}
-                      href="/campaigns/create"
+                      // TO DO: 
+                      // href="/campaigns/create"
+                      href=""
                       color="primary"
                       className="w-full justify-center"
                       onPress={() => setIsMenuOpen(false)}
@@ -150,7 +156,9 @@ const Navbar = () => {
                   <div className="px-3">
                     <Button
                       as={Link}
-                      href="/login"
+                      // TO DO:
+                      // href="/login"
+                      href=""
                       color="secondary"
                       className="w-full justify-center"
                       onPress={() => setIsMenuOpen(false)}

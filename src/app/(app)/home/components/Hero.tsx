@@ -20,7 +20,8 @@ const Hero = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link 
-                href="/campaigns/create"
+                // href="/campaigns/create" 
+                href="/home" 
                 className="bg-white text-teal-700 hover:bg-teal-50 px-6 py-3 rounded-md font-medium text-center transition-colors"
               >
                 Crear Campaña
