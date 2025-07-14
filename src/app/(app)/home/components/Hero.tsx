@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Import useState, useEffect
 import { ChevronRight, Shield, Zap, Heart } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import hero from "@public/images/home/hero.png"
 import { Card } from '@heroui/react';
+import { useWeb3AuthUser } from '@web3auth/modal/react'; // Import useWeb3AuthUser
+import { useCampaigns } from '../../../context/CampaignContext'; // Import useCampaigns
 
 const Hero = () => {
+  const { userInfo } = useWeb3AuthUser(); // Get user info
+  const { campaigns } = useCampaigns(); // Get campaigns
+  const [canCreateCampaign, setCanCreateCampaign] = useState(true); // New state
+
+  useEffect(() => {
+    if (userInfo?.name) {
+      // Simulate checking if the logged-in user (e.g., 'Juan Pérez') has an existing campaign
+      // For a real app, this check would come from the backend.
+      const userHasCampaign = campaigns.some(campaign => campaign.creator === userInfo.name);
+      setCanCreateCampaign(!userHasCampaign);
+    } else {
+      setCanCreateCampaign(true); // Allow creation if not logged in or no user info
+    }
+  }, [userInfo, campaigns]);
+
   return (
     <div className="bg-gradient-to-br from-primary-600 to-secondary-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
@@ -15,25 +32,26 @@ const Hero = () => {
               Donaciones Transparentes con <span className="text-secondary-300">Blockchain</span>
             </h1>
             <p className="text-lg md:text-xl mb-6 text-teal-100">
-              Revoluciona la forma en que gestionas la recaudacion de fondos con total transparencia, 
+              Revoluciona la forma en que gestionas la recaudacion de fondos con total transparencia,
               seguridad y eficiencia.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link 
-                // href="/campaigns/create" 
-                href="/home" 
-                className="bg-white text-teal-700 hover:bg-teal-50 px-6 py-3 rounded-md font-medium text-center transition-colors"
+              <Link
+                href={canCreateCampaign ? "/campaigns/create" : "#"} // Redirect if allowed, or no-op
+                className={`bg-white text-teal-700 hover:bg-teal-50 px-6 py-3 rounded-md font-medium text-center transition-colors ${!canCreateCampaign ? "opacity-50 cursor-not-allowed" : ""}`}
+                aria-disabled={!canCreateCampaign} // ARIA for accessibility
+                title={!canCreateCampaign ? "Ya tienes una campaña activa o en revisión" : "Crear una nueva campaña"}
               >
                 Crear Campaña
               </Link>
-              <Link 
-                href="/how-it-works" 
+              <Link
+                href="/how-it-works"
                 className="bg-transparent border border-white text-white hover:bg-white/10 px-6 py-3 rounded-md font-medium flex items-center justify-center transition-colors"
               >
                 ¿Cómo Funciona? <ChevronRight className="h-5 w-5 ml-1" />
               </Link>
             </div>
-            
+
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center sm:text-left">
               <div className="flex flex-col items-center sm:items-start">
                 <div className="bg-white/10 p-2 rounded-full mb-2">
@@ -42,7 +60,7 @@ const Hero = () => {
                 <h3 className="text-lg font-medium mb-1">100% Seguro</h3>
                 <p className="text-teal-100 text-sm">Transacciones protegidas</p>
               </div>
-              
+
               <div className="flex flex-col items-center sm:items-start">
                 <div className="bg-white/10 p-2 rounded-full mb-2">
                   <Zap className="h-6 w-6" />
@@ -50,7 +68,7 @@ const Hero = () => {
                 <h3 className="text-lg font-medium mb-1">Rápido</h3>
                 <p className="text-teal-100 text-sm">Fondos disponibles al instante</p>
               </div>
-              
+
               <div className="flex flex-col items-center sm:items-start">
                 <div className="bg-white/10 p-2 rounded-full mb-2">
                   <Heart className="h-6 w-6" />
@@ -60,26 +78,18 @@ const Hero = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="order-1 md:order-2 flex justify-center">
             <div className="relative">
               <Card className="w-full h-full rounded-lg shadow-lg overflow-hidden">
-                <Image 
-                  // src="https://images.pexels.com/photos/6647037/pexels-photo-6647037.jpeg" 
-                  src={hero}                   
-                  alt="Donaciones transparentes" 
+                <Image
+                  src={hero}
+                  alt="Donaciones transparentes"
                   className="w-full h-full object-cover"
                   width={400}
                   height={400}
                 />
               </Card>
-              {/* <div className="absolute -bottom-6 -right-6 bg-purple-600 rounded-lg shadow-lg p-4 w-40">
-                <div className="text-xs font-medium mb-1">Verificado por Blockchain</div>
-                <div className="flex items-center text-sm font-bold">
-                  <span className="mr-1">$1,245,678</span>
-                  <span className="text-purple-300 text-xs">donados</span>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
