@@ -65,7 +65,7 @@ const DashboardPage: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Mi Panel de Control</h1>
           <p className="text-gray-600">Administra tus campañas y transacciones</p>
-        </div>
+        </div>  
         <div className="mt-4 sm:mt-0">
           <Link
                   href="/campaigns/create"
