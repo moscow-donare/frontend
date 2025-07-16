@@ -4,6 +4,7 @@ import {Info, AlertCircle, Image as ImageIcon, Calendar, Upload} from 'lucide-re
 import { useCampaigns } from '../../context/CampaignContext';
 import { useRouter } from 'next/navigation';
 import { useWeb3AuthUser } from "@web3auth/modal/react"; // Import useWeb3AuthUser
+import { Button } from '@heroui/react';
 
 export default function Page(){
   const router = useRouter();
@@ -42,12 +43,12 @@ export default function Page(){
             Actualmente solo se permite tener una campaña activa o en revisión por usuario.
             Puedes administrar tu campaña existente desde tu Panel de Control.
           </p>
-          <button
-            onClick={() => router.push('/dashboard')}
+          <Button
+            onPress={() => router.push('/dashboard')}
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
           >
             Ir a mi Panel de Control
-          </button>
+          </Button>
         </div>
       </div>
     );
