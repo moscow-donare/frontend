@@ -1,4 +1,8 @@
+"use client";
+import AcceptModal from "./components/AcceptModal";
 import { CampaignsTable } from "./components/CampaignTable";
+import RejectModal from "./components/RejectModal";
+import ReviewModal from "./components/ReviewModal";
 
 export default function ValidateCampaignsPage() {
     return (
@@ -10,6 +14,9 @@ export default function ValidateCampaignsPage() {
                 </div>
             </div>
                 <CampaignsTable/>
+                <AcceptModal />
+                <RejectModal />
+                <ReviewModal />
         </div>
     )
 }

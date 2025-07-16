@@ -1,19 +1,27 @@
 "use client"
+import { Campaign } from '@/app/types/Campaign'
 import {
+    Button,
     Chip,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
     Table,
     TableBody,
     TableCell,
     TableColumn,
     TableHeader,
-    TableRow
+    TableRow,
+    Tooltip
 } from '@heroui/react'
-import { Edit, Eye, Trash2 } from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
+import { BookOpenText, CheckIcon, PencilLine, PenTool, X } from 'lucide-react'
+import React, { Key } from 'react'
+import { useValidateCampaignsModals } from '../hooks/useValidateCampaignsModals'
 
 export function CampaignsTable() {
-    const userCampaigns = [
+    const { acceptModal, rejectModal, reviewModal } = useValidateCampaignsModals();
+    const userCampaigns: Campaign[] = [
         {
             id: '1',
             title: 'Campaña de Ayuda a Niños',
@@ -22,6 +30,17 @@ export function CampaignsTable() {
             goal: 10000,
             daysLeft: 10,
             endDate: new Date('2023-12-31'),
+            description: 'Ayudamos a niños en situación vulnerable proporcionándoles atención médica y educación.',
+            status: 'active',
+            donors: 245,
+            amountRaised: 7500,
+            creator: 'Juan Pérez',
+            creatorImageUrl: '/images/creator1.jpg',
+            creatorBio: 'Activista social con más de 10 años de experiencia en proyectos comunitarios.',
+            walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
+            isVerified: true,
+            fullDescription: 'Esta campaña busca recaudar fondos para proporcionar atención médica y educación a niños',
+            createdAt: new Date('2023-01-01')
         },
         {
             id: '2',
@@ -29,99 +48,111 @@ export function CampaignsTable() {
             category: 'Medio Ambiente',
             imageUrl: '/images/campaign2.jpg',
             goal: 8000,
-            endDate: new Date('2023-12-31'),
-            daysLeft: 5
+            daysLeft: 5,
+            endDate: new Date('2023-09-15'),
+            description: 'Proyecto para la conservación de bosques nativos y reforestación de áreas degradadas.',
+            status: 'active',
+            donors: 128,
+            amountRaised: 6200,
+            creator: 'María González',
+            creatorImageUrl: '/images/creator2.jpg',
+            creatorBio: 'Bióloga especializada en conservación ambiental.',
+            walletAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
+            isVerified: true,
+            fullDescription: 'Esta campaña busca proteger los bosques nativos mediante proyectos de reforestación y conservación.',
+            createdAt: new Date('2023-06-01')
         }
     ]
 
-    const renderCell = React.useCallback((campaign, columnKey) => {
+    const renderCell = React.useCallback((campaign: Campaign, columnKey: Key) => {
         switch (columnKey) {
             case "title":
                 return (
                     <div className="flex items-center">
-                        <img
+                        {/* <img
                             className="h-10 w-10 rounded object-cover mr-3"
                             src={campaign.imageUrl}
                             alt={campaign.title}
-                        />
-                        <div>
-                            <div className="text-sm font-medium text-gray-900">
-                                {campaign.title}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                                {campaign.category}
-                            </div>
+                        /> */}
+                        <div className="text-sm font-medium text-gray-900">
+                            {campaign.title}
                         </div>
                     </div>
                 );
             case "endDate":
                 return (
                     <div>
-                        {campaign.endDate.toLocaleDateString('es-ES')} 
+                        {campaign.endDate.toLocaleDateString('es-ES')}
                     </div>
                 );
             case "goal":
                 return (
                     <Chip className="text-sm" color='success' variant='flat'>
-                        USD {campaign.goal} 
+                        USD {campaign.goal}
+                    </Chip>
+                );
+            case "creator":
+                return (
+                    <p className="font-bold text-medium">
+                        {campaign.creator}
+                    </p>
+                );
+
+            case "category":
+                return (
+                    <Chip size='sm' variant='flat' color='secondary'>
+                        {campaign.category} 
                     </Chip>
                 );
             case "actions":
                 return (
-                    <div className="flex justify-end space-x-2">
-                        <Link href={`/campaign/${campaign.id}`} title="Ver">
-                            <Eye className="h-5 w-5 text-gray-400 hover:text-gray-500" />
-                        </Link>
-                        <button title="Editar">
-                            <Edit className="h-5 w-5 text-blue-400 hover:text-blue-500" />
-                        </button>
-                        <button title="Eliminar">
-                            <Trash2 className="h-5 w-5 text-red-400 hover:text-red-500" />
-                        </button>
+                    <div className='flex flex-row gap-2'>
+                        <Tooltip content="Ver Descripciones">
+                            <Button isIconOnly>
+                                <BookOpenText className="h-5 w-5" />
+                            </Button>
+                        </Tooltip>
+                        <Dropdown>
+                            <DropdownTrigger>
+                                <Button color='secondary' variant='flat'>
+                                    <PenTool className="h-5 w-5" /> Acciones
+                                </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu>
+                                <DropdownItem key={"Aprobar"} color='success' onClick={acceptModal.onOpen}><p className='flex flex-row gap-2'><CheckIcon />Aprobar</p></DropdownItem>
+                                <DropdownItem key={"Rechazar"} color='danger' onClick={rejectModal.onOpen}><p className='flex flex-row gap-2'><X />Rechazar</p></DropdownItem>
+                                <DropdownItem key={"Editar"} color='secondary' onClick={reviewModal.onOpen}><p className='flex flex-row gap-2'><PencilLine />Solicitar Cambios</p></DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                     </div>
+
                 );
             default:
                 return campaign[columnKey];
         }
     }, []);
     return (
-        // <div>
-        //     {userCampaigns.length > 0 ? (
-                <Table>
-                    <TableHeader>
-                        <TableColumn key="title">Campaña</TableColumn>
-                        <TableColumn key="donors">Meta</TableColumn>
-                        <TableColumn key="donors">Fecha Finalizacion</TableColumn>
-                        <TableColumn key="actions">Acciones</TableColumn>
-                    </TableHeader>
-                    <TableBody items={userCampaigns}>
-                        {(item) => (
-                            <TableRow key={item.id}>
-                                <TableCell>{renderCell(item, "title")}</TableCell>
-                                <TableCell>{renderCell(item, "goal")}</TableCell>
-                                <TableCell>{renderCell(item, "endDate")}</TableCell>
-                                <TableCell>{renderCell(item, "actions")}</TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-        //     ) : (
-        //         <div className="text-center py-16">
-        //             <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-        //             <h3 className="text-lg font-medium text-gray-900 mb-2">
-        //                 No tienes campañas activas
-        //             </h3>
-        //             <p className="text-gray-500 mb-6">
-        //                 ¡Comienza a crear tu primera campaña ahora!
-        //             </p>
-        //             <Link
-        //                 href="/campaigns/create"
-        //                 className="inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-        //             >
-        //                 <Plus className="h-4 w-4 mr-2" /> Nueva Campaña
-        //             </Link>
-        //         </div>
-        //     )}
-        // </div>
+        <Table>
+            <TableHeader>
+                <TableColumn key="creator">Creador</TableColumn>
+                <TableColumn key="title">Campaña</TableColumn>
+                <TableColumn key="category">Categoría</TableColumn>
+                <TableColumn key="goal">Meta</TableColumn>
+                <TableColumn key="endDate">Fecha Finalizacion</TableColumn>
+                <TableColumn key="actions">Acciones</TableColumn>
+            </TableHeader>
+            <TableBody items={userCampaigns}>
+                {(item) => (
+                    <TableRow key={item.id}>
+                        <TableCell>{renderCell(item, "creator")}</TableCell>
+                        <TableCell>{renderCell(item, "title")}</TableCell>
+                        <TableCell>{renderCell(item, "category")}</TableCell>
+                        <TableCell>{renderCell(item, "goal")}</TableCell>
+                        <TableCell>{renderCell(item, "endDate")}</TableCell>
+                        <TableCell>{renderCell(item, "actions")}</TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
     )
 }
