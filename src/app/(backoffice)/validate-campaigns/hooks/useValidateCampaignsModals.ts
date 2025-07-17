@@ -1,25 +1,25 @@
 import { useContext } from "react";
 import { ValidateCampaignContext } from "./ValidateCampaignsContext";
+import { Campaign } from "@/app/types/Campaign";
 
 export const useValidateCampaignsModals = () => {
     const context = useContext(ValidateCampaignContext);
     if (!context) {
         throw new Error("useValidateCampaignsModals must be used within a ValidateCampaignProvider");
     }
-    const { acceptModal, rejectModal, reviewModal } = context;
+    const { acceptModal, rejectModal, reviewModal, descriptionModal, setSelectedCampaign } = context;
 
-    // const openAcceptModal = () => acceptModal.onOpen();
-    // const closeAcceptModal = () => acceptModal.onClose();   
-    // const openRejectModal = () => rejectModal.onOpen();
-    // const closeRejectModal = () => rejectModal.onClose();
-    // const openCancelModal = () => cancelModal.onOpen();
-    // const closeCancelModal = () => cancelModal.onClose();
-
+    const openDescriptionModal = (campaign: Campaign) => {
+        setSelectedCampaign(campaign);
+        descriptionModal.onOpen();
+    };
 
     return {
         acceptModal,
         rejectModal,
         reviewModal,
+        descriptionModal,
+        openDescriptionModal
     };
 
 };

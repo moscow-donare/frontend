@@ -7,6 +7,7 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownTrigger,
+    Pagination,
     Table,
     TableBody,
     TableCell,
@@ -20,8 +21,11 @@ import React, { Key } from 'react'
 import { useValidateCampaignsModals } from '../hooks/useValidateCampaignsModals'
 
 export function CampaignsTable() {
-    const { acceptModal, rejectModal, reviewModal } = useValidateCampaignsModals();
-    const userCampaigns: Campaign[] = [
+    const { acceptModal, rejectModal, reviewModal, openDescriptionModal } = useValidateCampaignsModals();
+    const [page, setPage] = React.useState(1);
+    const rowsPerPage = 4;
+    
+    const userCampaigns: Campaign[] = React.useMemo(() => [
         {
             id: '1',
             title: 'Campaña de Ayuda a Niños',
@@ -62,7 +66,16 @@ export function CampaignsTable() {
             fullDescription: 'Esta campaña busca proteger los bosques nativos mediante proyectos de reforestación y conservación.',
             createdAt: new Date('2023-06-01')
         }
-    ]
+    ], []);
+
+    const pages = Math.ceil(userCampaigns.length / rowsPerPage);
+
+    const items = React.useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return userCampaigns.slice(start, end);
+    }, [page, userCampaigns, rowsPerPage]);
 
     const renderCell = React.useCallback((campaign: Campaign, columnKey: Key) => {
         switch (columnKey) {
@@ -108,7 +121,7 @@ export function CampaignsTable() {
                 return (
                     <div className='flex flex-row gap-2'>
                         <Tooltip content="Ver Descripciones">
-                            <Button isIconOnly>
+                            <Button isIconOnly onPress={() => openDescriptionModal(campaign)}>
                                 <BookOpenText className="h-5 w-5" />
                             </Button>
                         </Tooltip>
@@ -128,11 +141,29 @@ export function CampaignsTable() {
 
                 );
             default:
-                return campaign[columnKey];
+                return String(campaign[columnKey as keyof Campaign] || '');
         }
-    }, []);
+    }, [acceptModal.onOpen, rejectModal.onOpen, reviewModal.onOpen]);
     return (
-        <Table>
+        <Table
+            aria-label="Tabla de campañas con paginación"
+            bottomContent={
+                <div className="flex w-full justify-center">
+                    <Pagination
+                        isCompact
+                        showControls
+                        showShadow
+                        color="secondary"
+                        page={page}
+                        total={pages}
+                        onChange={(page) => setPage(page)}
+                    />
+                </div>
+            }
+            classNames={{
+                wrapper: "min-h-[222px]",
+            }}
+        >
             <TableHeader>
                 <TableColumn key="creator">Creador</TableColumn>
                 <TableColumn key="title">Campaña</TableColumn>
@@ -141,7 +172,7 @@ export function CampaignsTable() {
                 <TableColumn key="endDate">Fecha Finalizacion</TableColumn>
                 <TableColumn key="actions">Acciones</TableColumn>
             </TableHeader>
-            <TableBody items={userCampaigns}>
+            <TableBody items={items}>
                 {(item) => (
                     <TableRow key={item.id}>
                         <TableCell>{renderCell(item, "creator")}</TableCell>

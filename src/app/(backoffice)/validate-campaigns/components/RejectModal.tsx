@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Textarea } from "@heroui/react";
 import { useValidateCampaignsModals } from "../hooks/useValidateCampaignsModals";
 
 export default function RejectModal() {
@@ -8,7 +8,7 @@ export default function RejectModal() {
     <Modal
       isOpen={rejectModal.isOpen}
       onClose={rejectModal.onClose}
-      size="lg"
+      size="2xl"
       placement="top-center"
     >
       <ModalContent>
@@ -21,6 +21,11 @@ export default function RejectModal() {
               <p>
                 La campaña pasara al estado <b>"Rechazada/Cancelada"</b> y ya no se podran registrar donaciones.
               </p>
+              <Textarea
+                placeholder="Escribe un comentario para el creador de la campaña..."
+                rows={4}
+                className="mt-4"
+              />
               </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="flat">
