@@ -25,7 +25,6 @@ import {
   Chip, 
   Progress, 
   Avatar,
-  Divider,
   Image
 } from "@heroui/react"
 

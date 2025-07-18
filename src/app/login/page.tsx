@@ -12,47 +12,42 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/home");
+    setTimeout(() => {
+      connect();
+    }, 1000);
   }, []);
 
+  useEffect(() => {
+    const handleLogin = async () => {
+      if (isConnected && web3Auth) {
+        console.log("✅ User logged in");
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     connect();
-  //   }, 1000);
-  // }, []);
+        try {
+          const idToken = (await web3Auth.getUserInfo()).idToken; // 👈 obtenemos el JWT
+          console.log("📨 Sending idToken to backend:", idToken);
 
-  // useEffect(() => {
-  //   const handleLogin = async () => {
-  //     if (isConnected && web3Auth) {
-  //       console.log("✅ User logged in");
+          const res = await fetch(`${BACKEND_URL}/auth/web3`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ idToken }),
+          });
 
-  //       try {
-  //         const idToken = (await web3Auth.getUserInfo()).idToken; // 👈 obtenemos el JWT
-  //         console.log("📨 Sending idToken to backend:", idToken);
+          if (!res.ok) throw new Error("❌ Error authenticating in backend");
 
-  //         const res = await fetch(`${BACKEND_URL}/auth/web3`, {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({ idToken }),
-  //         });
+          const data = await res.json();
+          console.log("🟢 Backend response:", data);
 
-  //         if (!res.ok) throw new Error("❌ Error authenticating in backend");
+          router.push("/home");
+        } catch (err) {
+          console.error("❌ Error in login flow:", err);
+        }
+      }
+    };
 
-  //         const data = await res.json();
-  //         console.log("🟢 Backend response:", data);
-
-  //         router.push("/home");
-  //       } catch (err) {
-  //         console.error("❌ Error in login flow:", err);
-  //       }
-  //     }
-  //   };
-
-  //   handleLogin();
-  // }, [isConnected, web3Auth]);
+    handleLogin();
+  }, [isConnected, web3Auth]);
 
   return (
     <div className="w-screen h-screen bg-gradient-to-br from-primary-600 to-secondary-800"></div>

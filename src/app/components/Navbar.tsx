@@ -92,7 +92,7 @@ const Navbar = () => {
                   </Button>
                   <Button
                     as={Link}
-                    href=""
+                    href="/login"
                     color="secondary"
                   >
                     <LogIn className="h-4 w-4 mr-1" /> Iniciar Sesion
@@ -187,7 +187,7 @@ const Navbar = () => {
                   <div className="px-3">
                     <Button
                       as={Link}
-                      href=""
+                      href="/login"
                       color="secondary"
                       className="w-full justify-center"
                       onPress={() => setIsMenuOpen(false)}
