@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { CheckCircle, ArrowRight, Home } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCampaigns } from '../../../../context/CampaignContext'; // Corregido: Ruta manual
+import { useCampaigns } from '../../../../context/CampaignContext'; 
 
 export default function CampaignConfirmationPage() {
   const router = useRouter();
