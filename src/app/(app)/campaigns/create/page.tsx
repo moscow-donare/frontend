@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useCampaigns } from '../../../context/CampaignContext';
 import { useRouter } from 'next/navigation';
+import { Button, Input, Select, SelectItem } from '@heroui/react';
 
 export default function Page(){
   const router = useRouter();
@@ -185,12 +186,12 @@ export default function Page(){
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                   Título de la Campaña*
                 </label>
-                <input
+                <Input
+                  variant='bordered'
                   type="text"
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
                   placeholder="Ej: Ayuda para tratamiento médico"
                 />
               </div>
@@ -199,17 +200,18 @@ export default function Page(){
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
                   Categoría*
                 </label>
-                <select
+                <Select
                   id="category"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+                  placeholder=''
                 >
-                  <option value="">Selecciona una categoría</option>
+                  
                   {categories.map((cat) => (
-                    <option key={cat} value={cat}>{cat}</option>
+                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                   ))}
-                </select>
+                </Select>
               </div>
               
               <div className="mb-6">
@@ -251,13 +253,13 @@ export default function Page(){
               </div>
               
               <div className="flex justify-end">
-                <button
+                <Button
                   type="button"
                   onClick={handleNextStep}
                   className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                 >
                   Siguiente
-                </button>
+                </Button>
               </div>
             </div>
           )}
@@ -312,13 +314,13 @@ export default function Page(){
                       <p className="mt-2 text-sm text-gray-600">
                         Imagen cargada correctamente
                       </p>
-                      <button
+                      <Button
                         type="button"
                         onClick={() => setImage('')}
                         className="mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         Cambiar imagen
-                      </button>
+                      </Button>
                     </div>
                   ) : (
                     <div className="space-y-1 text-center">
@@ -349,13 +351,13 @@ export default function Page(){
               </div>
               
               <div className="flex justify-between">
-                <button
+                <Button
                   type="button"
                   onClick={handlePrevStep}
                   className="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                 >
                   Anterior
-                </button>
+                </Button>
                 <button
                   type="button"
                   onClick={handleNextStep}

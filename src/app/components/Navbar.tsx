@@ -3,16 +3,30 @@
 import { LogIn, Menu, Plus, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import logo from "../../../public/images/logo.png"
 import { Button } from "@heroui/react"
-import { useWeb3Auth } from "@web3auth/modal/react"
+import { useWeb3Auth, useWeb3AuthUser } from "@web3auth/modal/react" // Corregido: Importa useWeb3AuthUser
 import { Balance } from "./wagmi/getBalance"
 import AuthAvatar from "./AuthAvatar"
+import { useCampaigns } from "../context/CampaignContext"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { isConnected } = useWeb3Auth()
+  const { isConnected } = useWeb3Auth() // Corregido: Solo desestructura isConnected de useWeb3Auth
+  const { userInfo } = useWeb3AuthUser(); // Corregido: Obtén userInfo de useWeb3AuthUser
+  const { campaigns } = useCampaigns();
+  const [canCreateCampaign, setCanCreateCampaign] = useState(true);
+
+  useEffect(() => {
+    if (isConnected && userInfo?.name) {
+      const userHasCampaign = campaigns.some(campaign => campaign.creator === userInfo.name);
+      setCanCreateCampaign(!userHasCampaign);
+    } else {
+      setCanCreateCampaign(true);
+    }
+  }, [isConnected, userInfo, campaigns]);
+
   return (
     <nav className="bg-white shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,30 +69,36 @@ const Navbar = () => {
             <div className="w-full flex flex-row justify-end items-end space-x-2">
               {isConnected ? (
                 <>
+                  <Button
+                    as={Link}
+                    href={canCreateCampaign ? "/campaigns/create" : "#"}
+                    color="primary"
+                    disabled={!canCreateCampaign}
+                    title={!canCreateCampaign ? "Ya tienes una campaña activa o en revisión" : "Crear una nueva campaña"}
+                  >
+                    <Plus className="h-4 w-4 mr-1" /> Crear Campaña
+                  </Button>
                   <Balance />
                   <AuthAvatar />
                 </>
-              ) : (<Button
-                as={Link}
-                // TO DO:  
-                // href="/campaigns/create"
-                href=""
-                color="primary"              >
-                <Plus className="h-4 w-4 mr-1" /> Crear Campaña
-              </Button>)}
-              {!isConnected ? (
+              ) : (
                 <>
                   <Button
                     as={Link}
-                    // TO DO: 
-                    // href="/login"
+                    href="/campaigns/create"
+                    color="primary"
+                  >
+                    <Plus className="h-4 w-4 mr-1" /> Crear Campaña
+                  </Button>
+                  <Button
+                    as={Link}
                     href=""
                     color="secondary"
                   >
                     <LogIn className="h-4 w-4 mr-1" /> Iniciar Sesion
                   </Button>
                 </>
-              ) : null}
+              )}
             </div>
           </div>
 
@@ -126,7 +146,7 @@ const Navbar = () => {
             >
               Contacto
             </Link>
-            
+
             {/* Mobile auth section */}
             <div className="pt-2 border-t border-gray-200 space-y-2">
               {isConnected ? (
@@ -137,15 +157,26 @@ const Navbar = () => {
                   <div className="px-3 py-2">
                     <AuthAvatar />
                   </div>
+                  <div className="px-3">
+                    <Button
+                      as={Link}
+                      href={canCreateCampaign ? "/campaigns/create" : "#"}
+                      color="primary"
+                      className="w-full justify-center"
+                      onPress={() => setIsMenuOpen(false)}
+                      disabled={!canCreateCampaign}
+                      title={!canCreateCampaign ? "Ya tienes una campaña activa o en revisión" : "Crear una nueva campaña"}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Crear Campaña
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-2">
                   <div className="px-3">
                     <Button
                       as={Link}
-                      // TO DO: 
-                      // href="/campaigns/create"
-                      href=""
+                      href="/campaigns/create"
                       color="primary"
                       className="w-full justify-center"
                       onPress={() => setIsMenuOpen(false)}
@@ -156,8 +187,6 @@ const Navbar = () => {
                   <div className="px-3">
                     <Button
                       as={Link}
-                      // TO DO:
-                      // href="/login"
                       href=""
                       color="secondary"
                       className="w-full justify-center"
