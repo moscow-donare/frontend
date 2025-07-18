@@ -17,6 +17,17 @@ import { useCampaigns } from "../../../context/CampaignContext"
 import { useTransactions } from "../../../hooks/useTransactions"
 import Link from "next/link"
 import { useParams } from "next/navigation"
+import { 
+  Card, 
+  CardBody, 
+  CardHeader, 
+  Button, 
+  Chip, 
+  Progress, 
+  Avatar,
+  Divider,
+  Image
+} from "@heroui/react"
 
 export default function Page() {
   const params = useParams()
@@ -43,16 +54,25 @@ export default function Page() {
   if (!campaign) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
-          <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Campaña no encontrada</h2>
-          <p className="text-gray-600 mb-6">
-            Lo sentimos, la campaña que estás buscando no existe o ha sido eliminada.
-          </p>
-          <Link href="/" className="inline-flex items-center text-teal-600 font-medium hover:text-teal-700">
-            <ArrowLeft className="h-5 w-5 mr-1" /> Volver al inicio
-          </Link>
-        </div>
+        <Card className="shadow-lg">
+          <CardBody className="text-center py-16">
+            <AlertCircle className="h-16 w-16 text-danger mx-auto mb-6" />
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Campaña no encontrada</h2>
+            <p className="text-gray-600 mb-8 text-lg">
+              Lo sentimos, la campaña que estás buscando no existe o ha sido eliminada.
+            </p>
+            <Button
+              as={Link}
+              href="/home"
+              color="primary"
+              variant="solid"
+              size="lg"
+              startContent={<ArrowLeft className="h-5 w-5" />}
+            >
+              Volver al inicio
+            </Button>
+          </CardBody>
+        </Card>
       </div>
     )
   }
@@ -61,176 +81,262 @@ export default function Page() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Breadcrumb */}
       <div className="mb-6">
-        <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900">
-          <ArrowLeft className="h-4 w-4 mr-1" /> Volver
-        </Link>
+        <Button
+          as={Link}
+          href="/home"
+          variant="light"
+          color="secondary"
+          startContent={<ArrowLeft className="h-4 w-4" />}
+          className="text-secondary-600 hover:text-secondary-800"
+        >
+          Volver
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Campaign Image and Basic Info */}
+          <Card className="shadow-lg overflow-hidden">
             <div className="relative">
-              <img
+              <Image
                 src={campaign.imageUrl || "/placeholder.svg"}
                 alt={campaign.title}
-                className="w-full h-72 object-cover"
+                className="w-full h-80 object-cover"
+                removeWrapper
               />
+              
+              {/* Category Badge */}
               <div className="absolute top-4 left-4">
-                <span
-                  className={`px-3 py-1 text-sm font-medium rounded-full ${
-                    campaign.category === "Salud"
-                      ? "bg-red-100 text-red-800"
-                      : campaign.category === "Educación"
-                        ? "bg-blue-100 text-blue-800"
-                        : campaign.category === "Rifa"
-                          ? "bg-purple-100 text-purple-800"
-                          : "bg-green-100 text-green-800"
-                  }`}
+                <Chip
+                  color={
+                    campaign.category === "Salud" ? "danger" :
+                    campaign.category === "Educación" ? "secondary" :
+                    campaign.category === "Emergencia" ? "warning" :
+                    "primary"
+                  }
+                  variant="solid"
+                  size="md"
+                  className="font-semibold"
                 >
                   {campaign.category}
-                </span>
+                </Chip>
               </div>
+
+              {/* Verified Badge */}
               {campaign.isVerified && (
                 <div className="absolute top-4 right-4">
-                  <div className="bg-white rounded-full p-1 shadow flex items-center">
-                    <CheckCircle className="h-4 w-4 text-teal-600 mr-1" />
-                    <span className="text-xs font-medium">Verificado</span>
-                  </div>
+                  <Chip
+                    color="success"
+                    variant="solid"
+                    startContent={<CheckCircle className="h-4 w-4" />}
+                    className="font-semibold"
+                  >
+                    Verificado
+                  </Chip>
                 </div>
               )}
             </div>
 
-            <div className="p-6">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">{campaign.title}</h1>
+            <CardBody className="p-8">
+              {/* Title */}
+              <h1 className="text-3xl font-bold text-gray-900 mb-6">{campaign.title}</h1>
 
-              <div className="flex flex-wrap items-center text-sm text-gray-500 mb-6 gap-4">
-                <div className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-1" />
+              {/* Meta Information */}
+              <div className="flex flex-wrap items-center gap-6 mb-8">
+                <div className="flex items-center text-gray-600">
+                  <Calendar className="h-5 w-5 mr-2 text-primary" />
                   <span>Creado el {campaign.createdAt.toLocaleDateString()}</span>
                 </div>
-                <div className="flex items-center">
-                  <User className="h-4 w-4 mr-1" />
+                <div className="flex items-center text-gray-600">
+                  <User className="h-5 w-5 mr-2 text-primary" />
                   <span>Por {campaign.creator}</span>
                 </div>
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-1" />
+                <div className="flex items-center text-gray-600">
+                  <Clock className="h-5 w-5 mr-2 text-primary" />
                   <span>{campaign.daysLeft} días restantes</span>
                 </div>
               </div>
 
-              <div className="mb-6">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium text-gray-900">${campaign.amountRaised.toLocaleString()}</span>
-                  <span className="text-gray-500">de ${campaign.goal.toLocaleString()}</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5 mb-1">
-                  <div
-                    className="bg-teal-600 h-2.5 rounded-full"
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                  ></div>
-                </div>
-                <div className="flex justify-between text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <Users className="h-4 w-4 mr-1" />
-                    <span>{campaign.donors} donantes</span>
+              {/* Progress Section */}
+              <Card className="bg-gradient-to-r from-primary-50 to-secondary-50 mb-8">
+                <CardBody className="p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <div>
+                      <p className="text-2xl font-bold text-primary">
+                        ${campaign.amountRaised.toLocaleString()}
+                      </p>
+                      <p className="text-gray-600">de ${campaign.goal.toLocaleString()}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-lg font-semibold text-secondary">
+                        {progress.toFixed(1)}%
+                      </p>
+                      <p className="text-sm text-gray-600">completado</p>
+                    </div>
                   </div>
-                  <span>{progress.toFixed(1)}% completado</span>
-                </div>
-              </div>
+                  
+                  <Progress
+                    value={Math.min(progress, 100)}
+                    color="primary"
+                    size="lg"
+                    className="mb-4"
+                  />
+                  
+                  <div className="flex justify-between items-center">
+                    <Chip
+                      color="secondary"
+                      variant="flat"
+                      startContent={<Users className="h-4 w-4" />}
+                    >
+                      {campaign.donors} donantes
+                    </Chip>
+                    <Chip
+                      color={campaign.daysLeft > 7 ? "success" : "warning"}
+                      variant="flat"
+                      startContent={<Clock className="h-4 w-4" />}
+                    >
+                      {campaign.daysLeft} días restantes
+                    </Chip>
+                  </div>
+                </CardBody>
+              </Card>
 
+              {/* Description */}
               <div className="prose max-w-none mb-8">
-                <h2 className="text-xl font-semibold mb-4">Sobre esta campaña</h2>
-                <p className="text-gray-700">{campaign.description}</p>
-                <p className="text-gray-700 mt-4">{campaign.fullDescription}</p>
+                <h2 className="text-2xl font-semibold mb-4 text-primary">Sobre esta campaña</h2>
+                <p className="text-gray-700 text-lg mb-4">{campaign.description}</p>
+                <p className="text-gray-700 leading-relaxed">{campaign.fullDescription}</p>
               </div>
 
+              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="flex-1 flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                  <Heart className="h-4 w-4 mr-2" /> Me gusta
-                </button>
-                <button className="flex-1 flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                  <Share2 className="h-4 w-4 mr-2" /> Compartir
-                </button>
+                <Button
+                  color="primary"
+                  variant="solid"
+                  size="lg"
+                  startContent={<Heart className="h-5 w-5" />}
+                  className="flex-1"
+                >
+                  Me gusta
+                </Button>
+                <Button
+                  color="secondary"
+                  variant="bordered"
+                  size="lg"
+                  startContent={<Share2 className="h-5 w-5" />}
+                  className="flex-1"
+                >
+                  Compartir
+                </Button>
               </div>
-            </div>
-          </div>
+            </CardBody>
+          </Card>
 
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-4">Blockchain transparente</h2>
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <div className="flex items-start mb-4">
-                <div className="bg-gray-100 p-2 rounded-md mr-3">
-                  <ExternalLink className="h-5 w-5 text-gray-600" />
+          {/* Blockchain Transparency Section */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <h2 className="text-2xl font-semibold text-primary">Transparencia Blockchain</h2>
+            </CardHeader>
+            <CardBody>
+              <div className="flex items-start mb-6">
+                <div className="bg-primary-100 p-3 rounded-lg mr-4">
+                  <ExternalLink className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-900 mb-1">Transparencia Blockchain</h3>
-                  <p className="text-gray-600 text-sm">
-                    Todas las transacciones de esta campaña son públicas y verificables en la blockchain. Puedes
-                    verificar el contrato inteligente y las transacciones en tiempo real.
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">Verificación Completa</h3>
+                  <p className="text-gray-600">
+                    Todas las transacciones de esta campaña son públicas y verificables en la blockchain. 
+                    Puedes verificar el contrato inteligente y las transacciones en tiempo real.
                   </p>
                 </div>
               </div>
-              <div className="bg-gray-50 rounded-md p-4">
-                <div className="flex flex-col sm:flex-row justify-between gap-4">
-                  <div>
-                    <div className="text-xs text-gray-500 mb-1">Dirección del contrato</div>
-                    <div className="font-mono text-sm bg-white border border-gray-200 rounded px-2 py-1">
-                      {campaign.walletAddress}
+              
+              <Card className="bg-gray-50">
+                <CardBody>
+                  <div className="flex flex-col lg:flex-row justify-between gap-4">
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-500 mb-2">Dirección del contrato</p>
+                      <Card className="bg-white border">
+                        <CardBody className="py-3">
+                          <code className="text-sm font-mono text-gray-800">
+                            {campaign.walletAddress}
+                          </code>
+                        </CardBody>
+                      </Card>
+                    </div>
+                    <div className="flex items-end">
+                      <Button
+                        as="a"
+                        href={`https://etherscan.io/address/${campaign.walletAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        color="secondary"
+                        variant="bordered"
+                        endContent={<ExternalLink className="h-4 w-4" />}
+                      >
+                        Ver en blockchain
+                      </Button>
                     </div>
                   </div>
-                  <div>
-                    <a
-                      href={`https://etherscan.io/address/${campaign.walletAddress}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-teal-600 hover:text-teal-700 text-sm font-medium"
-                    >
-                      Ver en blockchain <ExternalLink className="h-3 w-3 ml-1" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+                </CardBody>
+              </Card>
+            </CardBody>
+          </Card>
 
-            <TransactionList transactions={transactions} />
-          </div>
+          {/* Transactions */}
+          <Card className="shadow-lg">
+            <CardBody>
+              <TransactionList transactions={transactions} />
+            </CardBody>
+          </Card>
         </div>
 
-        <div>
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Donation Form */}
           <div className="sticky top-24">
             <DonationForm campaign={campaign} onDonate={handleDonate} />
+          </div>
 
-            <div className="mt-6 bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Acerca del beneficiario</h3>
-              <div className="flex items-center mb-4">
-                <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                  <img
-                    src={
-                      campaign.creatorImageUrl ||
-                      "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                    }
-                    alt={campaign.creator}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="ml-4">
-                  <h4 className="font-medium text-gray-900">{campaign.creator}</h4>
-                  <p className="text-gray-500 text-sm">Organizador de la campaña</p>
+          {/* Creator Info */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <h3 className="text-xl font-semibold text-primary">Acerca del beneficiario</h3>
+            </CardHeader>
+            <CardBody>
+              <div className="flex items-center mb-6">
+                <Avatar
+                  src={campaign.creatorImageUrl || "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg"}
+                  alt={campaign.creator}
+                  size="lg"
+                  className="mr-4"
+                />
+                <div>
+                  <h4 className="font-semibold text-gray-900 text-lg">{campaign.creator}</h4>
+                  <p className="text-gray-500">Organizador de la campaña</p>
                 </div>
               </div>
-              <p className="text-gray-600 text-sm mb-4">
+              
+              <p className="text-gray-600 mb-6 leading-relaxed">
                 {campaign.creatorBio ||
                   "Este organizador está trabajando para ayudar a su comunidad y necesita tu apoyo para lograrlo."}
               </p>
+              
               {campaign.isVerified && (
-                <div className="flex items-center text-sm text-teal-600">
-                  <CheckCircle className="h-4 w-4 mr-1" />
-                  <span>Identidad verificada</span>
-                </div>
+                <Chip
+                  color="success"
+                  variant="flat"
+                  startContent={<CheckCircle className="h-4 w-4" />}
+                  className="font-semibold"
+                >
+                  Identidad verificada
+                </Chip>
               )}
-            </div>
-          </div>
+            </CardBody>
+          </Card>
         </div>
       </div>
     </div>
