@@ -1,5 +1,6 @@
 "use client"
 
+import { CampaignService } from "@/app/services/CampaignService";
 import { Campaign } from "@/app/types/Campaign";
 import { useDisclosure } from "@heroui/react";
 import { ReactNode, createContext, useEffect, useState } from "react";
@@ -14,24 +15,35 @@ interface ValidateCampaignType {
     setSelectedCampaign: (campaign: Campaign | null) => void;
     isLoaded: boolean;
     setIsLoaded: (loaded: boolean) => void;
+    campaigns: Campaign[];
+    setCampaigns: (campaigns: Campaign[]) => void;
 }
 
 export const ValidateCampaignContext = createContext<ValidateCampaignType | undefined>(undefined);
 
 export const ValidateCampaignProvider = ({ children }: { children: ReactNode }) => {
     const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
+    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
     const acceptModal = useDisclosure();
     const rejectModal = useDisclosure();
     const reviewModal = useDisclosure();
     const descriptionModal = useDisclosure();
-    const [isLoaded, setIsLoaded] = useState(false);
+    const loadCampaigns = async () => {
+        setIsLoaded(false); // Reset loading state before fetching campaigns
+        try {
+            const response = await CampaignService.getPendingCampaigns();
+            setCampaigns(response.data); // Set campaigns to the fetched data
+            console.log("Campaigns loaded");
+        } catch (error) {
+            console.error("Error loading campaigns:", error);
+        } finally {
+            setIsLoaded(true); // Reset loading state after fetching campaigns
+        }
+    };
 
     useEffect(() => {
-        const loadData = async () => {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            setIsLoaded(true);
-        };
-        loadData();
+        loadCampaigns();
     }, []);
 
     return (
@@ -43,7 +55,9 @@ export const ValidateCampaignProvider = ({ children }: { children: ReactNode }) 
             selectedCampaign,
             setSelectedCampaign,
             isLoaded,
-            setIsLoaded
+            setIsLoaded,
+            campaigns,
+            setCampaigns
         }}>
             {children}
         </ValidateCampaignContext.Provider>

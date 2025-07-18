@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
+import { Alert, Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { useValidateCampaignsModals } from "../hooks/useValidateCampaignsModals";
 
 export default function AcceptModal() {
@@ -18,9 +18,9 @@ export default function AcceptModal() {
               ¿Seguro que quieres aceptar la campaña?
             </ModalHeader>
             <ModalBody>
-              <p>
-                La campaña pasara al estado <b>"Activa"</b> y ya se podran registrar donaciones.
-              </p>
+              <Alert color="success" title={<>
+                La campaña pasara al estado <b>"Activa"</b> y ya se podran registrar donaciones.</>}>
+              </Alert>
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="flat">

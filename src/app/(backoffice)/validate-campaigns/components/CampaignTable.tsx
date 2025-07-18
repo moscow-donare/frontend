@@ -19,63 +19,22 @@ import {
 import { BookOpenText, CheckIcon, PencilLine, PenTool, X } from 'lucide-react'
 import React, { Key } from 'react'
 import { useValidateCampaignsModals } from '../hooks/useValidateCampaignsModals'
+import { useValidateCampaigns } from '../hooks/useValidateCampaigns'
+import { PriceFormatter } from '@/app/utils/PriceFormatter'
 
 export function CampaignsTable() {
     const { acceptModal, rejectModal, reviewModal, openDescriptionModal } = useValidateCampaignsModals();
+    const { campaigns } = useValidateCampaigns();
     const [page, setPage] = React.useState(1);
-    const rowsPerPage = 4;
-    
-    const userCampaigns: Campaign[] = React.useMemo(() => [
-        {
-            id: '1',
-            title: 'Campaña de Ayuda a Niños',
-            category: 'Salud',
-            imageUrl: '/images/campaign1.jpg',
-            goal: 10000,
-            daysLeft: 10,
-            endDate: new Date('2023-12-31'),
-            description: 'Ayudamos a niños en situación vulnerable proporcionándoles atención médica y educación.',
-            status: 'active',
-            donors: 245,
-            amountRaised: 7500,
-            creator: 'Juan Pérez',
-            creatorImageUrl: '/images/creator1.jpg',
-            creatorBio: 'Activista social con más de 10 años de experiencia en proyectos comunitarios.',
-            walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-            isVerified: true,
-            fullDescription: 'Esta campaña busca recaudar fondos para proporcionar atención médica y educación a niños',
-            createdAt: new Date('2023-01-01')
-        },
-        {
-            id: '2',
-            title: 'Protección del Medio Ambiente',
-            category: 'Medio Ambiente',
-            imageUrl: '/images/campaign2.jpg',
-            goal: 8000,
-            daysLeft: 5,
-            endDate: new Date('2023-09-15'),
-            description: 'Proyecto para la conservación de bosques nativos y reforestación de áreas degradadas.',
-            status: 'active',
-            donors: 128,
-            amountRaised: 6200,
-            creator: 'María González',
-            creatorImageUrl: '/images/creator2.jpg',
-            creatorBio: 'Bióloga especializada en conservación ambiental.',
-            walletAddress: '0xabcdef1234567890abcdef1234567890abcdef12',
-            isVerified: true,
-            fullDescription: 'Esta campaña busca proteger los bosques nativos mediante proyectos de reforestación y conservación.',
-            createdAt: new Date('2023-06-01')
-        }
-    ], []);
-
-    const pages = Math.ceil(userCampaigns.length / rowsPerPage);
+    const rowsPerPage = 5;
+    const pages = Math.ceil(campaigns.length / rowsPerPage);
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
 
-        return userCampaigns.slice(start, end);
-    }, [page, userCampaigns, rowsPerPage]);
+        return campaigns.slice(start, end);
+    }, [page, campaigns, rowsPerPage]);
 
     const renderCell = React.useCallback((campaign: Campaign, columnKey: Key) => {
         switch (columnKey) {
@@ -101,7 +60,7 @@ export function CampaignsTable() {
             case "goal":
                 return (
                     <Chip className="text-sm" color='success' variant='flat'>
-                        USD {campaign.goal}
+                        {PriceFormatter(campaign.goal)}
                     </Chip>
                 );
             case "creator":
@@ -143,7 +102,7 @@ export function CampaignsTable() {
             default:
                 return String(campaign[columnKey as keyof Campaign] || '');
         }
-    }, [acceptModal.onOpen, rejectModal.onOpen, reviewModal.onOpen]);
+    }, []);
     return (
         <Table
             aria-label="Tabla de campañas con paginación"
