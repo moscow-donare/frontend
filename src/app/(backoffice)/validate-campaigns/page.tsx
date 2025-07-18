@@ -3,7 +3,7 @@ import LoadingSpinner from "@/app/components/LoadingSpinner";
 import AcceptModal from "./components/AcceptModal";
 import { CampaignsTable } from "./components/CampaignTable";
 import DescriptionModal from "./components/DescriptionModal";
-import RejectModal from "./components/RejectModal";
+import RejectModal from "./components/CancelModal";
 import ReviewModal from "./components/ReviewModal";
 import { useValidateCampaigns } from "./hooks/useValidateCampaigns";
 

@@ -7,19 +7,37 @@ export const useValidateCampaignsModals = () => {
     if (!context) {
         throw new Error("useValidateCampaignsModals must be used within a ValidateCampaignProvider");
     }
-    const { acceptModal, rejectModal, reviewModal, descriptionModal, setSelectedCampaign } = context;
+    const { acceptModal, cancelModal, reviewModal, descriptionModal, setSelectedCampaign } = context;
 
     const openDescriptionModal = (campaign: Campaign) => {
         setSelectedCampaign(campaign);
         descriptionModal.onOpen();
     };
 
+    const openCancelModal = (campaign: Campaign) => {
+        setSelectedCampaign(campaign);
+        cancelModal.onOpen();
+    };
+
+    const openReviewModal = (campaign: Campaign) => {
+        setSelectedCampaign(campaign);
+        reviewModal.onOpen();
+    };
+
+    const openAcceptModal = (campaign: Campaign) => {
+        setSelectedCampaign(campaign);
+        acceptModal.onOpen();
+    };
+
     return {
         acceptModal,
-        rejectModal,
+        cancelModal,
         reviewModal,
         descriptionModal,
-        openDescriptionModal
+        openDescriptionModal,
+        openCancelModal,
+        openReviewModal,
+        openAcceptModal
     };
 
 };

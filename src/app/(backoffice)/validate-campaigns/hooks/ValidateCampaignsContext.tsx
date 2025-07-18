@@ -5,10 +5,9 @@ import { Campaign } from "@/app/types/Campaign";
 import { useDisclosure } from "@heroui/react";
 import { ReactNode, createContext, useEffect, useState } from "react";
 
-
 interface ValidateCampaignType {
     acceptModal: ReturnType<typeof useDisclosure>;
-    rejectModal: ReturnType<typeof useDisclosure>;
+    cancelModal: ReturnType<typeof useDisclosure>;
     reviewModal: ReturnType<typeof useDisclosure>;
     descriptionModal: ReturnType<typeof useDisclosure>;
     selectedCampaign: Campaign | null;
@@ -26,7 +25,7 @@ export const ValidateCampaignProvider = ({ children }: { children: ReactNode }) 
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const acceptModal = useDisclosure();
-    const rejectModal = useDisclosure();
+    const cancelModal = useDisclosure();
     const reviewModal = useDisclosure();
     const descriptionModal = useDisclosure();
     const loadCampaigns = async () => {
@@ -49,7 +48,7 @@ export const ValidateCampaignProvider = ({ children }: { children: ReactNode }) 
     return (
         <ValidateCampaignContext.Provider value={{
             acceptModal,
-            rejectModal,
+            cancelModal,
             reviewModal,
             descriptionModal,
             selectedCampaign,

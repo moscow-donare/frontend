@@ -3,13 +3,13 @@ import { Alert, Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader
 import { useValidateCampaignsModals } from "../hooks/useValidateCampaignsModals";
 import { useState } from "react";
 
-export default function RejectModal() {
-    const { rejectModal } = useValidateCampaignsModals();
+export default function CancelModal() {
+    const { cancelModal } = useValidateCampaignsModals();
     const [comment, setComment] = useState("");
     return (
     <Modal
-      isOpen={rejectModal.isOpen}
-      onClose={rejectModal.onClose}
+      isOpen={cancelModal.isOpen}
+      onClose={cancelModal.onClose}
       size="2xl"
       placement="top-center"
     >

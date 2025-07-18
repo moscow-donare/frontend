@@ -23,7 +23,7 @@ import { useValidateCampaigns } from '../hooks/useValidateCampaigns'
 import { PriceFormatter } from '@/app/utils/PriceFormatter'
 
 export function CampaignsTable() {
-    const { acceptModal, rejectModal, reviewModal, openDescriptionModal } = useValidateCampaignsModals();
+    const { openDescriptionModal, openCancelModal, openReviewModal, openAcceptModal } = useValidateCampaignsModals();
     const { campaigns } = useValidateCampaigns();
     const [page, setPage] = React.useState(1);
     const rowsPerPage = 5;
@@ -91,9 +91,9 @@ export function CampaignsTable() {
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu>
-                                <DropdownItem key={"Aprobar"} color='success' onClick={acceptModal.onOpen}><p className='flex flex-row gap-2'><CheckIcon />Aprobar</p></DropdownItem>
-                                <DropdownItem key={"Cancelar"} color='danger' onClick={rejectModal.onOpen}><p className='flex flex-row gap-2'><X />Cancelar</p></DropdownItem>
-                                <DropdownItem key={"Solicitar Cambios"} color='secondary' onClick={reviewModal.onOpen}><p className='flex flex-row gap-2'><PencilLine />Solicitar Cambios</p></DropdownItem>
+                                <DropdownItem key={"Aprobar"} color='success' onClick={() => openAcceptModal(campaign)}><p className='flex flex-row gap-2'><CheckIcon />Aprobar</p></DropdownItem>
+                                <DropdownItem key={"Cancelar"} color='danger' onClick={() => openCancelModal(campaign)}><p className='flex flex-row gap-2'><X />Cancelar</p></DropdownItem>
+                                <DropdownItem key={"Solicitar Cambios"} color='secondary' onClick={() => openReviewModal(campaign)}><p className='flex flex-row gap-2'><PencilLine />Solicitar Cambios</p></DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>

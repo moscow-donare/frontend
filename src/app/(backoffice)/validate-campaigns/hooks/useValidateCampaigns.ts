@@ -11,13 +11,13 @@ export const useValidateCampaigns = () => {
 
     const { selectedCampaign, isLoaded, setIsLoaded, setSelectedCampaign, campaigns } = context;
 
-    const sendRejectValidation = async (campaignId: string, reason: string) => {
-        // Simulate an API call to reject the campaign
+    const sendCancelValidation = async (campaignId: string, reason: string) => {
+        // Simulate an API call to cancel the campaign
         setIsLoaded(true); // Set loading state to true while processing
         try {
             await CampaignService.cancelCampaign(campaignId, reason);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            console.log(`Campaign ${campaignId} rejected for reason: ${reason}`);
+            console.log(`Campaign ${campaignId} canceled for reason: ${reason}`);
             setSelectedCampaign(null);
         } catch (error) {
             console.error(`Error rejecting campaign ${campaignId}:`, error);
@@ -59,9 +59,9 @@ export const useValidateCampaigns = () => {
 
 
     return {
-        sendRejectValidation,
         selectedCampaign,
         isLoaded,
+        sendCancelValidation,
         sendAcceptValidation,
         sendReviewValidation,
         setSelectedCampaign,
