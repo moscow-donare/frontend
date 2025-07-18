@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { ValidateCampaignContext } from "./ValidateCampaignsContext";
+import { CampaignService } from "@/services/CampaignService";
 // import { ManualValidationService } from "@/app/services/ManualValidationService";
 
 export const useValidateCampaigns = () => {
@@ -14,7 +15,7 @@ export const useValidateCampaigns = () => {
         // Simulate an API call to reject the campaign
         setIsLoaded(true); // Set loading state to true while processing
         try {
-            // const result = await ManualValidationService.rejectValidation(campaignId, reason);
+            await CampaignService.cancelCampaign(campaignId, reason);
             await new Promise(resolve => setTimeout(resolve, 1000));
             console.log(`Campaign ${campaignId} rejected for reason: ${reason}`);
             setSelectedCampaign(null);
@@ -30,7 +31,7 @@ export const useValidateCampaigns = () => {
         // Simulate an API call to accept the campaign
         setIsLoaded(true); // Set loading state to true while processing
         try {
-            // const result = await ManualValidationService.acceptValidation(campaignId);
+            await CampaignService.acceptCampaign(campaignId);
             await new Promise(resolve => setTimeout(resolve, 1000));
             console.log(`Campaign ${campaignId} accepted`);
             setSelectedCampaign(null);
@@ -45,7 +46,7 @@ export const useValidateCampaigns = () => {
         // Simulate an API call to review the campaign
         setIsLoaded(true); // Set loading state to true while processing
         try {
-            // const result = await ManualValidationService.reviewValidation(campaignId, review);
+            await CampaignService.rejectCampaign(campaignId, review);
             await new Promise(resolve => setTimeout(resolve, 1000));
             console.log(`Campaign ${campaignId} reviewed with comment: ${review}`);
             setSelectedCampaign(null);

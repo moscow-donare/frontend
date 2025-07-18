@@ -21,7 +21,7 @@ export default function RejectModal() {
             </ModalHeader>
             <ModalBody>
               <Alert color="danger" title={<>
-                La campaña pasara al estado <b>"Rechazada/Cancelada"</b> y ya no se podran registrar donaciones.</>}>
+                La campaña pasara al estado <b>"Cancelada"</b> y ya no se podran registrar donaciones.</>}>
               </Alert>
               <Textarea
                 isRequired

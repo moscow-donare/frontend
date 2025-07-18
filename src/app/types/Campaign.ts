@@ -16,5 +16,5 @@ export interface Campaign {
   creatorBio?: string;
   walletAddress: string;
   isVerified: boolean;
-  status: 'active' | 'completed' | 'cancelled';
+  status: 'active' | 'completed' | 'cancelled' | 'revision';
 }

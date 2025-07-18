@@ -15,7 +15,7 @@ export default function AcceptModal() {
         {() => (
           <>
             <ModalHeader>
-              ¿Seguro que quieres aceptar la campaña?
+              ¿Seguro que quieres aprobar la campaña?
             </ModalHeader>
             <ModalBody>
               <Alert color="success" title={<>
@@ -27,7 +27,7 @@ export default function AcceptModal() {
                 Cancelar
               </Button>
               <Button color="secondary">
-                Aceptar
+                Aprobar
               </Button>
             </ModalFooter>
           </>

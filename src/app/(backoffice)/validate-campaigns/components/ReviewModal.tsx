@@ -22,7 +22,7 @@ export default function ReviewModal() {
             </ModalHeader>
             <ModalBody>
               <Alert color="warning" title={<>
-                La campaña será enviada de nuevo a <b>"En revisión"</b> para que el usuario pueda corregir los errores señalados.
+                La campaña será enviada de nuevo a <b>"Pendiente a Cambios"</b> para que el usuario pueda corregir los errores señalados.
               </>}>
               </Alert>
               <Textarea

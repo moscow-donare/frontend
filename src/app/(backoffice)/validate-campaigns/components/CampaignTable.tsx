@@ -92,8 +92,8 @@ export function CampaignsTable() {
                             </DropdownTrigger>
                             <DropdownMenu>
                                 <DropdownItem key={"Aprobar"} color='success' onClick={acceptModal.onOpen}><p className='flex flex-row gap-2'><CheckIcon />Aprobar</p></DropdownItem>
-                                <DropdownItem key={"Rechazar"} color='danger' onClick={rejectModal.onOpen}><p className='flex flex-row gap-2'><X />Rechazar</p></DropdownItem>
-                                <DropdownItem key={"Editar"} color='secondary' onClick={reviewModal.onOpen}><p className='flex flex-row gap-2'><PencilLine />Solicitar Cambios</p></DropdownItem>
+                                <DropdownItem key={"Cancelar"} color='danger' onClick={rejectModal.onOpen}><p className='flex flex-row gap-2'><X />Cancelar</p></DropdownItem>
+                                <DropdownItem key={"Solicitar Cambios"} color='secondary' onClick={reviewModal.onOpen}><p className='flex flex-row gap-2'><PencilLine />Solicitar Cambios</p></DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>

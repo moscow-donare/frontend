@@ -1,6 +1,6 @@
 "use client"
 
-import { CampaignService } from "@/app/services/CampaignService";
+import { CampaignService } from "@/services/CampaignService";
 import { Campaign } from "@/app/types/Campaign";
 import { useDisclosure } from "@heroui/react";
 import { ReactNode, createContext, useEffect, useState } from "react";
