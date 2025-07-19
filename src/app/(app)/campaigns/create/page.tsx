@@ -1,14 +1,17 @@
 "use client"
-import React, { useState } from 'react';
-import { 
+import React, { useEffect, useState } from 'react';
+import {
   Info, AlertCircle, Image, Calendar, Upload
 } from 'lucide-react';
 import { useCampaigns } from '../../../context/CampaignContext';
 import { useRouter } from 'next/navigation';
-import { Button, CalendarDate, Input, Select, SelectItem } from '@heroui/react';
-import {DatePicker} from "@heroui/react";
+import { Button, CalendarDate, DateValue, Input, Select, SelectItem } from '@heroui/react';
+import { DatePicker } from "@heroui/react";
+import { Campaign, CreateCampaign } from '@/app/types/Campaign';
+import { BlockchainCampaignRepository } from '@/lib/repositories/Campaign/BlockchainCampaingRepository';
+import { useWalletClient } from 'wagmi';
 
-export default function Page(){
+export default function Page() {
   const router = useRouter();
   const { addCampaign } = useCampaigns();
   const [step, setStep] = useState<number>(1);
@@ -21,9 +24,72 @@ export default function Page(){
   const [image, setImage] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  
+  const { data: walletClient } = useWalletClient(); // ✅ fuera del handler
+  const blockchainCampaingRepository = new BlockchainCampaignRepository();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateStep()) {
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      const endDateTime = new Date(endDate).getTime();
+      const todayTime = new Date().getTime();
+      const daysDiff = Math.ceil((endDateTime - todayTime) / (1000 * 60 * 60 * 24));
+
+      const newCampaign: CreateCampaign = {
+        title,
+        description,
+        imageCID: image,
+        goal: parseFloat(goal),
+        deadline: Math.floor(endDateTime / 1000), // blockchain usa timestamp en segundos
+        url: "",
+      };
+      console.log("📝 Creando campaña:", newCampaign);
+
+      console.log(walletClient);
+
+      if (!walletClient) {
+        setError("Wallet no conectada");
+        console.error("❌ Wallet no conectada");
+        setIsSubmitting(false);
+        return;
+      }
+      console.log("🔗 Conectando a la blockchain...");
+      const response = await blockchainCampaingRepository.createCampaign(newCampaign, walletClient);
+
+      console.log("✅ Campaña creada:", response);
+      // Si querés redirigir al detalle de la campaña después:
+      // router.push(`/campaigns/${newCampaign.id}`); // si tenés ID después del deploy
+
+      console.log("✅ Campaña creada en tx:", response.data);
+      setIsSubmitting(false);
+      const campaignsCreated = await blockchainCampaingRepository.getAll(walletClient);
+      console.log("✅ Campañas obtenidas:", campaignsCreated);
+
+    } catch (err) {
+      console.error("❌ Error al crear campaña:", err);
+      setError("Hubo un error al crear tu campaña. Por favor intenta nuevamente.");
+      setIsSubmitting(false);
+    }
+  };
+
+  useEffect(() => {
+  if (!walletClient) return;
+  const fetchCampaigns = async () => {
+    const campaigns = await blockchainCampaingRepository.getAll(walletClient);
+    console.log("✅ Campañas obtenidas:", campaigns );
+  };
+  fetchCampaigns();
+}, [walletClient]);
+
+
   const categories = ['Salud', 'Educación', 'Emergencia', 'Rifa', 'Proyecto', 'Otros'];
-  
+
   const validateStep = () => {
     if (step === 1) {
       if (!title.trim()) {
@@ -42,7 +108,7 @@ export default function Page(){
         setError('Por favor selecciona una fecha de finalización');
         return false;
       }
-      
+
       const selectedDate = new Date(endDate);
       const today = new Date();
       if (selectedDate <= today) {
@@ -63,29 +129,30 @@ export default function Page(){
         return false;
       }
     }
-    
+
     setError('');
     return true;
   };
-  
+
   const handleNextStep = () => {
     if (validateStep()) {
       setStep(step + 1);
     }
   };
-  
+
   const handlePrevStep = () => {
     setStep(step - 1);
   };
-  
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     // In a real app, this would upload the file to a server
     // For this demo, we'll just use a placeholder
     setImage('https://images.pexels.com/photos/3184419/pexels-photo-3184419.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
   };
-  
-  const handleDateChange = (value: CalendarDate | null) => {
+
+  const handleDateChange = (value: DateValue | null) => {
     let jsDate: Date
+    if (!value) return;
     if ('hour' in value) {
       // CalendarDateTime — includes hour, minute, maybe second
       jsDate = new Date(
@@ -100,81 +167,32 @@ export default function Page(){
     setEndDate(jsDate.toISOString().split('T')[0]);
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateStep()) {
-      return;
-    }
-    
-    setIsSubmitting(true);
-    
-    // Calculate days between today and end date
-    const endDateTime = new Date(endDate).getTime();
-    const todayTime = new Date().getTime();
-    const daysDiff = Math.ceil((endDateTime - todayTime) / (1000 * 60 * 60 * 24));
-    
-    // In a real app, this would create the campaign on the blockchain
-    setTimeout(() => {
-      try {
-        const newCampaign = {
-          id: '20',
-          title,
-          category,
-          goal: parseFloat(goal),
-          endDate: new Date(endDate),
-          description,
-          fullDescription,
-          imageUrl: image,
-          createdAt: new Date(),
-          daysLeft: daysDiff,
-          amountRaised: 0,
-          donors: 0,
-          creator: 'Juan Pérez',
-          walletAddress: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
-          isVerified: false
-        };
-        
-        addCampaign(newCampaign);
-        router.push(`/campaigns/${newCampaign.id}`);
-      } catch (err) {
-        setError('Hubo un error al crear tu campaña. Por favor intenta nuevamente.');
-        setIsSubmitting(false);
-      }
-    }, 1500);
-  };
-  
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Crear Nueva Campaña</h1>
-      
+
       {/* Progress Steps */}
       <div className="mb-8">
         <div className="flex items-center justify-center">
           <div className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
-              step >= 1 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
-            }`}>
+            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 1 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
+              }`}>
               <span>1</span>
             </div>
-            <div className={`h-1 w-12 sm:w-24 ${
-              step >= 2 ? 'bg-teal-600' : 'bg-gray-200'
-            }`}></div>
+            <div className={`h-1 w-12 sm:w-24 ${step >= 2 ? 'bg-teal-600' : 'bg-gray-200'
+              }`}></div>
           </div>
           <div className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
-              step >= 2 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
-            }`}>
+            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 2 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
+              }`}>
               <span>2</span>
             </div>
-            <div className={`h-1 w-12 sm:w-24 ${
-              step >= 3 ? 'bg-teal-600' : 'bg-gray-200'
-            }`}></div>
+            <div className={`h-1 w-12 sm:w-24 ${step >= 3 ? 'bg-teal-600' : 'bg-gray-200'
+              }`}></div>
           </div>
           <div className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
-              step >= 3 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
-            }`}>
+            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 3 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
+              }`}>
               <span>3</span>
             </div>
           </div>
@@ -185,7 +203,7 @@ export default function Page(){
           <span className="text-xs text-gray-600">Revisión</span>
         </div>
       </div>
-      
+
       <div className="bg-white rounded-lg shadow-md p-8">
         {error && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md flex items-start">
@@ -193,12 +211,12 @@ export default function Page(){
             <p className="text-sm text-red-600">{error}</p>
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit}>
           {step === 1 && (
             <div>
               <h2 className="text-xl font-semibold mb-6">Detalles de la Campaña</h2>
-              
+
               <div className="mb-6">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                   Título de la Campaña*
@@ -212,25 +230,25 @@ export default function Page(){
                   placeholder="Ej: Ayuda para tratamiento médico"
                 />
               </div>
-              
+
               <div className="mb-6">
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
                   Categoría*
                 </label>
                 <Select
                   id="category"
-    
+
                   selectedKeys={category ? new Set([category]) : new Set()}
                   onSelectionChange={(keys) => setCategory(Array.from(keys as Set<string>)[0] || '')}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
-                  placeholder="Selecciona una categoría" 
-                  >
+                  placeholder="Selecciona una categoría"
+                >
                   {categories.map((cat) => (
-                  <SelectItem key={cat}>{cat}</SelectItem>
-                    ))}
-                  </Select>
+                    <SelectItem key={cat}>{cat}</SelectItem>
+                  ))}
+                </Select>
               </div>
-              
+
               <div className="mb-6">
                 <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-1">
                   Objetivo de Recaudación ($)*
@@ -250,25 +268,25 @@ export default function Page(){
                   />
                 </div>
               </div>
-              
+
               <div className="mb-6">
                 <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
                   Fecha de Finalización*
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Calendar className="h-5 w-5 text-gray-400" />
+                    <Calendar className="h-5 w-5 text-gray-400" />
                   </div>
                   <DatePicker
-                  id="endDate"
-                  onChange={handleDateChange}
-                  isRequired
-                  className="max-w-[284px]"
-                  label="Birth date"
+                    id="endDate"
+                    onChange={handleDateChange}
+                    isRequired
+                    className="max-w-[284px]"
+                    label="Birth date"
                   />
                 </div>
               </div>
-              
+
               <div className="flex justify-end">
                 <Button
                   type="button"
@@ -280,11 +298,11 @@ export default function Page(){
               </div>
             </div>
           )}
-          
+
           {step === 2 && (
             <div>
               <h2 className="text-xl font-semibold mb-6">Contenido de la Campaña</h2>
-              
+
               <div className="mb-6">
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                   Descripción Breve*
@@ -301,7 +319,7 @@ export default function Page(){
                   Esta descripción aparecerá en las tarjetas de campaña (máx. 100 caracteres)
                 </p>
               </div>
-              
+
               <div className="mb-6">
                 <label htmlFor="fullDescription" className="block text-sm font-medium text-gray-700 mb-1">
                   Descripción Completa*
@@ -315,7 +333,7 @@ export default function Page(){
                   placeholder="Explica detalladamente el propósito de la campaña, por qué necesitas los fondos y cómo se utilizarán"
                 />
               </div>
-              
+
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Imagen Principal*
@@ -366,7 +384,7 @@ export default function Page(){
                   )}
                 </div>
               </div>
-              
+
               <div className="flex justify-between">
                 <Button
                   type="button"
@@ -385,11 +403,11 @@ export default function Page(){
               </div>
             </div>
           )}
-          
+
           {step === 3 && (
             <div>
               <h2 className="text-xl font-semibold mb-6">Revisar y Confirmar</h2>
-              
+
               <div className="bg-gray-50 rounded-lg p-6 mb-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -413,7 +431,7 @@ export default function Page(){
                       </div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 mb-2">Imagen</h3>
                     <div className="bg-white rounded-md p-4 border border-gray-200">
@@ -424,7 +442,7 @@ export default function Page(){
                       />
                     </div>
                   </div>
-                  
+
                   <div className="md:col-span-2">
                     <h3 className="text-sm font-medium text-gray-500 mb-2">Descripción</h3>
                     <div className="bg-white rounded-md p-4 border border-gray-200">
@@ -440,7 +458,7 @@ export default function Page(){
                   </div>
                 </div>
               </div>
-              
+
               <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md flex items-start">
                 <Info className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
                 <div>
@@ -452,19 +470,18 @@ export default function Page(){
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center mb-6">
                 <Input
                   id="terms"
                   type="checkbox"
-                  required
                   className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                 />
                 <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
                   Acepto los términos y condiciones y la política de privacidad de Donaré
                 </label>
               </div>
-              
+
               <div className="flex justify-between">
                 <Button
                   type="button"
@@ -488,7 +505,7 @@ export default function Page(){
                     </>
                   ) : (
                     <>
-                      <Upload className="h-4 w-4 mr-2" /> 
+                      <Upload className="h-4 w-4 mr-2" />
                       Crear Campaña
                     </>
                   )}

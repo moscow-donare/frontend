@@ -10,6 +10,7 @@ import { useWeb3Auth, useWeb3AuthUser } from "@web3auth/modal/react" // Corregid
 import { Balance } from "./wagmi/getBalance"
 import AuthAvatar from "./AuthAvatar"
 import { useCampaigns } from "../context/CampaignContext"
+import { SwitchChain } from "./wagmi/switchNetwork"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -78,6 +79,7 @@ const Navbar = () => {
                   >
                     <Plus className="h-4 w-4 mr-1" /> Crear Campaña
                   </Button>
+                  <SwitchChain/>
                   <Balance />
                   <AuthAvatar />
                 </>
@@ -156,6 +158,9 @@ const Navbar = () => {
                   </div>
                   <div className="px-3 py-2">
                     <AuthAvatar />
+                  </div>
+                  <div className="px-3 py-2">
+                    <SwitchChain/>
                   </div>
                   <div className="px-3">
                     <Button

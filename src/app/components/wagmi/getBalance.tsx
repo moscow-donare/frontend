@@ -5,7 +5,7 @@ import { Chip } from "@heroui/react";
 
 export function Balance() {
   const { address } = useAccount()
-  const tokenChecksum = getAddress('0xdAC17F958D2ee523a2206206994597C13d831ec7')
+  const tokenChecksum = getAddress('0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9')
 
   const { data, isLoading, error } = useBalance({
     address,

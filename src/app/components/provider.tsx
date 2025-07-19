@@ -28,14 +28,14 @@ const web3AuthContextConfig: Web3AuthContextConfig = {
     chains: [
       {
         chainNamespace: "eip155",
-        chainId: "0x13882", // hexadecimal de 80002
-        displayName: "Polygon Amoy",
-        tickerName: "MATIC",
-        ticker: "MATIC",
+        chainId: "0x7a69", // 👈 31337 en hexadecimal
+        displayName: "Localhost",
+        tickerName: "ETH", // Recomendado usar ETH para localhost (ganache/hardhat)
+        ticker: "ETH",
         decimals: 18,
-        rpcTarget: "https://rpc-amoy.polygon.technology",
-        blockExplorerUrl: "https://amoy.polygonscan.com",
-        logo: "", // opcional
+        rpcTarget: "http://localhost:8545",
+        blockExplorerUrl: "http://localhost:8545", // podés dejarlo vacío también
+        logo: "",
       },
     ],
   },

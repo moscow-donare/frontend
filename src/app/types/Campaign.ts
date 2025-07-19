@@ -1,5 +1,5 @@
 export interface Campaign {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   fullDescription: string;
@@ -17,4 +17,15 @@ export interface Campaign {
   walletAddress: string;
   isVerified: boolean;
   status: 'active' | 'completed' | 'cancelled' | 'revision';
+}
+
+export type CampaignStatus = 'InReview' | 'PendingChange' | 'Cancelled' | 'Active' | 'Completed';
+
+export type CreateCampaign = {
+    title: string;
+    description: string;
+    imageCID: string;
+    goal: number;
+    deadline: number;
+    url: string;
 }
