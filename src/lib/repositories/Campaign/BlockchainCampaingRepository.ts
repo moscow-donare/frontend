@@ -109,7 +109,7 @@ export class BlockchainCampaignRepository implements ICampaignRepository {
                         creator,
                         walletAddress: addr,
                         isVerified: true, // opcional
-                        status: status.toLowerCase(), // debería mapear a 'active' | 'revision' | etc.
+                        status: status ? status : "active", // asegurarse de que sea un string
                     };
                 })
             );

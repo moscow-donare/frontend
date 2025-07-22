@@ -1,11 +1,10 @@
 import { useAccount, useBalance } from "wagmi";
 import { formatUnits, getAddress } from "viem";
 import { USDTIcon } from "@public/icons/USDTIcon";
-import { Chip } from "@heroui/react";
-
+const USDT = process.env.NEXT_PUBLIC_USDT_ADDRESS;
 export function Balance() {
   const { address } = useAccount()
-  const tokenChecksum = getAddress('0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9')
+  const tokenChecksum = getAddress(USDT || "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9")
 
   const { data, isLoading, error } = useBalance({
     address,

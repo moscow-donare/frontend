@@ -8,6 +8,7 @@ import { IWeb3AuthState, WEB3AUTH_NETWORK } from "@web3auth/modal";
 import { WagmiProvider } from "@web3auth/modal/react/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
+import { HeroUIProvider } from "@heroui/react";
 // IMP END - Setup Wagmi Provider
 
 // IMP START - Dashboard Registration
@@ -59,7 +60,9 @@ export default function Provider({
       {/* // IMP START - Setup Wagmi Provider */}
       <QueryClientProvider client={queryClient}>
         <WagmiProvider>
-        {children}
+          <HeroUIProvider>
+            {children}
+          </HeroUIProvider>
         </WagmiProvider>
       </QueryClientProvider>
       {/*// IMP START - Setup Web3Auth Provider */}
