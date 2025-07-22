@@ -1,24 +1,25 @@
-import { mockCampaignRepository } from "@/lib/repositories/Campaign/MockCampaignRepository";
+import { BlockchainCampaignRepository } from "@/lib/repositories/Campaign/BlockchainCampaingRepository";
 
+const repository = new BlockchainCampaignRepository();
 export const CampaignService = {
     async getPendingCampaigns() {
         // return HttpCampaignRepository.getPendingCampaigns();
-        return mockCampaignRepository.getPendingCampaigns();
+        return repository.getAll();
     },
     async getCampaignById(id: string) {
         // return HttpCampaignRepository.getById(id);
-        return mockCampaignRepository.getById(id);
+        return repository.getById(id);
     },
-    async acceptCampaign(id: string) {
+    async acceptCampaign(address: string, reason: string) {
         // return HttpCampaignRepository.acceptCampaign(id);
-        return mockCampaignRepository.acceptCampaign(id);
+        return repository.acceptCampaign(address, reason);
     },
-    async rejectCampaign(id: string, reason: string) {
+    async requestChanges(address: string, reason: string) {
         // return HttpCampaignRepository.rejectCampaign(id, reason);
-        return mockCampaignRepository.rejectCampaign(id, reason);
+        return repository.requestChanges(address, reason);
     },
-    async cancelCampaign(id: string, reason: string) {
+    async cancelCampaign(address: string, reason: string) {
         // return HttpCampaignRepository.cancelCampaign(id, reason);
-        return mockCampaignRepository.cancelCampaign(id, reason);
+        return repository.cancelCampaign(address, reason);
     }
 }

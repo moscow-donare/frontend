@@ -1,24 +1,20 @@
 "use client"
 
-import { BlockchainCampaignRepository } from "@/lib/repositories/Campaign/BlockchainCampaingRepository";
+import { useCampaigns } from "@/app/hooks/useCampaings";
 import { useEffect } from "react";
-import { useWalletClient } from "wagmi";
 
 export default function CampaignsPage() {
-  
-  const { data: walletClient } = useWalletClient(); // ✅ fuera del handler
-  const blockchainCampaingRepository = new BlockchainCampaignRepository();
+  const { getAllCampaigns } = useCampaigns(); // Hook para acceder al contexto de campañas
 
   const handleGetCampaign = async () => {
-    const campaignsCreated = await blockchainCampaingRepository.getAll(walletClient);
-    console.log("✅ Campañas obtenidas:", campaignsCreated);
+    const campaigns = await getAllCampaigns();
+    console.log("Campaigns:", campaigns);
   };
 
   useEffect(() => {
-    if (walletClient) {
-      handleGetCampaign();
-    }
-  }, [walletClient]);
+    console.log("Fetching campaigns...");
+    handleGetCampaign();
+  }, []);
 
   return (
     <div>

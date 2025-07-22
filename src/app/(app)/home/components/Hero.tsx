@@ -5,11 +5,9 @@ import Image from 'next/image';
 import hero from "@public/images/home/hero.png"
 import { Card } from '@heroui/react';
 import { useWeb3AuthUser } from '@web3auth/modal/react'; // Import useWeb3AuthUser
-import { useCampaigns } from '../../../context/CampaignContext'; // Import useCampaigns
 
 const Hero = () => {
   const { userInfo } = useWeb3AuthUser(); // Get user info
-  const { campaigns } = useCampaigns(); // Get campaigns
   const [canCreateCampaign, setCanCreateCampaign] = useState(true); // New state
 
   useEffect(() => {

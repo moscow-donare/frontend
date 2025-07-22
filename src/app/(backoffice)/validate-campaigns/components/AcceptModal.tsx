@@ -1,9 +1,10 @@
 import { Alert, Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { useValidateCampaignsModals } from "../hooks/useValidateCampaignsModals";
+import { useValidateCampaigns } from "../hooks/useValidateCampaigns";
 
 export default function AcceptModal() {
     const { acceptModal } = useValidateCampaignsModals();
-
+    const {sendAcceptValidation} = useValidateCampaigns();
     return (
     <Modal
       isOpen={acceptModal.isOpen}
@@ -26,7 +27,7 @@ export default function AcceptModal() {
               <Button color="danger" variant="flat">
                 Cancelar
               </Button>
-              <Button color="secondary">
+              <Button color="secondary" onPress={()=> sendAcceptValidation()}>
                 Aprobar
               </Button>
             </ModalFooter>

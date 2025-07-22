@@ -1,19 +1,18 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import { useCampaigns } from '@/app/hooks/useCampaings';
+import { CreateCampaign } from '@/app/types/Campaign';
+import { Button, DatePicker, DateValue, Input, Select, SelectItem } from '@heroui/react';
 import {
-  Info, AlertCircle, Image, Calendar, Upload
+  AlertCircle,
+  Calendar,
+  Image,
+  Info,
+  Upload
 } from 'lucide-react';
-import { useCampaigns } from '../../../context/CampaignContext';
-import { useRouter } from 'next/navigation';
-import { Button, CalendarDate, DateValue, Input, Select, SelectItem } from '@heroui/react';
-import { DatePicker } from "@heroui/react";
-import { Campaign, CreateCampaign } from '@/app/types/Campaign';
-import { BlockchainCampaignRepository } from '@/lib/repositories/Campaign/BlockchainCampaingRepository';
+import React, { useEffect, useState } from 'react';
 import { useWalletClient } from 'wagmi';
 
 export default function Page() {
-  const router = useRouter();
-  const { addCampaign } = useCampaigns();
   const [step, setStep] = useState<number>(1);
   const [title, setTitle] = useState<string>('');
   const [category, setCategory] = useState<string>('');
@@ -25,7 +24,7 @@ export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const { data: walletClient } = useWalletClient(); // ✅ fuera del handler
-  const blockchainCampaingRepository = new BlockchainCampaignRepository();
+  const { createCampaign } = useCampaigns(); // Hook para acceder al contexto de campañas
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,8 +37,8 @@ export default function Page() {
       setIsSubmitting(true);
 
       const endDateTime = new Date(endDate).getTime();
-      const todayTime = new Date().getTime();
-      const daysDiff = Math.ceil((endDateTime - todayTime) / (1000 * 60 * 60 * 24));
+      // const todayTime = new Date().getTime();
+      // const daysDiff = Math.ceil((endDateTime - todayTime) / (1000 * 60 * 60 * 24));
 
       const newCampaign: CreateCampaign = {
         title,
@@ -50,26 +49,13 @@ export default function Page() {
         url: "",
       };
       console.log("📝 Creando campaña:", newCampaign);
-
-      console.log(walletClient);
-
-      if (!walletClient) {
-        setError("Wallet no conectada");
-        console.error("❌ Wallet no conectada");
-        setIsSubmitting(false);
-        return;
-      }
       console.log("🔗 Conectando a la blockchain...");
-      const response = await blockchainCampaingRepository.createCampaign(newCampaign, walletClient);
-
+      const response = await createCampaign(newCampaign);
       console.log("✅ Campaña creada:", response);
+      console.log("✅ Campaña creada en tx:", response.data);
       // Si querés redirigir al detalle de la campaña después:
       // router.push(`/campaigns/${newCampaign.id}`); // si tenés ID después del deploy
-
-      console.log("✅ Campaña creada en tx:", response.data);
       setIsSubmitting(false);
-      const campaignsCreated = await blockchainCampaingRepository.getAll(walletClient);
-      console.log("✅ Campañas obtenidas:", campaignsCreated);
 
     } catch (err) {
       console.error("❌ Error al crear campaña:", err);
@@ -77,16 +63,6 @@ export default function Page() {
       setIsSubmitting(false);
     }
   };
-
-  useEffect(() => {
-  if (!walletClient) return;
-  const fetchCampaigns = async () => {
-    const campaigns = await blockchainCampaingRepository.getAll(walletClient);
-    console.log("✅ Campañas obtenidas:", campaigns );
-  };
-  fetchCampaigns();
-}, [walletClient]);
-
 
   const categories = ['Salud', 'Educación', 'Emergencia', 'Rifa', 'Proyecto', 'Otros'];
 
@@ -175,23 +151,23 @@ export default function Page() {
       <div className="mb-8">
         <div className="flex items-center justify-center">
           <div className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 1 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
+            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 1 ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-600'
               }`}>
               <span>1</span>
             </div>
-            <div className={`h-1 w-12 sm:w-24 ${step >= 2 ? 'bg-teal-600' : 'bg-gray-200'
+            <div className={`h-1 w-12 sm:w-24 ${step >= 2 ? 'bg-primary-600' : 'bg-gray-200'
               }`}></div>
           </div>
           <div className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 2 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
+            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 2 ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-600'
               }`}>
               <span>2</span>
             </div>
-            <div className={`h-1 w-12 sm:w-24 ${step >= 3 ? 'bg-teal-600' : 'bg-gray-200'
+            <div className={`h-1 w-12 sm:w-24 ${step >= 3 ? 'bg-primary-600' : 'bg-gray-200'
               }`}></div>
           </div>
           <div className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 3 ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-600'
+            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${step >= 3 ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-600'
               }`}>
               <span>3</span>
             </div>
@@ -282,7 +258,7 @@ export default function Page() {
                     onChange={handleDateChange}
                     isRequired
                     className="max-w-[284px]"
-                    label="Birth date"
+                    label="End date"
                   />
                 </div>
               </div>
@@ -291,7 +267,7 @@ export default function Page() {
                 <Button
                   type="button"
                   onPress={handleNextStep}
-                  className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                  color='primary'
                 >
                   Siguiente
                 </Button>
@@ -352,7 +328,7 @@ export default function Page() {
                       <Button
                         type="button"
                         onPress={() => setImage('')}
-                        className="mt-2 inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        color='primary'
                       >
                         Cambiar imagen
                       </Button>
@@ -389,14 +365,13 @@ export default function Page() {
                 <Button
                   type="button"
                   onPress={handlePrevStep}
-                  className="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-                >
+                  color='secondary'>
                   Anterior
                 </Button>
                 <Button
                   type="button"
                   onPress={handleNextStep}
-                  className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                  color='primary'
                 >
                   Siguiente
                 </Button>
@@ -486,15 +461,15 @@ export default function Page() {
                 <Button
                   type="button"
                   onPress={handlePrevStep}
-                  className="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-                >
+                  color='secondary'
+                  >
                   Anterior
                 </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 flex items-center"
-                >
+                  color='primary'
+              >
                   {isSubmitting ? (
                     <>
                       <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

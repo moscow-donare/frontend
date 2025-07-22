@@ -32,7 +32,8 @@ export const ValidateCampaignProvider = ({ children }: { children: ReactNode }) 
         setIsLoaded(false); // Reset loading state before fetching campaigns
         try {
             const response = await CampaignService.getPendingCampaigns();
-            setCampaigns(response.data); // Set campaigns to the fetched data
+            console.log("Campaigns loaded:", response);
+            setCampaigns(response); // Set campaigns to the fetched data
             console.log("Campaigns loaded");
         } catch (error) {
             console.error("Error loading campaigns:", error);

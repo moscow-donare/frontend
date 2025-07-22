@@ -13,7 +13,6 @@ import {
 } from "lucide-react"
 import DonationForm from "../../../components/DonationForm"
 import TransactionList from "../../../components/TransactionList"
-import { useCampaigns } from "../../../context/CampaignContext"
 import { useTransactions } from "../../../hooks/useTransactions"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -27,13 +26,26 @@ import {
   Avatar,
   Image
 } from "@heroui/react"
+import { useCampaigns } from "@/app/hooks/useCampaings"
+import { Campaign } from "@/app/types/Campaign"
+import { useEffect, useState } from "react"
 
 export default function Page() {
   const params = useParams()
   const id = params?.id as string
   const { getCampaignById } = useCampaigns()
-  const campaign = getCampaignById(id || "")
+  const [campaign, setCampaign] = useState<Campaign | null>(null)
   const { transactions, addTransaction } = useTransactions(id || "")
+  useEffect(() => {
+    const fetchCampaign = async () => {
+      if (id) {
+        const campaign = await getCampaignById(id)
+        setCampaign(campaign || null)
+      }
+    }
+    fetchCampaign()
+  }, [])
+
 
   const handleDonate = (amount: number, message: string, isAnonymous: boolean) => {
     // In a real app, this would process payment and create blockchain transaction
@@ -77,6 +89,7 @@ export default function Page() {
   }
 
   const progress = (campaign.amountRaised / campaign.goal) * 100
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

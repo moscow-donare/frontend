@@ -2,11 +2,12 @@
 import { Alert, Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Textarea } from "@heroui/react";
 import { useValidateCampaignsModals } from "../hooks/useValidateCampaignsModals";
 import { useState } from "react";
+import { useValidateCampaigns } from "../hooks/useValidateCampaigns";
 
 export default function ReviewModal() {
   const { reviewModal } = useValidateCampaignsModals();
   const [comment, setComment] = useState(""); 
-
+  const { sendReviewValidation } = useValidateCampaigns();
   return (
     <Modal
       isOpen={reviewModal.isOpen}
@@ -39,7 +40,7 @@ export default function ReviewModal() {
               <Button color="danger" variant="flat">
                 Cancelar
               </Button>
-              <Button color="secondary" isDisabled={!comment.trim()}>
+              <Button color="secondary" isDisabled={!comment.trim()} onPress={() => sendReviewValidation(comment)}>
                 Aceptar
               </Button>
             </ModalFooter>

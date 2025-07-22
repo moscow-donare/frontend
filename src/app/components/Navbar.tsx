@@ -9,25 +9,23 @@ import { Button } from "@heroui/react"
 import { useWeb3Auth, useWeb3AuthUser } from "@web3auth/modal/react" // Corregido: Importa useWeb3AuthUser
 import { Balance } from "./wagmi/getBalance"
 import AuthAvatar from "./AuthAvatar"
-import { useCampaigns } from "../context/CampaignContext"
 import { SwitchChain } from "./wagmi/switchNetwork"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { isConnected } = useWeb3Auth() // Corregido: Solo desestructura isConnected de useWeb3Auth
   const { userInfo } = useWeb3AuthUser(); // Corregido: Obtén userInfo de useWeb3AuthUser
-  const { campaigns } = useCampaigns();
   const [canCreateCampaign, setCanCreateCampaign] = useState(true);
 
-  useEffect(() => {
-    if (isConnected && userInfo?.name) {
-      const userHasCampaign = campaigns.some(campaign => campaign.creator === userInfo.name);
-      setCanCreateCampaign(!userHasCampaign);
-    } else {
-      setCanCreateCampaign(true);
-    }
-  }, [isConnected, userInfo, campaigns]);
-
+  // useEffect(() => {
+  //   if (isConnected && userInfo?.name) {
+  //       const userHasCampaign = campaigns.some(campaign => campaign.creator === userInfo.name);
+  //     setCanCreateCampaign(!userHasCampaign);
+  //   } else {
+  //     setCanCreateCampaign(true);
+  //   }
+  // }, [isConnected, userInfo]);
+  
   return (
     <nav className="bg-white shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
