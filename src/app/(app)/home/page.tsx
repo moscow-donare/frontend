@@ -1,20 +1,31 @@
 "use client"
 
-import React from 'react';
+import React, { use, useEffect } from 'react';
 import Hero from './components/Hero';
 import CampaignGrid from './components/CampaignGrid';
+import { Campaign } from '@/app/types/Campaign';
+import { useCampaigns } from '@/app/hooks/useCampaings';
 
 const HomePage: React.FC = () => {
-  // const { campaigns } = useCampaigns();
-  
-  // const featuredCampaigns = campaigns
-  //   .sort((a, b) => (b.amountRaised / b.goal) - (a.amountRaised / a.goal))
-  //   .slice(0, 6);
-  
+  const { getAllCampaigns } = useCampaigns();
+  const [campaigns, setCampaigns] = React.useState<Campaign[]>([]);
+  const featuredCampaigns = campaigns
+    .sort((a: Campaign, b: Campaign) => (b.amountRaised / b.goal) - (a.amountRaised / a.goal))
+    .slice(0, 6);
+
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      const allCampaigns = await getAllCampaigns();
+      setCampaigns(allCampaigns);
+    };
+
+    fetchCampaigns();
+  }, []);
+
   return (
     <>
       <Hero />
-      <CampaignGrid 
+      <CampaignGrid
         campaigns={featuredCampaigns}
         title="Campañas Destacadas"
         description="Proyectos verificados que están haciendo un impacto real en la comunidad"

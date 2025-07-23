@@ -3,6 +3,9 @@ import { Campaign, CreateCampaign } from "../types/Campaign";
 import { useWalletClient } from "wagmi";
 
 export const useCampaigns = () => {
+    // Todo: deberiamos tener una variable campaigns que se actualice cada vez que se crea una campaña
+    // o se actualiza una campaña, para no tener que hacer un getAllCampaigns
+    // Esto se puede hacer con un estado global o un contexto
     const { data: wallet } = useWalletClient();
     const repository = new BlockchainCampaignRepository();
 
@@ -12,7 +15,8 @@ export const useCampaigns = () => {
         return filtered.length > 0 ? filtered[0] : undefined;
     }
 
-    const getAllCampaigns = async (): Promise<Campaign[]> => {        
+    const getAllCampaigns = async (): Promise<Campaign[]> => {       
+        console.log("Fetching all campaigns from blockchain repository"); 
         return await repository.getAll();
     }
     

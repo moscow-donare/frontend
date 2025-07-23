@@ -3,23 +3,48 @@ import { ChevronRight, Shield, Zap, Heart } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import hero from "@public/images/home/hero.png"
-import { Card } from '@heroui/react';
+import { Card, user } from '@heroui/react';
 import { useWeb3AuthUser } from '@web3auth/modal/react'; // Import useWeb3AuthUser
+import { useCampaigns } from '@/app/hooks/useCampaings';
+import { Campaign } from '@/app/types/Campaign';
 
 const Hero = () => {
-  const { userInfo } = useWeb3AuthUser(); // Get user info
-  const [canCreateCampaign, setCanCreateCampaign] = useState(true); // New state
+  const { userInfo } = useWeb3AuthUser();
+  const [canCreateCampaign, setCanCreateCampaign] = useState(true);
+  const { getAllCampaigns } = useCampaigns(); // Assuming useCampaigns provides campaigns
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
   useEffect(() => {
+    console.log("hola");
     if (userInfo?.name) {
+      console.log("User Info:", userInfo);
+      const fetchCampaigns = async () => {
+        const allCampaigns = await getAllCampaigns();
+        console.log("Fetched Campaigns:", allCampaigns);
+        setCampaigns(allCampaigns);
+      };
+      fetchCampaigns();
       // Simulate checking if the logged-in user (e.g., 'Juan Pérez') has an existing campaign
       // For a real app, this check would come from the backend.
       const userHasCampaign = campaigns.some(campaign => campaign.creator === userInfo.name);
       setCanCreateCampaign(!userHasCampaign);
-    } else {
-      setCanCreateCampaign(true); // Allow creation if not logged in or no user info
     }
-  }, [userInfo, campaigns]);
+  }, [userInfo]);
+
+  const getAriaLabelCreateCampaign = () => {
+    if (!userInfo?.name) {
+      return "Inicia sesión para crear una campaña";
+    }
+    return canCreateCampaign ? "Crear una nueva campaña" : "Ya tienes una campaña activa o en revisión";
+  }
+
+  const getHrefCreateCampaign = () => {
+    let href = canCreateCampaign ? "/campaigns/create" : "#";
+    if (!userInfo?.name) {
+      href = '/login';
+    }
+    return href;
+  }
 
   return (
     <div className="bg-gradient-to-br from-primary-600 to-secondary-800 text-white">
@@ -35,10 +60,10 @@ const Hero = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href={canCreateCampaign ? "/campaigns/create" : "#"} // Redirect if allowed, or no-op
+                href={getHrefCreateCampaign()}
                 className={`bg-white text-teal-700 hover:bg-teal-50 px-6 py-3 rounded-md font-medium text-center transition-colors ${!canCreateCampaign ? "opacity-50 cursor-not-allowed" : ""}`}
-                aria-disabled={!canCreateCampaign} // ARIA for accessibility
-                title={!canCreateCampaign ? "Ya tienes una campaña activa o en revisión" : "Crear una nueva campaña"}
+                aria-disabled={!canCreateCampaign}
+                title={getAriaLabelCreateCampaign()}
               >
                 Crear Campaña
               </Link>
