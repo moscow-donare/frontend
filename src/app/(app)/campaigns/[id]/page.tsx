@@ -123,7 +123,7 @@ export default function Page() {
               />
               
               {/* Category Badge */}
-              <div className="absolute top-4 left-4">
+              <div className="absolute top-4 left-4 z-10">
                 <Chip
                   color={
                     getCategoryById(campaign.category)?.name === "Salud" ? "danger" :
@@ -141,7 +141,7 @@ export default function Page() {
 
               {/* Verified Badge */}
               {campaign.isVerified && (
-                <div className="absolute top-4 right-4">
+                <div className="absolute top-4 right-4 z-10">
                   <Chip
                     color="success"
                     variant="solid"
