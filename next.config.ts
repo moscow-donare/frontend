@@ -12,9 +12,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.pexels.com",
-        port: "",
-        pathname: "/photos/**",
+        hostname: "salmon-naval-guppy-392.mypinata.cloud", // <== tu subdominio específico de Pinata
+        pathname: "/ipfs/**",
       },
     ],
   },

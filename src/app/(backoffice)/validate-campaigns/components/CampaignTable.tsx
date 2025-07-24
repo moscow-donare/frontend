@@ -21,10 +21,12 @@ import React, { Key } from 'react'
 import { useValidateCampaignsModals } from '../hooks/useValidateCampaignsModals'
 import { useValidateCampaigns } from '../hooks/useValidateCampaigns'
 import { PriceFormatter } from '@/app/utils/PriceFormatter'
+import { useCampaigns } from '@/app/hooks/useCampaings'
 
 export function CampaignsTable() {
     const { openDescriptionModal, openCancelModal, openReviewModal, openAcceptModal } = useValidateCampaignsModals();
     const { campaigns } = useValidateCampaigns();
+    const { getCategoryById } = useCampaigns();
     const [page, setPage] = React.useState(1);
     const rowsPerPage = 5;
     const pages = Math.ceil(campaigns.length / rowsPerPage);
@@ -73,7 +75,7 @@ export function CampaignsTable() {
             case "category":
                 return (
                     <Chip size='sm' variant='flat' color='secondary'>
-                        {campaign.category} 
+                        {getCategoryById(campaign.category)?.name} 
                     </Chip>
                 );
             case "actions":

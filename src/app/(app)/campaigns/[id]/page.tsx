@@ -29,17 +29,19 @@ import {
 import { useCampaigns } from "@/app/hooks/useCampaings"
 import { Campaign } from "@/app/types/Campaign"
 import { useEffect, useState } from "react"
+import { useIPFS } from "@/app/hooks/useIPFS"
 
 export default function Page() {
   const params = useParams()
   const id = params?.id as string
-  const { getCampaignById } = useCampaigns()
+  const { getCampaignById, getCategoryById } = useCampaigns()
   const [campaign, setCampaign] = useState<Campaign | null>(null)
+  const {resolveCid} = useIPFS()
   const { transactions, addTransaction } = useTransactions(id || "")
   useEffect(() => {
     const fetchCampaign = async () => {
       if (id) {
-        const campaign = await getCampaignById(id)
+        const campaign = await getCampaignById(Number(id))
         setCampaign(campaign || null)
       }
     }
@@ -114,7 +116,7 @@ export default function Page() {
           <Card className="shadow-lg overflow-hidden">
             <div className="relative">
               <Image
-                src={campaign.imageUrl || "/placeholder.svg"}
+                src={resolveCid(campaign.imageCID) || "/placeholder.svg"}
                 alt={campaign.title}
                 className="w-full h-80 object-cover"
                 removeWrapper
@@ -124,16 +126,16 @@ export default function Page() {
               <div className="absolute top-4 left-4">
                 <Chip
                   color={
-                    campaign.category === "Salud" ? "danger" :
-                    campaign.category === "Educación" ? "secondary" :
-                    campaign.category === "Emergencia" ? "warning" :
+                    getCategoryById(campaign.category)?.name === "Salud" ? "danger" :
+                    getCategoryById(campaign.category)?.name === "Educación" ? "secondary" :
+                    getCategoryById(campaign.category)?.name === "Emergencia" ? "warning" :
                     "primary"
                   }
                   variant="solid"
                   size="md"
                   className="font-semibold"
                 >
-                  {campaign.category}
+                  {getCategoryById(campaign.category)?.name}
                 </Chip>
               </div>
 
@@ -321,7 +323,7 @@ export default function Page() {
             <CardBody>
               <div className="flex items-center mb-6">
                 <Avatar
-                  src={campaign.creatorImageUrl || "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg"}
+                  src={"https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg"}
                   alt={campaign.creator}
                   size="lg"
                   className="mr-4"
@@ -333,7 +335,7 @@ export default function Page() {
               </div>
               
               <p className="text-gray-600 mb-6 leading-relaxed">
-                {campaign.creatorBio ||
+                {
                   "Este organizador está trabajando para ayudar a su comunidad y necesita tu apoyo para lograrlo."}
               </p>
               

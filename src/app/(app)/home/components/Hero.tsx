@@ -3,7 +3,7 @@ import { ChevronRight, Shield, Zap, Heart } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import hero from "@public/images/home/hero.png"
-import { Card, user } from '@heroui/react';
+import { Card } from '@heroui/react';
 import { useWeb3AuthUser } from '@web3auth/modal/react'; // Import useWeb3AuthUser
 import { useCampaigns } from '@/app/hooks/useCampaings';
 import { Campaign } from '@/app/types/Campaign';
@@ -15,12 +15,9 @@ const Hero = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
   useEffect(() => {
-    console.log("hola");
     if (userInfo?.name) {
-      console.log("User Info:", userInfo);
       const fetchCampaigns = async () => {
         const allCampaigns = await getAllCampaigns();
-        console.log("Fetched Campaigns:", allCampaigns);
         setCampaigns(allCampaigns);
       };
       fetchCampaigns();

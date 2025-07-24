@@ -15,7 +15,7 @@ export default function ValidateCampaignsPage() {
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">Validar Campañas</h1>
-                    <p className="text-gray-600">Valida las campañas en "En Revisión"</p>
+                    <p className="text-gray-600">Valida las campañas en En Revisión</p>
                 </div>
             </div>
                 <CampaignsTable/>

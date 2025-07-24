@@ -28,11 +28,12 @@ export type CreateCampaign = {
   goal: number;
   deadline: number;
   url: string;
+  category: number
 }
 
 export interface Campaign {
   amountRaised: number;
-  category: string;
+  category: number;
   createdAt: Date;
   creator: string;
   daysLeft: number;
@@ -43,7 +44,7 @@ export interface Campaign {
   goal: number;
   id: number;
   address: string;
-  imageUrl: string;
+  imageCID: string;
   isVerified: boolean;
   status: string;
   title: string;

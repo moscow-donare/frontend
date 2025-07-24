@@ -1,6 +1,6 @@
 "use client"
 
-import React, { use, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Hero from './components/Hero';
 import CampaignGrid from './components/CampaignGrid';
 import { Campaign } from '@/app/types/Campaign';
@@ -16,9 +16,9 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchCampaigns = async () => {
       const allCampaigns = await getAllCampaigns();
+      console.log('campañas', allCampaigns)
       setCampaigns(allCampaigns);
     };
-
     fetchCampaigns();
   }, []);
 

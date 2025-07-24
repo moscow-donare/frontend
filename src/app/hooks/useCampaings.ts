@@ -2,6 +2,34 @@ import { BlockchainCampaignRepository } from "@/lib/repositories/Campaign/Blockc
 import { Campaign, CreateCampaign } from "../types/Campaign";
 import { useWalletClient } from "wagmi";
 
+export type CategoryType = {
+    id: number,
+    name: string
+}
+
+export const CATEGORIES: CategoryType[] = [
+    {
+        id: 0,
+        name: 'Salud'
+    },
+    {
+        id: 1,
+        name: 'Educación'
+    },
+    {
+        id: 2,
+        name: 'Emergencia'
+    },
+    {
+        id: 3,
+        name: 'Rifa'
+    },
+    {
+        id: 4,
+        name: 'Proyecto'
+    }
+];
+
 export const useCampaigns = () => {
     // Todo: deberiamos tener una variable campaigns que se actualice cada vez que se crea una campaña
     // o se actualiza una campaña, para no tener que hacer un getAllCampaigns
@@ -10,9 +38,7 @@ export const useCampaigns = () => {
     const repository = new BlockchainCampaignRepository();
 
     const getCampaignById = async (id: number): Promise<Campaign | undefined> => {
-        const campaigns = await repository.getAll();
-        const filtered = campaigns.filter(campaign => campaign.id == id);
-        return filtered.length > 0 ? filtered[0] : undefined;
+        return await repository.getById(id);
     }
 
     const getAllCampaigns = async (): Promise<Campaign[]> => {       
@@ -24,9 +50,14 @@ export const useCampaigns = () => {
         return await repository.createCampaign(campaignData, wallet);
     }
 
+    const getCategoryById = (id: number): CategoryType | null => {
+        return CATEGORIES.find((category) => category.id === id) ?? null;
+    }
+
     return {
         getCampaignById,
         getAllCampaigns,
-        createCampaign
+        createCampaign,
+        getCategoryById
     };
 }

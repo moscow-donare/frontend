@@ -1,5 +1,6 @@
 "use client"
-import { useCampaigns } from '@/app/hooks/useCampaings';
+import { CATEGORIES, useCampaigns } from '@/app/hooks/useCampaings';
+import { useIPFS } from '@/app/hooks/useIPFS';
 import { CreateCampaign } from '@/app/types/Campaign';
 import { Button, DatePicker, DateValue, Input, Select, SelectItem } from '@heroui/react';
 import {
@@ -9,22 +10,21 @@ import {
   Info,
   Upload
 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { useWalletClient } from 'wagmi';
+import React, { useState } from 'react';
 
 export default function Page() {
   const [step, setStep] = useState<number>(1);
   const [title, setTitle] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
+  const [category, setCategory] = useState<number>();
   const [goal, setGoal] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [fullDescription, setFullDescription] = useState<string>('');
   const [image, setImage] = useState<string>('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const { data: walletClient } = useWalletClient(); // ✅ fuera del handler
   const { createCampaign } = useCampaigns(); // Hook para acceder al contexto de campañas
+  const { uploadFile } = useIPFS();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,25 +36,25 @@ export default function Page() {
     try {
       setIsSubmitting(true);
 
+      const imageCID = await uploadFile(imageFile!);
+
       const endDateTime = new Date(endDate).getTime();
-      // const todayTime = new Date().getTime();
-      // const daysDiff = Math.ceil((endDateTime - todayTime) / (1000 * 60 * 60 * 24));
 
       const newCampaign: CreateCampaign = {
         title,
         description,
-        imageCID: image,
+        imageCID: imageCID,
         goal: parseFloat(goal),
-        deadline: Math.floor(endDateTime / 1000), // blockchain usa timestamp en segundos
+        deadline: endDateTime, // blockchain usa timestamp en segundos
         url: "",
+        category: category!
       };
-      console.log("📝 Creando campaña:", newCampaign);
-      console.log("🔗 Conectando a la blockchain...");
       const response = await createCampaign(newCampaign);
-      console.log("✅ Campaña creada:", response);
-      console.log("✅ Campaña creada en tx:", response.data);
-      // Si querés redirigir al detalle de la campaña después:
-      // router.push(`/campaigns/${newCampaign.id}`); // si tenés ID después del deploy
+      if (response.error) {
+        setError(response.error);
+        setIsSubmitting(false);
+        return;
+      }
       setIsSubmitting(false);
 
     } catch (err) {
@@ -63,8 +63,6 @@ export default function Page() {
       setIsSubmitting(false);
     }
   };
-
-  const categories = ['Salud', 'Educación', 'Emergencia', 'Rifa', 'Proyecto', 'Otros'];
 
   const validateStep = () => {
     if (step === 1) {
@@ -96,10 +94,6 @@ export default function Page() {
         setError('Por favor ingresa una descripción breve');
         return false;
       }
-      if (!fullDescription.trim()) {
-        setError('Por favor ingresa una descripción completa');
-        return false;
-      }
       if (!image) {
         setError('Por favor selecciona una imagen para tu campaña');
         return false;
@@ -121,23 +115,22 @@ export default function Page() {
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // In a real app, this would upload the file to a server
-    // For this demo, we'll just use a placeholder
-    setImage('https://images.pexels.com/photos/3184419/pexels-photo-3184419.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImageFile(file);
+    setImage(URL.createObjectURL(file!));
   };
 
   const handleDateChange = (value: DateValue | null) => {
     let jsDate: Date
     if (!value) return;
     if ('hour' in value) {
-      // CalendarDateTime — includes hour, minute, maybe second
       jsDate = new Date(
         value.year,
         value.month - 1,
         value.day
       )
     } else {
-      // CalendarDate — only year, month, day
       jsDate = new Date(value.year, value.month - 1, value.day)
     }
     setEndDate(jsDate.toISOString().split('T')[0]);
@@ -215,12 +208,12 @@ export default function Page() {
                   id="category"
 
                   selectedKeys={category ? new Set([category]) : new Set()}
-                  onSelectionChange={(keys) => setCategory(Array.from(keys as Set<string>)[0] || '')}
+                  onSelectionChange={(keys) => setCategory(Array.from(keys as Set<number>)[0] || 0)}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
                   placeholder="Selecciona una categoría"
                 >
-                  {categories.map((cat) => (
-                    <SelectItem key={cat}>{cat}</SelectItem>
+                  {CATEGORIES.map((cat) => (
+                    <SelectItem key={cat.id}>{cat.name}</SelectItem>
                   ))}
                 </Select>
               </div>
@@ -280,31 +273,14 @@ export default function Page() {
               <h2 className="text-xl font-semibold mb-6">Contenido de la Campaña</h2>
 
               <div className="mb-6">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                  Descripción Breve*
-                </label>
-                <Input
-                  type="text"
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
-                  placeholder="Describe tu campaña en una frase corta"
-                />
-                <p className="mt-1 text-xs text-gray-500">
-                  Esta descripción aparecerá en las tarjetas de campaña (máx. 100 caracteres)
-                </p>
-              </div>
-
-              <div className="mb-6">
                 <label htmlFor="fullDescription" className="block text-sm font-medium text-gray-700 mb-1">
                   Descripción Completa*
                 </label>
                 <textarea
                   id="fullDescription"
                   rows={6}
-                  value={fullDescription}
-                  onChange={(e) => setFullDescription(e.target.value)}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
                   placeholder="Explica detalladamente el propósito de la campaña, por qué necesitas los fondos y cómo se utilizarán"
                 />
@@ -421,13 +397,9 @@ export default function Page() {
                   <div className="md:col-span-2">
                     <h3 className="text-sm font-medium text-gray-500 mb-2">Descripción</h3>
                     <div className="bg-white rounded-md p-4 border border-gray-200">
-                      <div className="mb-3">
-                        <span className="text-xs text-gray-500">Descripción breve</span>
-                        <p className="font-medium">{description}</p>
-                      </div>
                       <div>
                         <span className="text-xs text-gray-500">Descripción completa</span>
-                        <p className="text-sm mt-1">{fullDescription}</p>
+                        <p className="text-sm mt-1">{description}</p>
                       </div>
                     </div>
                   </div>
