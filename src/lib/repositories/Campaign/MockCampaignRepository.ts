@@ -232,10 +232,10 @@ export const mockCampaignRepository: ICampaignRepository = {
       MOCK_CAMPAIGNS.filter((c) => ["active", "revision"].includes(c.status))
     );
   },
-  async getById(id: string) {
+  async getById(id: number) {
     return MockBackendResponse(MOCK_CAMPAIGNS.find((c) => c.id === id) ?? null);
   },
-    async acceptCampaign(id: string) {
+    async acceptCampaign(id: number ) {
         return MockBackendResponse(null);
     },
 

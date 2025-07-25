@@ -39,10 +39,10 @@ export default function LoginPage() {
           const data = await res.json();
           console.log("🟢 Backend response:", data);
 
-          router.push("/home");
         } catch (err) {
           console.error("❌ Error in login flow:", err);
         }
+        router.back();
       }
     };
 

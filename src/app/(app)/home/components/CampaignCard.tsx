@@ -5,7 +5,7 @@ import { Campaign } from '../../../types/Campaign';
 import Image from 'next/image';
 import { Card, CardBody, CardFooter, Button, Chip, Progress } from '@heroui/react';
 import { useIPFS } from '@/app/hooks/useIPFS';
-import { useCampaigns } from '@/app/hooks/useCampaings';
+import { CATEGORY_MAPPER } from '@/lib/const/Categories';
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -14,7 +14,6 @@ interface CampaignCardProps {
 const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
   const progress = (campaign.amountRaised / campaign.goal) * 100;
   const {resolveCid} = useIPFS();
-  const {getCategoryById} = useCampaigns()
 
   return (
     <Card>
@@ -43,7 +42,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({ campaign }) => {
             variant="solid"
             color='danger'
           >
-            {getCategoryById(campaign.category)?.name ?? '' }
+            {CATEGORY_MAPPER(campaign.category)}
           </Chip>
         </div>
       </div>

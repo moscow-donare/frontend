@@ -24,7 +24,7 @@ export default function AcceptModal() {
               </Alert>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="flat">
+              <Button color="danger" variant="flat" onPress={acceptModal.onClose}>
                 Cancelar
               </Button>
               <Button color="secondary" onPress={()=> sendAcceptValidation()}>

@@ -4,6 +4,7 @@ import { CampaignService } from "@/services/CampaignService";
 import { Campaign } from "@/app/types/Campaign";
 import { useDisclosure } from "@heroui/react";
 import { ReactNode, createContext, useEffect, useState } from "react";
+import { useCampaigns } from "@/app/hooks/useCampaings";
 
 interface ValidateCampaignType {
     acceptModal: ReturnType<typeof useDisclosure>;
@@ -21,6 +22,7 @@ interface ValidateCampaignType {
 export const ValidateCampaignContext = createContext<ValidateCampaignType | undefined>(undefined);
 
 export const ValidateCampaignProvider = ({ children }: { children: ReactNode }) => {
+    const { getPendingCampaigns } = useCampaigns();
     const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -31,7 +33,7 @@ export const ValidateCampaignProvider = ({ children }: { children: ReactNode }) 
     const loadCampaigns = async () => {
         setIsLoaded(false); // Reset loading state before fetching campaigns
         try {
-            const response = await CampaignService.getPendingCampaigns();
+            const response = await getPendingCampaigns();
             console.log("Campaigns loaded:", response);
             setCampaigns(response); // Set campaigns to the fetched data
             console.log("Campaigns loaded");

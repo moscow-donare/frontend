@@ -37,7 +37,7 @@ export default function ReviewModal() {
  />
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="flat">
+              <Button color="danger" variant="flat" onPress={reviewModal.onClose}>
                 Cancelar
               </Button>
               <Button color="secondary" isDisabled={!comment.trim()} onPress={() => sendReviewValidation(comment)}>

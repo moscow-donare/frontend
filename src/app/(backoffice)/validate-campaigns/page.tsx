@@ -10,6 +10,7 @@ import { useValidateCampaigns } from "./hooks/useValidateCampaigns";
 export default function ValidateCampaignsPage() {
     const { isLoaded } = useValidateCampaigns();
 
+    if (!isLoaded) return <LoadingSpinner />;
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -23,7 +24,6 @@ export default function ValidateCampaignsPage() {
                 <RejectModal />
                 <ReviewModal />
                 <DescriptionModal />
-                {!isLoaded && <LoadingSpinner />}
         </div>
     )
 }

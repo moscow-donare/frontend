@@ -60,7 +60,7 @@ export default function Provider({
       {/* // IMP START - Setup Wagmi Provider */}
       <QueryClientProvider client={queryClient}>
         <WagmiProvider>
-          <HeroUIProvider>
+          <HeroUIProvider locale="es-ES">
             {children}
           </HeroUIProvider>
         </WagmiProvider>

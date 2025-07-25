@@ -21,12 +21,11 @@ import React, { Key } from 'react'
 import { useValidateCampaignsModals } from '../hooks/useValidateCampaignsModals'
 import { useValidateCampaigns } from '../hooks/useValidateCampaigns'
 import { PriceFormatter } from '@/app/utils/PriceFormatter'
-import { useCampaigns } from '@/app/hooks/useCampaings'
+import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from '@/lib/const/Categories'
 
 export function CampaignsTable() {
     const { openDescriptionModal, openCancelModal, openReviewModal, openAcceptModal } = useValidateCampaignsModals();
     const { campaigns } = useValidateCampaigns();
-    const { getCategoryById } = useCampaigns();
     const [page, setPage] = React.useState(1);
     const rowsPerPage = 5;
     const pages = Math.ceil(campaigns.length / rowsPerPage);
@@ -67,15 +66,21 @@ export function CampaignsTable() {
                 );
             case "creator":
                 return (
-                    <p className="font-bold text-medium">
-                        {campaign.creator}
+                    //  TODO: Agregar link al perfil del creador
+                    //  <Link href={`/profile/${campaign.creator}`}>
+                    //      Agregar llamado al back para obtener el nombre del creador
+                    // <p className="font-bold text-medium">
+                    //     {campaign.creator}
+                    // </p>
+                    <p>
+                        Nombre del creador
                     </p>
                 );
 
             case "category":
                 return (
-                    <Chip size='sm' variant='flat' color='secondary'>
-                        {getCategoryById(campaign.category)?.name} 
+                    <Chip size='sm' variant='flat' color={CATEGORY_COLOR_MAPPER(campaign.category)}>
+                        {CATEGORY_MAPPER(campaign.category)} 
                     </Chip>
                 );
             case "actions":

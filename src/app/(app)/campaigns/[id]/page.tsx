@@ -30,19 +30,27 @@ import { useCampaigns } from "@/app/hooks/useCampaings"
 import { Campaign } from "@/app/types/Campaign"
 import { useEffect, useState } from "react"
 import { useIPFS } from "@/app/hooks/useIPFS"
+import LoadingSpinner from "@/app/components/LoadingSpinner"
+import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from "@/lib/const/Categories"
+import { DateFormatter } from "@/app/utils/DateFormatter"
+import { PriceFormatter } from "@/app/utils/PriceFormatter"
 
 export default function Page() {
   const params = useParams()
   const id = params?.id as string
-  const { getCampaignById, getCategoryById } = useCampaigns()
+  const { getCampaignById } = useCampaigns()
   const [campaign, setCampaign] = useState<Campaign | null>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
   const {resolveCid} = useIPFS()
   const { transactions, addTransaction } = useTransactions(id || "")
   useEffect(() => {
+    
     const fetchCampaign = async () => {
       if (id) {
         const campaign = await getCampaignById(Number(id))
+        console.log("Campaign fetched:", campaign)
         setCampaign(campaign || null)
+        setIsLoaded(true)
       }
     }
     fetchCampaign()
@@ -63,6 +71,8 @@ export default function Page() {
       message: message,
     })
   }
+
+  if (!isLoaded) return <LoadingSpinner />
 
   if (!campaign) {
     return (
@@ -125,17 +135,12 @@ export default function Page() {
               {/* Category Badge */}
               <div className="absolute top-4 left-4 z-10">
                 <Chip
-                  color={
-                    getCategoryById(campaign.category)?.name === "Salud" ? "danger" :
-                    getCategoryById(campaign.category)?.name === "Educación" ? "secondary" :
-                    getCategoryById(campaign.category)?.name === "Emergencia" ? "warning" :
-                    "primary"
-                  }
+                  color={CATEGORY_COLOR_MAPPER(campaign.category as number)}
                   variant="solid"
                   size="md"
                   className="font-semibold"
                 >
-                  {getCategoryById(campaign.category)?.name}
+                  {CATEGORY_MAPPER(campaign.category)}
                 </Chip>
               </div>
 
@@ -162,7 +167,7 @@ export default function Page() {
               <div className="flex flex-wrap items-center gap-6 mb-8">
                 <div className="flex items-center text-gray-600">
                   <Calendar className="h-5 w-5 mr-2 text-primary" />
-                  <span>Creado el {campaign.createdAt.toLocaleDateString()}</span>
+                  <span>Creado el {DateFormatter(campaign.createdAt)}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <User className="h-5 w-5 mr-2 text-primary" />
@@ -180,9 +185,9 @@ export default function Page() {
                   <div className="flex justify-between items-center mb-4">
                     <div>
                       <p className="text-2xl font-bold text-primary">
-                        ${campaign.amountRaised.toLocaleString()}
+                        {PriceFormatter(campaign.amountRaised)}
                       </p>
-                      <p className="text-gray-600">de ${campaign.goal.toLocaleString()}</p>
+                      <p className="text-gray-600">de {PriceFormatter(campaign.goal)}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-semibold text-secondary">

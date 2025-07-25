@@ -9,7 +9,7 @@ export const HttpCampaignRepository: ICampaignRepository = {
   async getPendingCampaigns(): Promise<BackendResponse<Campaign[]>> {
     return await httpClient.get<BackendResponse<Campaign[]>>(API_ROUTE);
   },
-  async getById(id: string): Promise<BackendResponse<Campaign>> {
+  async getById(id: number): Promise<BackendResponse<Campaign>> {
     return await httpClient.get<BackendResponse<Campaign>>(`${API_ROUTE}/${id}`);
   },
   async acceptCampaign(id: string): Promise<BackendResponse> {

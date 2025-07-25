@@ -162,7 +162,7 @@ export class BlockchainCampaignRepository implements ICampaignRepository {
         creator,
         walletAddress: campaignAddress,
         isVerified: true,
-        status: String(status), // Asegurate que sea string
+        status: Number(status), // Asegurate que sea number
       };
 
       return campaing;
@@ -235,7 +235,7 @@ export class BlockchainCampaignRepository implements ICampaignRepository {
             creator,
             walletAddress: addr,
             isVerified: true,
-            status: String(status), // Asegurate que sea string
+            status: Number(status),
           };
         })
       );

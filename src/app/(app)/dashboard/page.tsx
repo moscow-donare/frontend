@@ -5,18 +5,51 @@ import {
   BarChart, TrendingUp, Users, AlertCircle, Settings, Plus,
   Eye, Edit, Trash2, PieChart, CreditCard, ArrowRight, ArrowDownRight
 } from 'lucide-react';
-import { useCampaigns } from '../../context/CampaignContext';
 import TransactionList from '../../components/TransactionList';
 import { Transaction } from '../../types/Transaction';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const DashboardPage: React.FC = () => {
-  const { campaigns } = useCampaigns();
   const [view, setView] = useState<'campaigns' | 'transactions'>('campaigns');
   
   // Mock data for user's campaigns - would come from API in a real app
-  const userCampaigns = campaigns.slice(0, 3);
-  
+  const userCampaigns = [
+    {
+      id: '1',
+      title: 'Campaña 1',
+      description: 'Descripción de la campaña 1',
+      amountRaised: 100,
+      goal: 1000,
+      donors: 5,
+      daysLeft: 10,
+      imageUrl: '/images/campaigns/campaign1.jpg',
+      category: 'Salud'
+    },
+    {
+      id: '2',
+      title: 'Campaña 2',
+      description: 'Descripción de la campaña 2',
+      amountRaised: 200,
+      goal: 1500,
+      donors: 10,
+      daysLeft: 5,
+      imageUrl: '/images/campaigns/campaign2.jpg',
+      category: 'Educación'
+    },
+    {
+      id: '3',
+      title: 'Campaña 3',
+      description: 'Descripción de la campaña 3',
+      amountRaised: 300,
+      goal: 2000,
+      donors: 15,
+      daysLeft: 0,
+      imageUrl: '/images/campaigns/campaign3.jpg',
+      category: 'Medio Ambiente'
+    }
+  ];
+
   // Mock data for transactions - would come from API in a real app
   const sampleTransactions: Transaction[] = [
     {
@@ -173,10 +206,12 @@ const DashboardPage: React.FC = () => {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0 mr-3">
-                              <img 
+                              <Image 
                                 className="h-10 w-10 rounded object-cover" 
                                 src={campaign.imageUrl} 
                                 alt={campaign.title}
+                                width={40}
+                                height={40}
                               />
                             </div>
                             <div className="ml-4">

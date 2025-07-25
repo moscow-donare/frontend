@@ -9,9 +9,6 @@ import { useCampaigns } from '@/app/hooks/useCampaings';
 const HomePage: React.FC = () => {
   const { getAllCampaigns } = useCampaigns();
   const [campaigns, setCampaigns] = React.useState<Campaign[]>([]);
-  const featuredCampaigns = campaigns
-    .sort((a: Campaign, b: Campaign) => (b.amountRaised / b.goal) - (a.amountRaised / a.goal))
-    .slice(0, 6);
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -26,7 +23,7 @@ const HomePage: React.FC = () => {
     <>
       <Hero />
       <CampaignGrid
-        campaigns={featuredCampaigns}
+        campaigns={campaigns}
         title="Campañas Destacadas"
         description="Proyectos verificados que están haciendo un impacto real en la comunidad"
       />

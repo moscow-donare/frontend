@@ -36,7 +36,7 @@ export default function CancelModal() {
               />
               </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="flat">
+              <Button color="danger" variant="flat" onPress={cancelModal.onClose}>
                 Cancelar
               </Button>
               <Button color="secondary" isDisabled={!comment.trim()} onPress={() => sendCancelValidation(comment)}>               

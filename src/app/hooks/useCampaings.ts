@@ -1,34 +1,9 @@
+import { STATE_NAME_TO_ID } from "@/lib/const/States";
 import { BlockchainCampaignRepository } from "@/lib/repositories/Campaign/BlockchainCampaingRepository";
-import { Campaign, CreateCampaign } from "../types/Campaign";
 import { useWalletClient } from "wagmi";
+import { Campaign, CreateCampaign } from "../types/Campaign";
 
-export type CategoryType = {
-    id: number,
-    name: string
-}
 
-export const CATEGORIES: CategoryType[] = [
-    {
-        id: 0,
-        name: 'Salud'
-    },
-    {
-        id: 1,
-        name: 'Educación'
-    },
-    {
-        id: 2,
-        name: 'Emergencia'
-    },
-    {
-        id: 3,
-        name: 'Rifa'
-    },
-    {
-        id: 4,
-        name: 'Proyecto'
-    }
-];
 
 export const useCampaigns = () => {
     // Todo: deberiamos tener una variable campaigns que se actualice cada vez que se crea una campaña
@@ -50,14 +25,21 @@ export const useCampaigns = () => {
         return await repository.createCampaign(campaignData, wallet);
     }
 
-    const getCategoryById = (id: number): CategoryType | null => {
-        return CATEGORIES.find((category) => category.id === id) ?? null;
+    // DEJAR ESTA FUNCION POR SI VAMOS A AGREGAR MAS CATEGORIAS A FUTURO Y NO LA DEJAMOS FIJAS
+    // const getCategoryById = (id: number): CategoryType | null => {
+    //     return CATEGORIES.find((category) => category.id === id) ?? null;
+    // }
+
+    const getPendingCampaigns = async () => {
+        const campaigns = await getAllCampaigns();
+        const filteredCampaigns = campaigns.filter(campaign => campaign.status === STATE_NAME_TO_ID.IN_REVIEW);
+        return filteredCampaigns;
     }
 
     return {
         getCampaignById,
         getAllCampaigns,
         createCampaign,
-        getCategoryById
+        getPendingCampaigns
     };
 }
