@@ -25,3 +25,14 @@ export const STATE_NAME_TO_ID = {
 export const STATE_MAPPER = (id: number) => {
     return STATE_ID_TO_NAME[id as keyof typeof STATE_ID_TO_NAME];
 };
+
+export const STATE_COLOR_MAPPER = (id: number) => {
+    switch (id) {
+        case 0: return 'default';
+        case 1: return 'warning';
+        case 2: return 'success';
+        case 3: return 'danger';
+        case 4: return 'secondary';
+    }
+};
+

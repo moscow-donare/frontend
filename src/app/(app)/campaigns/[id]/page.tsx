@@ -16,15 +16,16 @@ import TransactionList from "../../../components/TransactionList"
 import { useTransactions } from "../../../hooks/useTransactions"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { 
-  Card, 
-  CardBody, 
-  CardHeader, 
-  Button, 
-  Chip, 
-  Progress, 
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Chip,
+  Progress,
   Avatar,
-  Image
+  Image,
+  Alert
 } from "@heroui/react"
 import { useCampaigns } from "@/app/hooks/useCampaings"
 import { Campaign } from "@/app/types/Campaign"
@@ -34,6 +35,7 @@ import LoadingSpinner from "@/app/components/LoadingSpinner"
 import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from "@/lib/const/Categories"
 import { DateFormatter } from "@/app/utils/DateFormatter"
 import { PriceFormatter } from "@/app/utils/PriceFormatter"
+import { STATE_NAME_TO_ID } from "@/lib/const/States"
 
 export default function Page() {
   const params = useParams()
@@ -41,10 +43,10 @@ export default function Page() {
   const { getCampaignById } = useCampaigns()
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
-  const {resolveCid} = useIPFS()
+  const { resolveCid } = useIPFS()
   const { transactions, addTransaction } = useTransactions(id || "")
   useEffect(() => {
-    
+
     const fetchCampaign = async () => {
       if (id) {
         const campaign = await getCampaignById(Number(id))
@@ -121,7 +123,17 @@ export default function Page() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
+
+
         <div className="lg:col-span-2 space-y-6">
+          {campaign.status === STATE_NAME_TO_ID.CANCELLED && (
+            <Alert title="Campaña Cancelada" color="danger" className="mb-6" description="Esta campaña ha sido cancelada y no está aceptando más donaciones.">
+            </Alert>
+          )}
+          {campaign.status === STATE_NAME_TO_ID.COMPLETED && (
+            <Alert title="Campaña Completada" color="success" className="mb-6" description="¡Esta campaña ha sido completada!">
+            </Alert>
+          )}
           {/* Campaign Image and Basic Info */}
           <Card className="shadow-lg overflow-hidden">
             <div className="relative">
@@ -131,7 +143,7 @@ export default function Page() {
                 className="w-full h-80 object-cover"
                 removeWrapper
               />
-              
+
               {/* Category Badge */}
               <div className="absolute top-4 left-4 z-10">
                 <Chip
@@ -171,7 +183,10 @@ export default function Page() {
                 </div>
                 <div className="flex items-center text-gray-600">
                   <User className="h-5 w-5 mr-2 text-primary" />
-                  <span>Por {campaign.creator}</span>
+                  {/* <span>Por {campaign.creator}</span>
+                   */}
+                  {/* TODO: Obtener el nombre del creador de la campaña */}
+                  <span>Por Creator</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Clock className="h-5 w-5 mr-2 text-primary" />
@@ -196,14 +211,14 @@ export default function Page() {
                       <p className="text-sm text-gray-600">completado</p>
                     </div>
                   </div>
-                  
+
                   <Progress
                     value={Math.min(progress, 100)}
                     color="primary"
                     size="lg"
                     className="mb-4"
                   />
-                  
+
                   <div className="flex justify-between items-center">
                     <Chip
                       color="secondary"
@@ -267,12 +282,12 @@ export default function Page() {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2 text-lg">Verificación Completa</h3>
                   <p className="text-gray-600">
-                    Todas las transacciones de esta campaña son públicas y verificables en la blockchain. 
+                    Todas las transacciones de esta campaña son públicas y verificables en la blockchain.
                     Puedes verificar el contrato inteligente y las transacciones en tiempo real.
                   </p>
                 </div>
               </div>
-              
+
               <Card className="bg-gray-50">
                 <CardBody>
                   <div className="flex flex-col lg:flex-row justify-between gap-4">
@@ -316,12 +331,13 @@ export default function Page() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Donation Form */}
-          <div className="sticky top-24">
-            <DonationForm campaign={campaign} onDonate={handleDonate} />
-          </div>
-
+          {campaign.status === STATE_NAME_TO_ID.ACTIVE &&
+            <div className="sticky top-24">
+              <DonationForm campaign={campaign} onDonate={handleDonate} />
+            </div>
+          }
           {/* Creator Info */}
-          <Card className="shadow-lg">
+          <Card className="shadow-lg w-full">
             <CardHeader>
               <h3 className="text-xl font-semibold text-primary">Acerca del beneficiario</h3>
             </CardHeader>
@@ -334,16 +350,17 @@ export default function Page() {
                   className="mr-4"
                 />
                 <div>
-                  <h4 className="font-semibold text-gray-900 text-lg">{campaign.creator}</h4>
+                  {/* <h4 className="font-semibold text-gray-900 text-lg">{campaign.creator}</h4> */}
+                  {/* TODO: Obtener el nombre del creador de la campaña */}
+                  <h4 className="font-semibold text-gray-900 text-lg">Creator</h4>
                   <p className="text-gray-500">Organizador de la campaña</p>
                 </div>
               </div>
-              
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                {
-                  "Este organizador está trabajando para ayudar a su comunidad y necesita tu apoyo para lograrlo."}
+
+              <p className="text-gray-600 mb-6">
+                Este organizador está trabajando para ayudar a su comunidad y necesita tu apoyo para lograrlo.
               </p>
-              
+
               {campaign.isVerified && (
                 <Chip
                   color="success"

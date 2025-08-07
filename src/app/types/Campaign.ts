@@ -21,6 +21,13 @@
 
 export type CampaignStatus = 'InReview' | 'PendingChange' | 'Cancelled' | 'Active' | 'Completed';
 
+export interface StateChange {
+  blockNumber: number;
+  txHash: string;
+  newState: number;
+  reason: string;
+}
+
 export type CreateCampaign = {
   title: string;
   description: string;
@@ -49,4 +56,5 @@ export interface Campaign {
   status: number;
   title: string;
   walletAddress: string;
+  stateChanges?: StateChange[];
 }

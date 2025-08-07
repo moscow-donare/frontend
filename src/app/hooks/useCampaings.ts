@@ -1,9 +1,7 @@
-import { STATE_NAME_TO_ID } from "@/lib/const/States";
 import { BlockchainCampaignRepository } from "@/lib/repositories/Campaign/BlockchainCampaingRepository";
 import { useWalletClient } from "wagmi";
 import { Campaign, CreateCampaign } from "../types/Campaign";
-
-
+import { STATE_NAME_TO_ID } from "@/lib/const/States";
 
 export const useCampaigns = () => {
     // Todo: deberiamos tener una variable campaigns que se actualice cada vez que se crea una campaña
@@ -36,10 +34,15 @@ export const useCampaigns = () => {
         return filteredCampaigns;
     }
 
+    const getCampaignsByCreator = async () => {
+        return await repository.getAllByUser(wallet!.account.address);
+    }
+
     return {
         getCampaignById,
         getAllCampaigns,
         createCampaign,
-        getPendingCampaigns
+        getPendingCampaigns,
+        getCampaignsByCreator,
     };
 }

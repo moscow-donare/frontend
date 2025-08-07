@@ -1,6 +1,6 @@
 import { BackendResponse } from "@/lib/BackendResponse";
 import { ICampaignRepository } from "./ICampaignRepository";
-import { Campaign, CreateCampaign } from "@/app/types/Campaign";
+import { Campaign, CreateCampaign, StateChange } from "@/app/types/Campaign";
 import { ABI_CAMPAIGN, ABI_FACTORY_CAMPAIGN } from "@/lib/ABIContracts";
 import { ethers, parseUnits } from "ethers";
 import { GetWalletClientData } from "wagmi/query";
@@ -246,6 +246,104 @@ export class BlockchainCampaignRepository implements ICampaignRepository {
       return [];
     }
   }
+
+  async fetchStateChanges(
+    contract: ethers.Contract,
+    fromBlock = 0,
+    toBlock: "latest" | number = "latest"
+  ): Promise<StateChange[]> {
+    const filter = contract.filters.StateChanged();
+    const logs = await contract.queryFilter(filter, fromBlock, toBlock);
+    return logs.map(evt => ({
+      blockNumber: evt.blockNumber,
+      txHash: evt.transactionHash,
+      newState: evt.args!.newState,
+      reason: evt.args!.reason,
+    }));
+  }
+
+ async getAllByUser(address: string): Promise<Campaign[]> {
+  try {
+    const provider = new ethers.JsonRpcProvider("http://localhost:8545");
+    const factory = new ethers.Contract(
+      FACTORY_ADDRESS,
+      ABI_FACTORY_CAMPAIGN,
+      provider
+    );
+
+    console.log("Fetching campaigns by user:", address);
+    const campaignAddresses: string[] = await factory.campaignsByUser(address);
+
+    const campaigns: Campaign[] = await Promise.all(
+      campaignAddresses.map(async (addr: string): Promise<Campaign> => {
+        const contract = new ethers.Contract(addr, ABI_CAMPAIGN, provider);
+
+        // 1) Datos básicos
+        const [
+          id,
+          title,
+          description,
+          goal,
+          deadline,
+          creator,
+          status,
+          imageCID,
+          category,
+        ] = await Promise.all([
+          contract.id(),
+          contract.title(),
+          contract.description(),
+          contract.goal(),
+          contract.deadline(),
+          contract.creator(),
+          contract.status(),
+          contract.imageCID(),
+          contract.category(),
+        ]);
+
+        // 2) Eventos StateChanged
+        const stateChanges = await this.fetchStateChanges(contract);
+
+        // 3) Cálculos de fecha
+        const endDate = new Date(Number(deadline));
+        const today = new Date();
+        const daysLeft = Math.max(
+          0,
+          Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+        );
+
+        return {
+          id: Number(id),
+          address: addr,
+          title,
+          description,
+          fullDescription: description,
+          category: Number(category),
+          imageCID,
+          goal: Number(ethers.formatUnits(goal, 18)),
+          amountRaised: 0,
+          createdAt: today,
+          endDate,
+          daysLeft,
+          donors: 0,
+          creator,
+          walletAddress: addr,
+          isVerified: true,
+          status: Number(status),
+          stateChanges,
+        };
+      })
+    );
+
+    console.log("Campaigns fetched:", campaigns);
+    return campaigns;
+  } catch (err) {
+    console.error("Error al obtener campañas:", err);
+    return [];
+  }
+  }
+
+
   getPendingCampaigns(): Promise<BackendResponse<Campaign[]>> {
     throw new Error("Method not implemented.");
   }
