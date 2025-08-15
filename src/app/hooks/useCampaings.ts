@@ -1,16 +1,18 @@
-import { STATE_NAME_TO_ID } from "@/lib/const/States";
-import { BlockchainCampaignRepository } from "@/lib/repositories/Campaign/BlockchainCampaingRepository";
-import { useWalletClient } from "wagmi";
+import { STATE_NAME_TO_ID } from "@/shared/const/States";
+import { BlockchainCampaignRepository } from "@/shared/repositories/Campaign/BlockchainCampaingRepository";
 import { Campaign, CreateCampaign } from "../types/Campaign";
+import { BackendCampaignRepository } from "@/shared/repositories/Campaign/HttpCampaignRepository";
+import { useWeb3Auth } from "@web3auth/modal/react";
 
 
 
 export const useCampaigns = () => {
+    const { web3Auth } = useWeb3Auth(); // 👈 acceso al objeto Web3Auth
     // Todo: deberiamos tener una variable campaigns que se actualice cada vez que se crea una campaña
     // o se actualiza una campaña, para no tener que hacer un getAllCampaigns
     // Esto se puede hacer con un estado global o un contexto
-    const { data: wallet } = useWalletClient();
     const repository = new BlockchainCampaignRepository();
+    const backenRepository = new BackendCampaignRepository(web3Auth);
 
     const getCampaignById = async (id: number): Promise<Campaign | undefined> => {
         return await repository.getById(id);
@@ -22,7 +24,7 @@ export const useCampaigns = () => {
     }
     
     const createCampaign = async (campaignData: CreateCampaign) => {
-        return await repository.createCampaign(campaignData, wallet);
+        return await backenRepository.createCampaign(campaignData);
     }
 
     // DEJAR ESTA FUNCION POR SI VAMOS A AGREGAR MAS CATEGORIAS A FUTURO Y NO LA DEJAMOS FIJAS

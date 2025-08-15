@@ -31,7 +31,7 @@ import { Campaign } from "@/app/types/Campaign"
 import { useEffect, useState } from "react"
 import { useIPFS } from "@/app/hooks/useIPFS"
 import LoadingSpinner from "@/app/components/LoadingSpinner"
-import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from "@/lib/const/Categories"
+import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from "@/shared/const/Categories"
 import { DateFormatter } from "@/app/utils/DateFormatter"
 import { PriceFormatter } from "@/app/utils/PriceFormatter"
 

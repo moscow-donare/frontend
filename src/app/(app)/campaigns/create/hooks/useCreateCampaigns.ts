@@ -84,24 +84,25 @@ export const useCreateCampaigns = () => {
       const endDateTime = new Date(formData.endDate).getTime();
 
       const newCampaign: CreateCampaign = {
-        title: formData.title,
+        name: formData.title,
         description: formData.description,
-        imageCID: imageCID,
+        photo: imageCID,
         goal: formData.goal,
-        deadline: endDateTime,
+        endDate: endDateTime,
         url: "",
-        category: formData.category!
+        category: Number(formData.category)
       };
 
       const response = await createCampaign(newCampaign);
-      if (response.error) {
-        setError(response.error);
+      if (response.IsErr) {
+        setError(response.AsErr.Error.message ?? "Error desconocido");
         setIsSubmitting(false);
         return;
       }
       console.log("✅ Campaña creada exitosamente:", response);
       // Redirect to confirmation page or campaigns list
-      router.push('/campaigns/create/confirmation?campaignId=' + response.id);
+      const campaignId = response.Unwrap().id
+      router.push('/campaigns/create/confirmation?campaignId=' + campaignId);
       setIsSubmitting(false);
 
     } catch (err) {

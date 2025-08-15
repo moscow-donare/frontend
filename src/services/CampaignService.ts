@@ -1,4 +1,4 @@
-import { BlockchainCampaignRepository } from "@/lib/repositories/Campaign/BlockchainCampaingRepository";
+import { BlockchainCampaignRepository } from "@/shared/repositories/Campaign/BlockchainCampaingRepository";
 
 const repository = new BlockchainCampaignRepository();
 export const CampaignService = {
