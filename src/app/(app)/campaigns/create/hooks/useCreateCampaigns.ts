@@ -101,7 +101,7 @@ export const useCreateCampaigns = () => {
       }
       console.log("✅ Campaña creada exitosamente:", response);
       // Redirect to confirmation page or campaigns list
-      router.push('/campaigns/create/confirmation?campaignId=' + response.id);
+      router.push('/campaigns/create/confirmation?campaignId=' + response.data.id);
       setIsSubmitting(false);
 
     } catch (err) {

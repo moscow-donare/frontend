@@ -38,10 +38,12 @@ export class BlockchainCampaignRepository implements ICampaignRepository {
 
     const receipt = await tx.wait();
 
+    const campaigns = await this.getAll();
+
     return {
       success: true,
       message: "Campaña creada exitosamente",
-      data: { txHash: receipt.transactionHash },
+      data: { txHash: receipt.transactionHash, id: campaigns.length - 1},
     };
   }
 

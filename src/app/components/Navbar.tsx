@@ -85,13 +85,6 @@ const Navbar = () => {
                 <>
                   <Button
                     as={Link}
-                    href="/campaigns/create"
-                    color="primary"
-                  >
-                    <Plus className="h-4 w-4 mr-1" /> Crear Campaña
-                  </Button>
-                  <Button
-                    as={Link}
                     href="/login"
                     color="secondary"
                   >
@@ -151,6 +144,17 @@ const Navbar = () => {
             <div className="pt-2 border-t border-gray-200 space-y-2">
               {isConnected ? (
                 <div className="space-y-3">
+                                    <div className="px-3">
+                    <Button
+                      as={Link}
+                      href="/campaigns/create"
+                      color="primary"
+                      className="w-full justify-center"
+                      onPress={() => setIsMenuOpen(false)}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Crear Campaña
+                    </Button>
+                  </div>
                   <div className="px-3 py-2">
                     <Balance />
                   </div>
@@ -176,17 +180,6 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <div className="px-3">
-                    <Button
-                      as={Link}
-                      href="/campaigns/create"
-                      color="primary"
-                      className="w-full justify-center"
-                      onPress={() => setIsMenuOpen(false)}
-                    >
-                      <Plus className="h-4 w-4 mr-1" /> Crear Campaña
-                    </Button>
-                  </div>
                   <div className="px-3">
                     <Button
                       as={Link}

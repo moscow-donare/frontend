@@ -16,15 +16,16 @@ import TransactionList from "../../../components/TransactionList"
 import { useTransactions } from "../../../hooks/useTransactions"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { 
-  Card, 
-  CardBody, 
-  CardHeader, 
-  Button, 
-  Chip, 
-  Progress, 
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Chip,
+  Progress,
   Avatar,
-  Image
+  Image,
+  Alert
 } from "@heroui/react"
 import { useCampaigns } from "@/app/hooks/useCampaings"
 import { Campaign } from "@/app/types/Campaign"
@@ -41,10 +42,10 @@ export default function Page() {
   const { getCampaignById } = useCampaigns()
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
-  const {resolveCid} = useIPFS()
+  const { resolveCid } = useIPFS()
   const { transactions, addTransaction } = useTransactions(id || "")
   useEffect(() => {
-    
+
     const fetchCampaign = async () => {
       if (id) {
         const campaign = await getCampaignById(Number(id))
@@ -73,6 +74,10 @@ export default function Page() {
   }
 
   if (!isLoaded) return <LoadingSpinner />
+
+  if (campaign?.status == 0) return <div className="h-screen"><Alert color="warning" title="Campaña en revisión" description="Esta campaña está actualmente en revisión y no se puede donar." /></div>;
+  if (campaign?.status == 3) return <div className="h-screen mx-auto"><Alert color="danger" title="Campaña Cancelada" description="Esta campaña ha sido cancelada y no se puede donar." /></div>;
+  if (campaign?.status == 1) return <div className="h-screen"><Alert color="secondary" title="Campaña en revisión" description="Esta campaña está actualmente pendiente de cambios y no se puede donar." /></div>;
 
   if (!campaign) {
     return (
@@ -131,7 +136,7 @@ export default function Page() {
                 className="w-full h-80 object-cover"
                 removeWrapper
               />
-              
+
               {/* Category Badge */}
               <div className="absolute top-4 left-4 z-10">
                 <Chip
@@ -196,14 +201,14 @@ export default function Page() {
                       <p className="text-sm text-gray-600">completado</p>
                     </div>
                   </div>
-                  
+
                   <Progress
                     value={Math.min(progress, 100)}
                     color="primary"
                     size="lg"
                     className="mb-4"
                   />
-                  
+
                   <div className="flex justify-between items-center">
                     <Chip
                       color="secondary"
@@ -267,12 +272,12 @@ export default function Page() {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2 text-lg">Verificación Completa</h3>
                   <p className="text-gray-600">
-                    Todas las transacciones de esta campaña son públicas y verificables en la blockchain. 
+                    Todas las transacciones de esta campaña son públicas y verificables en la blockchain.
                     Puedes verificar el contrato inteligente y las transacciones en tiempo real.
                   </p>
                 </div>
               </div>
-              
+
               <Card className="bg-gray-50">
                 <CardBody>
                   <div className="flex flex-col lg:flex-row justify-between gap-4">
@@ -306,19 +311,19 @@ export default function Page() {
           </Card>
 
           {/* Transactions */}
-          <Card className="shadow-lg">
+          {/* <Card className="shadow-lg">
             <CardBody>
               <TransactionList transactions={transactions} />
             </CardBody>
-          </Card>
+          </Card> */}
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Donation Form */}
-          <div className="sticky top-24">
+          {/* <div className="sticky top-24">
             <DonationForm campaign={campaign} onDonate={handleDonate} />
-          </div>
+          </div> */}
 
           {/* Creator Info */}
           <Card className="shadow-lg">
@@ -338,12 +343,12 @@ export default function Page() {
                   <p className="text-gray-500">Organizador de la campaña</p>
                 </div>
               </div>
-              
+
               <p className="text-gray-600 mb-6 leading-relaxed">
                 {
                   "Este organizador está trabajando para ayudar a su comunidad y necesita tu apoyo para lograrlo."}
               </p>
-              
+
               {campaign.isVerified && (
                 <Chip
                   color="success"

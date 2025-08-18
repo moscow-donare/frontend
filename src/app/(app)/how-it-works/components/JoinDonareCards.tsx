@@ -32,7 +32,7 @@ const cards = [
     icon: <Zap className="h-6 w-6" />,
     title: "Crea una Campaña",
     desc: "Inicia tu propia campaña para financiar un proyecto o ayudar a quien lo necesite.",
-    href: "/campaigns/create",
+    href: "/login",
     link: "Crear campaña"
   },
   {

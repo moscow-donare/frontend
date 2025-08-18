@@ -35,8 +35,8 @@ export default function AuthAvatar() {
                     </div>
                 </DropdownTrigger>
                 <DropdownMenu>
-                    <DropdownItem key="profile">Perfil</DropdownItem>
-                    <DropdownItem key="settings">Configuración</DropdownItem>
+                    {/* <DropdownItem key="profile">Perfil</DropdownItem> */}
+                    {/* <DropdownItem key="settings">Configuración</DropdownItem> */}
                     <DropdownItem key="logout" onClick={() => disconnect()}>Cerrar sesión</DropdownItem>
                 </DropdownMenu>
             </Dropdown>

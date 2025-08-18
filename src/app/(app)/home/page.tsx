@@ -13,8 +13,8 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchCampaigns = async () => {
       const allCampaigns = await getAllCampaigns();
-      console.log('campañas', allCampaigns)
-      setCampaigns(allCampaigns);
+      const campaings = allCampaigns.filter(c => c.status == 2);
+      setCampaigns(campaings);
     };
     fetchCampaigns();
   }, []);
