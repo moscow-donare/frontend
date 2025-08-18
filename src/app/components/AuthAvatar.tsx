@@ -1,20 +1,25 @@
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import { useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useWalletClient } from "wagmi";
 
 export default function AuthAvatar() {
     const { disconnect } = useWeb3AuthDisconnect();
-    const { userInfo, loading } = useWeb3AuthUser();
-    const {data: walletClient } = useWalletClient();
+    const { userInfo, loading, getUserInfo } = useWeb3AuthUser();
+    const { data: walletClient } = useWalletClient();
     const [userInfoData, setUserInfo] = useState(userInfo);
-
     useEffect(() => {
         console.log("User Info:", userInfo);
         console.log("Wallet Client:", walletClient);
-        userInfoData && setUserInfo(userInfo);
+        fetchData();
+        // userInfoData && setUserInfo(userInfo);
+    }, [walletClient]);
 
-    }, [userInfo, walletClient]);
+    const fetchData = async () => {
+        const user = await getUserInfo();
+        setUserInfo(user);
+    }
+
     return (
         // TO DO: REALIZAR UN COMPONENTE DE AVATAR MOBILE
         <div>
