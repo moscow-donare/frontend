@@ -1,7 +1,7 @@
 "use client"
 
 import { PriceFormatter } from '@/app/utils/PriceFormatter';
-import { CATEGORY_MAPPER } from '@/lib/const/Categories';
+import { CATEGORY_MAPPER } from '@/shared/const/Categories';
 import { Button } from '@heroui/react';
 import { Info, Upload } from 'lucide-react';
 import React from 'react';

@@ -1,7 +1,7 @@
-import { BackendResponse } from "@/lib/BackendResponse";
+import { BackendResponse } from "@/shared/BackendResponse";
 import { ICampaignRepository } from "./ICampaignRepository";
 import { Campaign, CreateCampaign } from "@/app/types/Campaign";
-import { ABI_CAMPAIGN, ABI_FACTORY_CAMPAIGN } from "@/lib/ABIContracts";
+import { ABI_CAMPAIGN, ABI_FACTORY_CAMPAIGN } from "@/shared/ABIContracts";
 import { ethers, parseUnits } from "ethers";
 import { GetWalletClientData } from "wagmi/query";
 import { Config } from "wagmi";
