@@ -1,20 +1,24 @@
-import { Web3Auth } from "@web3auth/modal";
+import { cookieStorage } from "wagmi";
 
 export class HttpClient {
 
-  constructor(private baseURL: string, private web3Auth: Web3Auth | null = null) {
+  constructor(private baseURL: string) {
     this.baseURL = baseURL;
   }
 
   private async  getAuthHeaders(): Promise<HeadersInit> {
-    console.log("Web3Auth", this.web3Auth);
-    const token = (await this.web3Auth?.getUserInfo())?.idToken ?? null;
-    console.log("Token", token);
-    if (!token) {
+    const web3AuthStorage = cookieStorage.getItem("Web3Auth-state") ?? null;
+    if (!web3AuthStorage) {
+      console.warn("Web3Auth storage not found, no auth headers will be sent.");
       return {};
     }
+    const idToken = JSON.parse(web3AuthStorage)?.idToken;
+    if (!idToken) {
+      return {};
+    }
+    console.log("ID Token:", idToken);
     return {
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${idToken}`,
     };
   }
 
@@ -53,9 +57,10 @@ export class HttpClient {
     }
   }
 
-  async get<T>(url: string, params?: Record<string, string>): Promise<T> {
+  async get<T>(url: string, authRequired: boolean = true,params?: Record<string, string>): Promise<T> {
     const queryString = params ? new URLSearchParams(params).toString() : '';
-    return this.request<T>(`${url}?${queryString}`, { method: "GET" });
+    const headers = await this.getHeaders(authRequired);
+    return this.request<T>(`${url}?${queryString}`, { method: "GET", headers });
   }
 
   async post<T>(url: string, data: unknown, authRequired: boolean = true): Promise<T> {

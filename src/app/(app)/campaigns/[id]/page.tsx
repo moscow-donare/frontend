@@ -35,7 +35,7 @@ import LoadingSpinner from "@/app/components/LoadingSpinner"
 import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from "@/shared/const/Categories"
 import { DateFormatter } from "@/app/utils/DateFormatter"
 import { PriceFormatter } from "@/app/utils/PriceFormatter"
-import { STATE_NAME_TO_ID } from "@/lib/const/States"
+import { STATE_NAME_TO_ID } from "@/shared/const/States"
 
 export default function Page() {
   const params = useParams()
@@ -139,7 +139,7 @@ export default function Page() {
             <div className="relative">
               <Image
                 src={resolveCid(campaign.imageCID) || "/placeholder.svg"}
-                alt={campaign.title}
+                alt={campaign.name}
                 className="w-full h-80 object-cover"
                 removeWrapper
               />
@@ -173,7 +173,7 @@ export default function Page() {
 
             <CardBody className="p-8">
               {/* Title */}
-              <h1 className="text-3xl font-bold text-gray-900 mb-6">{campaign.title}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-6">{campaign.name}</h1>
 
               {/* Meta Information */}
               <div className="flex flex-wrap items-center gap-6 mb-8">

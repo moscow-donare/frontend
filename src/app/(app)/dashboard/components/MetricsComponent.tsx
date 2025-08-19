@@ -1,4 +1,4 @@
-import { STATE_NAME_TO_ID } from "@/lib/const/States";
+import { STATE_NAME_TO_ID } from "@/shared/const/States";
 import { BarChart, TrendingUp, Users } from "lucide-react";
 import { useDashboard } from "../hooks/useDashboard";
 

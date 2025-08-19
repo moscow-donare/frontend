@@ -54,7 +54,7 @@ export interface Campaign {
   imageCID: string;
   isVerified: boolean;
   status: number;
-  title: string;
+  name: string;
   walletAddress: string;
   stateChanges?: StateChange[];
 }

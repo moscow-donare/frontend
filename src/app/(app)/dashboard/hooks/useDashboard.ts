@@ -16,7 +16,11 @@ export const useDashboard = () => {
 
   const fetchData = async () => {
     const campaigns = await getCampaignsByCreator();
-    setCampaigns(campaigns);
+    if (campaigns.IsErr) {
+      console.error("Error fetching campaigns:", campaigns.Error);
+      return;
+    }
+    setCampaigns(campaigns.Unwrap());
   }
 
   const selectCampaign = (campaign: Campaign | null) => {

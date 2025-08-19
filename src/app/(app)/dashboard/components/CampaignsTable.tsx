@@ -1,10 +1,9 @@
 "use client"
 import { Campaign } from '@/app/types/Campaign'
 import { PriceFormatter } from '@/app/utils/PriceFormatter'
-import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from '@/lib/const/Categories'
+import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from '@/shared/const/Categories'
 import {
     addToast,
-    alert,
     Button,
     Chip,
     Dropdown,
@@ -21,7 +20,7 @@ import {
 } from '@heroui/react'
 import React, { Key } from 'react'
 import { useDashboard } from '../hooks/useDashboard'
-import { STATE_COLOR_MAPPER, STATE_MAPPER, STATE_NAME_TO_ID } from '@/lib/const/States'
+import { STATE_COLOR_MAPPER, STATE_MAPPER, STATE_NAME_TO_ID } from '@/shared/const/States'
 import { AlertCircle, Edit, Eye, Plus, Share, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -54,14 +53,14 @@ export function CampaignsTable() {
                             alt={campaign.title}
                         /> */}
                         <div className="text-sm font-medium text-gray-900">
-                            {campaign.title}
+                            {campaign.name}
                         </div>
                     </div>
                 );
             case "endDate":
                 return (
                     <div>
-                        {campaign.endDate.toLocaleDateString('es-ES')}
+                        {new Date(campaign.endDate).toLocaleDateString('es-ES')}
                     </div>
                 );
             case "goal":
