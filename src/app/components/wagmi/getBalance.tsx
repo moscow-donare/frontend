@@ -2,7 +2,7 @@ import { useWalletClient } from "wagmi";
 import { useEffect, useState } from "react";
 import { BrowserProvider, ethers } from "ethers";
 import { USDTIcon } from "@public/icons/USDTIcon";
-import { ABI_ERC20_TOKEN } from "@/lib/ABIContracts";
+import { ABI_ERC20_TOKEN } from "@/shared/ABIContracts";
 
 const USDT = process.env.NEXT_PUBLIC_USDT_ADDRESS!;
 

@@ -1,4 +1,4 @@
-import { MockBackendResponse } from "@/lib/MockBackendResponse";
+import { MockBackendResponse } from "@/shared/MockBackendResponse";
 import { ICampaignRepository } from "./ICampaignRepository";
 import { Campaign } from "@/app/types/Campaign";
 const MOCK_CAMPAIGNS: Campaign[] = [

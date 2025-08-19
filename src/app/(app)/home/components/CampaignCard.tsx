@@ -5,7 +5,7 @@ import { Campaign } from '../../../types/Campaign';
 import Image from 'next/image';
 import { Card, CardBody, CardFooter, Button, Chip, Progress } from '@heroui/react';
 import { useIPFS } from '@/app/hooks/useIPFS';
-import { CATEGORY_MAPPER } from '@/lib/const/Categories';
+import { CATEGORY_MAPPER } from '@/shared/const/Categories';
 
 interface CampaignCardProps {
   campaign: Campaign;

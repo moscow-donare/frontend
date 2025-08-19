@@ -21,7 +21,7 @@ import React, { Key } from 'react'
 import { useValidateCampaignsModals } from '../hooks/useValidateCampaignsModals'
 import { useValidateCampaigns } from '../hooks/useValidateCampaigns'
 import { PriceFormatter } from '@/app/utils/PriceFormatter'
-import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from '@/lib/const/Categories'
+import { CATEGORY_COLOR_MAPPER, CATEGORY_MAPPER } from '@/shared/const/Categories'
 
 export function CampaignsTable() {
     const { openDescriptionModal, openCancelModal, openReviewModal, openAcceptModal } = useValidateCampaignsModals();

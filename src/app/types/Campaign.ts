@@ -29,11 +29,11 @@ export interface StateChange {
 }
 
 export type CreateCampaign = {
-  title: string;
+  name: string;
   description: string;
-  imageCID: string;
+  photo: string;
   goal: number;
-  deadline: number;
+  endDate: number;
   url: string;
   category: number
 }

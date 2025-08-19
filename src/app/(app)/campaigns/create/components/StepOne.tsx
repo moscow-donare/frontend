@@ -1,6 +1,6 @@
 "use client"
 
-import { CATEGORY_ID_TO_NAME } from '@/lib/const/Categories';
+import { CATEGORY_ID_TO_NAME } from '@/shared/const/Categories';
 import { Button, DatePicker, DateValue, Input, Select, SelectItem } from '@heroui/react';
 import { Calendar } from 'lucide-react';
 import { useCreateCampaignContext } from '../context/CreateCampaignContext';

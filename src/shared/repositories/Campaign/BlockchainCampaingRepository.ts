@@ -1,7 +1,12 @@
-import { BackendResponse } from "@/lib/BackendResponse";
+import { BackendResponse } from "@/shared/BackendResponse";
 import { ICampaignRepository } from "./ICampaignRepository";
+<<<<<<< HEAD:src/lib/repositories/Campaign/BlockchainCampaingRepository.ts
 import { Campaign, CreateCampaign, StateChange } from "@/app/types/Campaign";
 import { ABI_CAMPAIGN, ABI_FACTORY_CAMPAIGN } from "@/lib/ABIContracts";
+=======
+import { Campaign, CreateCampaign } from "@/app/types/Campaign";
+import { ABI_CAMPAIGN, ABI_FACTORY_CAMPAIGN } from "@/shared/ABIContracts";
+>>>>>>> development:src/shared/repositories/Campaign/BlockchainCampaingRepository.ts
 import { ethers, parseUnits } from "ethers";
 import { GetWalletClientData } from "wagmi/query";
 import { Config } from "wagmi";
