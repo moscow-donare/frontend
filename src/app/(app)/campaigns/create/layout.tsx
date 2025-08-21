@@ -1,9 +1,9 @@
-import { CreateCampaignProvider } from './context/CreateCampaignContext';
+import { CampaignFormProvider } from '../shared/context/CampaignFormContext';
 
 export default function CreateCampaignLayout({ children }: { children: React.ReactNode }) {
   return (
-    <CreateCampaignProvider>
-        {children}
-    </CreateCampaignProvider>
+    <CampaignFormProvider mode="create">
+      {children}
+    </CampaignFormProvider>
   );
 }

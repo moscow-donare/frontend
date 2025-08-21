@@ -244,18 +244,19 @@ const DashboardPage: React.FC = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <div className="flex justify-end space-x-2">
                             <Link 
-                              href={`/campaign/${campaign.id}`}
+                              href={`/campaigns/${campaign.id}`}
                               className="text-gray-400 hover:text-gray-500"
                               title="Ver"
                             >
                               <Eye className="h-5 w-5" />
                             </Link>
-                            <button 
+                            <Link 
+                              href={`/campaigns/edit/${campaign.id}`}
                               className="text-blue-400 hover:text-blue-500"
                               title="Editar"
                             >
                               <Edit className="h-5 w-5" />
-                            </button>
+                            </Link>
                             <button 
                               className="text-red-400 hover:text-red-500"
                               title="Eliminar"
