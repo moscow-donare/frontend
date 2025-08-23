@@ -21,6 +21,13 @@
 
 export type CampaignStatus = 'InReview' | 'PendingChange' | 'Cancelled' | 'Active' | 'Completed';
 
+export interface StateChange {
+  blockNumber: number;
+  txHash: string;
+  newState: number;
+  reason: string;
+}
+
 export type CreateCampaign = {
   name: string;
   description: string;
@@ -47,6 +54,7 @@ export interface Campaign {
   imageCID: string;
   isVerified: boolean;
   status: number;
-  title: string;
+  name: string;
   walletAddress: string;
+  stateChanges?: StateChange[];
 }

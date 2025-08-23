@@ -3,23 +3,47 @@ import { Campaign, CreateCampaign } from "@/app/types/Campaign";
 import { ICampaignRepository } from "./ICampaignRepository";
 import { HttpClient } from "@/shared/HttpClient";
 import Result, { AsyncResult } from "@/shared/Result";
-import { Web3Auth } from "@web3auth/modal";
+import { Criteria } from "@/shared/models/criteria/Criteria";
+import { Filter } from "@/shared/models/criteria/Filter";
 
-const API_ROUTE = "/campaigns/create";
+const API_ROUTE = "/campaigns/";
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000/api";
 
 export class BackendCampaignRepository implements ICampaignRepository {
   private httpClient: HttpClient;
-  constructor(private web3Auth: Web3Auth | null) {
-    this.httpClient = new HttpClient(BASE_URL, web3Auth);
+  constructor() {
+    this.httpClient = new HttpClient(BASE_URL);
   }
 
 
   getPendingCampaigns(): AsyncResult<BackendResponse<Campaign[]>> {
     throw new Error("Method not implemented.");
   }
-  getById(id: number): AsyncResult<Campaign | null> {
-    throw new Error("Method not implemented.");
+
+  async getById(id: number): AsyncResult<Campaign | null> {
+    try {  
+      const criteria: Criteria = new Criteria();
+      const filter: Filter = new Filter('id', id)
+      criteria.addFilter(filter);
+      const queryString = this.criteriaToQueryString(criteria);
+      const response = await this.httpClient.get<BackendResponse>(`${API_ROUTE}/criteria?${queryString}`);
+      if (!response || !response.success) {
+        return Result.Err({
+          code: "GET_CAMPAIGN_BY_ID_FAILED",
+          message: response ? response.message : "Unknown error",
+          details: response?.error ?? response?.data ?? null
+        });
+      }
+
+      return Result.Ok(response.data as Campaign);
+    } catch (error) {
+      console.error("Error getting campaign by ID:", error);
+      return Result.Err({
+        code: "GET_CAMPAIGN_BY_ID_EXCEPTION",
+        message: (error as Error).message,
+        details: error
+      }); 
+    }
   }
   acceptCampaign(address: string, reason: string): AsyncResult<BackendResponse> {
     throw new Error("Method not implemented.");
@@ -33,7 +57,7 @@ export class BackendCampaignRepository implements ICampaignRepository {
 
   async createCampaign(createCampaignData: CreateCampaign): AsyncResult<Campaign> {
     try {
-      const response = await  this.httpClient.post<BackendResponse>(API_ROUTE, createCampaignData);
+      const response = await  this.httpClient.post<BackendResponse>(`${API_ROUTE}create`, createCampaignData);
       if (!response || !response.success) {
         return Result.Err({
           code: "CREATE_CAMPAIGN_FAILED",
@@ -50,6 +74,38 @@ export class BackendCampaignRepository implements ICampaignRepository {
         details: error
       });
     }
+  }
+
+  async getAllByCreator(): AsyncResult<Campaign[] | null> {
+    try {  
+      const response = await this.httpClient.get<BackendResponse>(`${API_ROUTE}creator/criteria`);
+      if (!response || !response.success) {
+        return Result.Err({
+          code: "GET_CAMPAIGNS_FAILED",
+          message: response ? response.message : "Unknown error",
+          details: response?.error ?? response?.data ?? null
+        });
+      }
+      console.log("Campaigns fetched successfully:", response.data);
+      return Result.Ok(response.data as Campaign[]);
+    } catch (error) {
+      console.error("Error getting campaigns:", error);
+      return Result.Err({
+        code: "GET_CAMPAIGNS_EXCEPTION",
+        message: (error as Error).message,
+        details: error
+      }); 
+    }
+  }
+
+  private criteriaToQueryString(criteria: Criteria): string {
+    let queryString = "";  
+    criteria.getFilters().forEach((filter, index) => {
+      queryString += `filters[${index}][field]=${encodeURIComponent(filter.getField())}&`;
+      queryString += `filters[${index}][value]=${encodeURIComponent(String(filter.getValue()))}&`;
+      queryString += `filters[${index}][operator]=${encodeURIComponent(filter.getOperator().getOperator())}&`;
+    });
+    return queryString;
   }
 }
 

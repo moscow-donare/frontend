@@ -1,20 +1,27 @@
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import { useWeb3AuthDisconnect, useWeb3AuthUser } from "@web3auth/modal/react";
-import { use, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useWalletClient } from "wagmi";
 
 export default function AuthAvatar() {
     const { disconnect } = useWeb3AuthDisconnect();
-    const { userInfo, loading } = useWeb3AuthUser();
-    const {data: walletClient } = useWalletClient();
+    const { userInfo, loading, getUserInfo } = useWeb3AuthUser();
+    const { data: walletClient } = useWalletClient();
     const [userInfoData, setUserInfo] = useState(userInfo);
-
+    const router = useRouter();
     useEffect(() => {
         console.log("User Info:", userInfo);
         console.log("Wallet Client:", walletClient);
-        userInfoData && setUserInfo(userInfo);
+        fetchData();
+        // userInfoData && setUserInfo(userInfo);
+    }, [walletClient]);
 
-    }, [userInfo, walletClient]);
+    const fetchData = async () => {
+            const user = await getUserInfo();
+        setUserInfo(user);
+    }
+
     return (
         // TO DO: REALIZAR UN COMPONENTE DE AVATAR MOBILE
         <div>
@@ -27,16 +34,16 @@ export default function AuthAvatar() {
                             size="md"
                             className="cursor-pointer"
                         />
-                        {!loading && userInfoData?.name ? (
+                        {/* {!loading && userInfoData?.name ? (
                             <span className="ml-2 font-medium text-gray-800">{userInfoData.name}</span>
                         ) : (
                             <span className="ml-2 font-medium text-gray-800"></span>
-                        )}
+                        )} */}
                     </div>
                 </DropdownTrigger>
                 <DropdownMenu>
-                    <DropdownItem key="profile">Perfil</DropdownItem>
-                    <DropdownItem key="settings">Configuración</DropdownItem>
+                    {/* <DropdownItem key="profile">Perfil</DropdownItem> */}
+                    <DropdownItem key="settings" onPress={() => router.push("/dashboard")}>Mis Campañas</DropdownItem>
                     <DropdownItem key="logout" onClick={() => disconnect()}>Cerrar sesión</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
