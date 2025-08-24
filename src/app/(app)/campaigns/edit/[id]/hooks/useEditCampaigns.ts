@@ -1,5 +1,6 @@
 "use client"
 
+import { useCampaigns } from '@/app/hooks/useCampaings';
 import { useEditCampaignContext } from '../context/EditCampaignContext';
 // import { useCampaigns } from '@/app/hooks/useCampaings'; // In a real app, you'd use this for updateCampaign
 import { useIPFS } from '@/app/hooks/useIPFS';
@@ -8,33 +9,33 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 // Mock function to get campaign data
-const mockGetCampaignById = async (id: string): Promise<Campaign> => {
-  // Simulate API delay
-//   await new Promise(resolve => setTimeout(resolve, 1000));
+// const mockGetCampaignById = async (id: string): Promise<Campaign> => {
+//   // Simulate API delay
+// //   await new Promise(resolve => setTimeout(resolve, 1000));
   
-  // Mock campaign data
-  const mockCampaign: Campaign = {
-    id: parseInt(id),
-    title: 'Ayuda para tratamiento médico de María',
-    description: 'María necesita ayuda urgente para su tratamiento médico. Tu donación puede hacer la diferencia.',
-    fullDescription: 'María es una madre de familia que necesita ayuda urgente para su tratamiento médico. Hace unos meses le diagnosticaron una enfermedad que requiere tratamiento especializado y costoso. Tu donación puede hacer la diferencia en su vida y la de su familia.',
-    category: 1, // Salud
-    imageCID: 'QmExampleImageHash',
-    goal: 5000,
-    amountRaised: 1250,
-    createdAt: new Date('2024-01-15'),
-    endDate: new Date('2024-06-15'),
-    daysLeft: 45,
-    donors: 25,
-    creator: 'María González',
-    address: '0x742d35Cc6634C0532925a3b8D45C9e86C2',
-    walletAddress: '0x742d35Cc6634C0532925a3b8D45C9e86C2',
-    isVerified: true,
-    status: 3 // Active
-  };
+//   // Mock campaign data
+//   const mockCampaign: Campaign = {
+//     id: parseInt(id),
+//     title: 'Ayuda para tratamiento médico de María',
+//     description: 'María necesita ayuda urgente para su tratamiento médico. Tu donación puede hacer la diferencia.',
+//     fullDescription: 'María es una madre de familia que necesita ayuda urgente para su tratamiento médico. Hace unos meses le diagnosticaron una enfermedad que requiere tratamiento especializado y costoso. Tu donación puede hacer la diferencia en su vida y la de su familia.',
+//     category: 1, // Salud
+//     imageCID: 'QmExampleImageHash',
+//     goal: 5000,
+//     amountRaised: 1250,
+//     createdAt: new Date('2024-01-15'),
+//     endDate: new Date('2024-06-15'),
+//     daysLeft: 45,
+//     donors: 25,
+//     creator: 'María González',
+//     address: '0x742d35Cc6634C0532925a3b8D45C9e86C2',
+//     walletAddress: '0x742d35Cc6634C0532925a3b8D45C9e86C2',
+//     isVerified: true,
+//     status: 3 // Active
+//   };
   
-  return mockCampaign;
-};
+//   return mockCampaign;
+// };
 
 export const useEditCampaigns = () => {
   const {
@@ -55,24 +56,26 @@ export const useEditCampaigns = () => {
   // const { createCampaign } = useCampaigns(); // In a real app, you'd have updateCampaign
   const { uploadFile } = useIPFS();
   const router = useRouter();
-
+  const { getCampaignById } = useCampaigns();
   // Load campaign data on mount
   useEffect(() => {
     const loadCampaign = async () => {
       try {
         setIsLoading(true);
-        const campaign = await mockGetCampaignById(campaignId);
-        console.log("📄 Datos de campaña cargados:", campaign);
+        const response = await getCampaignById(Number(campaignId));
+        console.log("📄 Datos de campaña cargados:", response);
+        const campaign = response.data as Campaign;
         // Convert campaign data to form format
         const endDateString = campaign.endDate.toISOString().split('T')[0];
         
         setFormData({
-          title: campaign.title,
+          title: campaign.name,
           category: campaign.category,
           goal: campaign.goal,
           endDate: endDateString,
           description: campaign.fullDescription || campaign.description,
-          image: `https://ipfs.io/ipfs/${campaign.imageCID}`,
+          // image: `https://ipfs.io/ipfs/${campaign.imageCID}`,
+          image: campaign.photo,
           imageFile: null,
         });
         

@@ -50,8 +50,7 @@ export default function Page() {
     const fetchCampaign = async () => {
       if (id) {
         const campaign = await getCampaignById(Number(id))
-        console.log("Campaign fetched:", campaign)
-        setCampaign(campaign || null)
+        setCampaign(campaign.data || null)
         setIsLoaded(true)
       }
     }
@@ -138,7 +137,7 @@ export default function Page() {
           <Card className="shadow-lg overflow-hidden">
             <div className="relative">
               <Image
-                src={resolveCid(campaign.imageCID) || "/placeholder.svg"}
+                src={resolveCid(campaign.photo) || "/placeholder.svg"}
                 alt={campaign.name}
                 className="w-full h-80 object-cover"
                 removeWrapper
@@ -200,7 +199,7 @@ export default function Page() {
                   <div className="flex justify-between items-center mb-4">
                     <div>
                       <p className="text-2xl font-bold text-primary">
-                        {PriceFormatter(campaign.amountRaised)}
+                        {PriceFormatter(campaign.amountRaised || 0)}
                       </p>
                       <p className="text-gray-600">de {PriceFormatter(campaign.goal)}</p>
                     </div>
@@ -225,14 +224,14 @@ export default function Page() {
                       variant="flat"
                       startContent={<Users className="h-4 w-4" />}
                     >
-                      {campaign.donors} donantes
+                      {campaign.donors || 0} donantes
                     </Chip>
                     <Chip
                       color={campaign.daysLeft > 7 ? "success" : "warning"}
                       variant="flat"
                       startContent={<Clock className="h-4 w-4" />}
                     >
-                      {campaign.daysLeft} días restantes
+                      {campaign.daysLeft || 0} días restantes
                     </Chip>
                   </div>
                 </CardBody>

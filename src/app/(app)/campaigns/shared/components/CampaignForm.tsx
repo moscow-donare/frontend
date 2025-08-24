@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, CardBody, Spinner } from '@heroui/react';
+import { Card, CardBody } from '@heroui/react';
 import { ErrorAlert } from './ErrorAlert';
 import { ProgressSteps } from './ProgressSteps';
 import { StepOne } from './StepOne';
@@ -9,7 +9,7 @@ import { StepTwo } from './StepTwo';
 import { useCampaignFormContext } from '../context/CampaignFormContext';
 
 export const CampaignForm: React.FC = () => {
-  const { currentStep, error, isLoading, isCreateMode } = useCampaignFormContext();
+  const { currentStep, error, isCreateMode } = useCampaignFormContext();
 
   const renderStep = () => {
     switch (currentStep) {

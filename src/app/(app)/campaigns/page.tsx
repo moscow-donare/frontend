@@ -5,7 +5,7 @@ import { useCampaigns } from "@/app/hooks/useCampaings";
 import { Campaign } from "@/app/types/Campaign";
 import { Button, Card, CardBody } from "@heroui/react";
 import { AlertCircle, ArrowLeft, Link } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function CampaignsPage() {
   const { getAllCampaigns } = useCampaigns(); // Hook para acceder al contexto de campañas
@@ -18,9 +18,9 @@ export default function CampaignsPage() {
     setIsLoaded(true);
   };
 
-  useEffect(() => {
-    handleGetCampaign();
-  }, []);
+  // useEffect(() => {
+  //   handleGetCampaign();
+  // }, []);
 
 
  if (!isLoaded) {

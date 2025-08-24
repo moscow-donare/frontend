@@ -26,7 +26,7 @@ export class BackendCampaignRepository implements ICampaignRepository {
       const filter: Filter = new Filter('id', id)
       criteria.addFilter(filter);
       const queryString = this.criteriaToQueryString(criteria);
-      const response = await this.httpClient.get<BackendResponse>(`${API_ROUTE}/criteria?${queryString}`);
+      const response = await this.httpClient.get<BackendResponse>(`${API_ROUTE}creator/criteria?${queryString}`);
       if (!response || !response.success) {
         return Result.Err({
           code: "GET_CAMPAIGN_BY_ID_FAILED",
@@ -34,8 +34,8 @@ export class BackendCampaignRepository implements ICampaignRepository {
           details: response?.error ?? response?.data ?? null
         });
       }
-
-      return Result.Ok(response.data as Campaign);
+      const campaign = response.data![0];
+      return Result.Ok(campaign as Campaign);
     } catch (error) {
       console.error("Error getting campaign by ID:", error);
       return Result.Err({
@@ -106,6 +106,28 @@ export class BackendCampaignRepository implements ICampaignRepository {
       queryString += `filters[${index}][operator]=${encodeURIComponent(filter.getOperator().getOperator())}&`;
     });
     return queryString;
+  }
+
+  async updateCampaign(id: number, campaignData: Partial<CreateCampaign>): AsyncResult<Campaign | null> {
+    try {  
+      const response = await this.httpClient.patch<BackendResponse>(`${API_ROUTE}edit/${id}`, campaignData);
+      if (!response || !response.success) {
+        return Result.Err({
+          code: "PATCH_CAMPAIGN_BY_ID_FAILED",
+          message: response ? response.message : "Unknown error",
+          details: response?.error ?? response?.data ?? null
+        });
+      }
+      console.log("Campaign updated successfully by ID:", response);
+      const campaign = response.data;
+      return Result.Ok(campaign as Campaign);
+    } catch (error) {
+      return Result.Err({
+        code: "PATCH_CAMPAIGN_BY_ID_EXCEPTION",
+        message: (error as Error).message,
+        details: error
+      }); 
+    }
   }
 }
 

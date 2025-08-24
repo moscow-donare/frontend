@@ -51,7 +51,8 @@ export interface Campaign {
   goal: number;
   id: number;
   address: string;
-  imageCID: string;
+  imageCID?: string;
+  photo: string;
   isVerified: boolean;
   status: number;
   name: string;

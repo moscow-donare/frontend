@@ -35,11 +35,16 @@ export const useCampaigns = () => {
         return await backendRepository.getAllByCreator();
     }
 
+    const updateCampaign = async (id: number, campaignData: Partial<CreateCampaign>) => {
+        return await backendRepository.updateCampaign(id, campaignData);
+    }
+
     return {
         getCampaignById,
         getAllCampaigns,
         createCampaign,
         getPendingCampaigns,
         getCampaignsByCreator,
+        updateCampaign
     };
 }
